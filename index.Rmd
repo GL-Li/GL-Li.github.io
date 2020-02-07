@@ -1,0 +1,8 @@
+---
+title: "Minimal Examples"
+output: html_document
+---
+
+## Study Notes
+
+[Minimal examples of ggplot2](https://gl-li.github.io/ggplot2_review_and_summary.html)
