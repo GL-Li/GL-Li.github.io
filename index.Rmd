@@ -10,6 +10,17 @@ output:
 library(flexdashboard)
 ```
 
+## Project
+
+## Tutorials
+### Study Notes
+
+<a href="https://gl-li.github.io/ggplot2_review_and_summary.html" target="_blank">ggplot2 summary</a>
+
+[Minimal examples of ggplot2](https://gl-li.github.io/ggplot2_review_and_summary.html)
+
+
+
 Column {data-width=650}
 -----------------------------------------------------------------------
 
