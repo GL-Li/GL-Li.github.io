@@ -1,68 +1,14 @@
 ---
-title: "Multiple Pages"
-output: flexdashboard::flex_dashboard
+title: "R, Data and More"
+output: html_document
 ---
 
-Projects
-=====================================  
-    
-Column {data-width=600}
--------------------------------------
-    
-### Chart 1
-    
-```{r}
-```
-   
-Column {data-width=400}
--------------------------------------
-   
-### Chart 2
-sads dsdsfa dsfadsaf sads dsdsfa dsfadsaf sads dsdsfa dsfadsaf sads dsdsfa dsfadsaf 
-sads dsdsfa dsfadsaf sads dsdsfa dsfadsaf 
-sads dsdsfa dsfadsaf sads dsdsfa dsfadsaf 
-
-dsaaf asdfsf 
-
-sdadsaf 
+## Projects
+### totalcensus package
 
 
-sdafdfa
-dsaaf asdfsf 
+## Study Notes
 
-sdadsaf 
+<a href="https://gl-li.github.io/ggplot2_review_and_summary.html" target="_blank"> ggplot2 summary </a>
 
-
-sdafdfa
-```{r}
-plot(1:3, 3:1)
-```   
- 
-### Chart 3
-    
-```{r}
-```
-
-Tutorials {data-orientation=rows}
-=====================================     
-   
-Row {data-height=600}
--------------------------------------
-
-### Chart 1
-
-```{r}
-```
-
-Row {data-height=400}
--------------------------------------
-   
-### Chart 2
-
-```{r}
-```   
-    
-### Chart 3
-
-```{r}
-```
+[Minimal examples of ggplot2](https://gl-li.github.io/ggplot2_review_and_summary.html)
