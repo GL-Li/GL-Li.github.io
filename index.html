@@ -3,7 +3,6 @@
 <html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
   
-
 <link href="./index_files/shiny.css" rel="stylesheet">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link href="./index_files/bootstrap.min.css" rel="stylesheet">
@@ -26,7 +25,7 @@
                             box-shadow:         0px 0px 10px 3px #BBC;
                           }
                           #navBar .title {
-                            width: 25%;
+                            width: 33.3%;
                             float: left;
                           }
                           #navBar h4 {
@@ -60,21 +59,18 @@
         </div>
 
         <div class="title">
-            <a href="https://gl-li.github.io/#tutorials"><h4>Shiny tricks</h4></a>
-        </div>
-
-        <div class="title">
             <a href="http://gl-li.com/" target="_blank"><h4>blogs</h4></a>
         </div>
     </div>
 
     <div id="intro">
-        <h2>R, Data, and More</h2>
+        <h1>R, Data, and More</h1>
     </div>
 
-    <h3 id="projects">Projects</h3>
+    <h2 id="projects">Projects</h2>
+    <hr style="height:1px;border:none;color:#333;background-color:#333;">
     <div class="row">
-      <div class="col-sm-7"><p><a href="https://github.com/GL-Li/totalcensus" target="_blank"></a></p><h4><a href="https://github.com/GL-Li/totalcensus" target="_blank">totalcensus package</a></h4> <p></p>
+      <div class="col-sm-7"><p><a href="https://github.com/GL-Li/totalcensus" target="_blank"></a></p><h3><a href="https://github.com/GL-Li/totalcensus" target="_blank">totalcensus package</a></h3> <p></p>
 
 <p>Download summary files from Census Bureau and extract data of decennial censuses and American Community Surveys from your local computer.</p>
 </div>
@@ -84,7 +80,7 @@
     </div>
     <hr>
     <div class="row">
-      <div class="col-sm-7"><p><a href="https://github.com/GL-Li/ggtiger" target="_blank"></a></p><h4><a href="https://github.com/GL-Li/ggtiger" target="_blank">ggtiger package</a></h4> <p></p>
+      <div class="col-sm-7"><p><a href="https://github.com/GL-Li/ggtiger" target="_blank"></a></p><h3><a href="https://github.com/GL-Li/ggtiger" target="_blank">ggtiger package</a></h3> <p></p>
 
 <p>This package draws TIGER census boundaries on ggmap with a single function geom_bounday() and plot census data on map with geom_census(). As extensions to ggplot2, geom_boundary() and geom_census() work similarly to native ggplot2 geom_xxxx() functions.</p>
 
@@ -96,7 +92,7 @@
     </div>
     <hr>
     <div class="row">
-      <div class="col-sm-7"><p><a href="http://gl-li.be/apps/China_census" target="_blank"></a></p><h4><a href="http://gl-li.be/apps/China_census" target="_blank">China census 2010</a></h4> <p></p>
+      <div class="col-sm-7"><p><a href="http://gl-li.be/apps/China_census" target="_blank"></a></p><h3><a href="http://gl-li.be/apps/China_census" target="_blank">China census 2010</a></h3> <p></p>
 
 <p>This application visualizes the China 2010 census. China has conducted a national census covering all population every ten years since 1990, collecting data such as age, gender, education and housing. The most recent one was carried out in November 01, 2010. The official summary of the census is published on the webpage of <a href="http://www.stats.gov.cn/tjsj/pcsj/rkpc/6rp/indexch.htm">National Bureau of Statistics of China</a> as Excel sheets. This app conveys the information essential to understanding China through interactive visualization. </p>
 </div>
@@ -106,7 +102,7 @@
     </div>
     <hr>
     <div class="row">
-      <div class="col-sm-7"><p><a href="https://gl-li.shinyapps.io/nextWord_ShinyApp" target="_blank"></a></p><h4><a href="https://gl-li.shinyapps.io/nextWord_ShinyApp" target="_blank">Predict next words</a></h4>  <p></p>
+      <div class="col-sm-7"><p><a href="https://gl-li.shinyapps.io/nextWord_ShinyApp" target="_blank"></a></p><h3><a href="https://gl-li.shinyapps.io/nextWord_ShinyApp" target="_blank">Predict next words</a></h3>  <p></p>
 
 <p>This is the capstone project of online course
 <a href="https://www.coursera.org/specializations/jhudatascience" target="blank">Data Science Specialization</a> offered by Johns Hopkins University. In this project we build a web application to predict the next words following each keystroke. This kind of applications have been widely used for text input in mobile devices such as cell phones and tablets.</p>
@@ -115,12 +111,15 @@
         <img src="./index_files/predict_next_words.gif" width="100%">
       </div>
     </div>
+    <hr>
+    <br>
+    <br>
+    <h2 id="tutorials">Tutorials</h2>
     <hr style="height:1px;border:none;color:#333;background-color:#333;">
-    <h3 id="tutorials">Tutorials</h3>
     <div class="row">
       <div class="col-sm-7">
-        <a href="https://gl-li.github.io/Rmd/shiny_click_to_get_figure.Rmd" target="blank">
-          <h4>Shiny: click on one figure to get another</h4>
+        <a href="https://gl-li.github.io/tutorials/shiny_click_to_get_figure.Rmd" target="blank">
+          <h3>Shiny: click on one figure to get another</h3>
         </a>
         <p>A common task in interactive plotting is to click on figures to extract more information. Shiny is a handy tool for this kind of work. This interactive document demonstrates and explains how to click on a figure to get another using the data from the clicked location.</p>
 
@@ -133,7 +132,7 @@
     <div class="row">
       <div class="col-sm-7">
         <a href="https://gl-li.github.io/Rmd/shiny_click_on_a_map.Rmd" target="blank">
-          <h4>Shiny: click on a map</h4>
+          <h3>Shiny: click on a map</h3>
         </a>
         <p>In this tutorial, we will continue the discussion of Shiny <code>click</code>  with one more example: click on a map to get something else. The purpose is to further understand the <code>click</code> and its application. Shiny <code>click</code> provides a flexible tool for interactive plotting with map.</p>
 

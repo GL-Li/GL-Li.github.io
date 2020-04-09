@@ -4,6 +4,6 @@ author: "GL Li"
 date: "December 28, 2019"
 output: html_document
 ---
-<a href="https://github.com/GL-Li/totalcensus" target="_blank"><h4>totalcensus package</h4></a> 
+<a href="https://github.com/GL-Li/totalcensus" target="_blank"><h3>totalcensus package</h3></a> 
 
 Download summary files from Census Bureau and extract data of decennial censuses and American Community Surveys from your local computer.

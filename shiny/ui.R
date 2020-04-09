@@ -21,7 +21,7 @@ tags$head(tags$style(HTML('
                             box-shadow:         0px 0px 10px 3px #BBC;
                           }
                           #navBar .title {
-                            width: 25%;
+                            width: 33.3%;
                             float: left;
                           }
                           #navBar h4 {
@@ -52,22 +52,20 @@ HTML('
         </div>
 
         <div class="title">
-            <a href="#tutorials"><h4>Shiny tricks</h4></a>
-        </div>
-
-        <div class="title">
             <a href="http://gl-li.com/" target="_blank"><h4>blogs</h4></a>
         </div>
     </div>
 
     <div id="intro">
-        <h2>R, Data, and More</h2>
+        <h1>R, Data, and More</h2>
     </div>
 '),
 
 
 # Projects ==========================================================
-h3("Projects", id = "projects"),
+h2("Projects", id = "projects"),
+HTML('<hr style="height:1px;border:none;color:#333;background-color:#333;" />'),
+
 
 # .. totalcensus ====
 fluidRow(
@@ -125,20 +123,22 @@ fluidRow(
         tags$img(src = "predict_next_words.gif", width = "100%")
     )
 ),
-
-#  separation line
-HTML('<hr style="height:1px;border:none;color:#333;background-color:#333;" />'),
-
+hr(),
+br(),
+br(),
 
 
 #  Tutoruals ===================================================================
-h3("Tutorials", id = "tutorials"),
+h2("Tutorials", id = "tutorials"),
+HTML('<hr style="height:1px;border:none;color:#333;background-color:#333;" />'),
+
+# .. shiny: click on a figure ====
 fluidRow(
     column(
         width = 7,
         # only excute in shiny server
-        tags$a(h4("Shiny: click on one figure to get another"),
-               href = "../Rmd/shiny_click_to_get_figure.Rmd",
+        tags$a(h3("Shiny: click on one figure to get another"),
+               href = "https://gl-li.github.io/tutorials/shiny_click_to_get_figure.Rmd",
                target = "blank"),
         includeMarkdown("./included_Rmd/shiny_tutorials_click_figure.Rmd")
     ),
@@ -149,11 +149,12 @@ fluidRow(
 ),
 hr(),
 
+# shiny: click on a map ====
 fluidRow(
     column(
         width = 7,
-        tags$a(h4("Shiny: click on a map"),
-               href = "../Rmd/shiny_click_on_a_map.Rmd",
+        tags$a(h3("Shiny: click on a map"),
+               href = "Rmd/shiny_click_on_a_map.Rmd",
                target = "blank"),
         includeMarkdown("./included_Rmd/shiny_tutorials_click_map.Rmd")
     ),
