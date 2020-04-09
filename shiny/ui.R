@@ -52,7 +52,7 @@ HTML('
         </div>
 
         <div class="title">
-            <a href="http://gl-li.com/" target="_blank"><h4>blogs</h4></a>
+            <a href="http://gl-li.com/" target="_blank"><h4>Blogs</h4></a>
         </div>
     </div>
 
@@ -112,6 +112,7 @@ fluidRow(
 ),
 hr(),
 
+
 # .. predict next words ====
 fluidRow(
     column(
@@ -124,6 +125,21 @@ fluidRow(
     )
 ),
 hr(),
+
+
+# .. clinical notes ====
+fluidRow(
+    column(
+        width = 7,
+        includeMarkdown("./included_Rmd/clinical_notes.Rmd")
+    ),
+    column(
+        width = 5,
+        tags$img(src = "clinical_note.png", width = "100%")
+    )
+),
+
+hr(),
 br(),
 br(),
 
@@ -131,6 +147,24 @@ br(),
 #  Tutoruals ===================================================================
 h2("Tutorials", id = "tutorials"),
 HTML('<hr style="height:1px;border:none;color:#333;background-color:#333;" />'),
+
+
+# .. ggplot2: minimal examples ====
+fluidRow(
+    column(
+        width = 7,
+        tags$a(h3("Plot with ggplot2 following minical examples"),
+               href = "https://gl-li.github.io/tutorials/ggplot2_review_and_summary.html",
+               target = "blank"),
+        includeMarkdown("./included_Rmd/ggplot2_minimal_examples.Rmd")
+    ),
+    column(
+        width = 5,
+        tags$img(src = "ggplot2_minimal_examples.png", width = "100%")
+    )
+),
+hr(),
+
 
 # .. shiny: click on a figure ====
 fluidRow(
@@ -149,7 +183,8 @@ fluidRow(
 ),
 hr(),
 
-# shiny: click on a map ====
+
+# .. shiny: click on a map ====
 fluidRow(
     column(
         width = 7,

@@ -1,0 +1,9 @@
+---
+title: "predict medical specialties of clinical notes"
+author: "GL Li"
+output: html_document
+---
+
+<a href="https://gl-li.shinyapps.io/Clinical_notes/" target="_blank"><h3>Predict medical specialties of clinical notes</h3></a>  
+
+This R Shiny dashboard analyzes clinical notes with unsupervised learning and supervised learning techniques, including principle component analysis, hierarchical clustering, K-means clustering, support vector machine, XGBoost, neural network, and Amazon machine learning. R packages used include Shiny, data.table, ggplot2, stringr, text2vec, Keras, and TensorFlow.  
