@@ -154,7 +154,7 @@ fluidRow(
     column(
         width = 7,
         tags$a(h3("Shiny: click on a map"),
-               href = "Rmd/shiny_click_on_a_map.Rmd",
+               href = "https://gl-li.github.io/tutorials/shiny_click_on_a_map.html",
                target = "blank"),
         includeMarkdown("./included_Rmd/shiny_tutorials_click_map.Rmd")
     ),
