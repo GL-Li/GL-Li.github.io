@@ -138,7 +138,7 @@ fluidRow(
         width = 7,
         # only excute in shiny server
         tags$a(h3("Shiny: click on one figure to get another"),
-               href = "https://gl-li.github.io/tutorials/shiny_click_to_get_figure.Rmd",
+               href = "https://gl-li.github.io/tutorials/shiny_click_to_get_figure.html",
                target = "blank"),
         includeMarkdown("./included_Rmd/shiny_tutorials_click_figure.Rmd")
     ),
