@@ -1,0 +1,11 @@
+---
+title: "ggtiger"
+author: "GL Li"
+date: "December 28, 2019"
+output: html_document
+---
+<a href="https://github.com/GL-Li/ggtiger" target="_blank"><h4>ggtiger package</h4></a> 
+
+This package draws TIGER census boundaries on ggmap with a single function geom_bounday() and plot census data on map with geom_census(). As extensions to ggplot2, geom_boundary() and geom_census() work similarly to native ggplot2 geom_xxxx() functions.
+
+It currently draws boundaries of states, counties, county subdivisions, tracts, block groups, zip code tabulation areas, and congressional districts. More geographies are being added.
