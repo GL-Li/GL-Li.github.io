@@ -58,6 +58,7 @@ HTML('
 
     <div id="intro">
         <h1>R, Data, and More</h2>
+        <h4>Welcome to Guanglai Li&#39;s Portfolio</h4>
     </div>
 '),
 
@@ -153,7 +154,7 @@ HTML('<hr style="height:1px;border:none;color:#333;background-color:#333;" />'),
 fluidRow(
     column(
         width = 7,
-        tags$a(h3("Plot with ggplot2 following minical examples"),
+        tags$a(h3("Plot with ggplot2 following minimal examples"),
                href = "https://gl-li.github.io/tutorials/ggplot2_review_and_summary.html",
                target = "blank"),
         includeMarkdown("./included_Rmd/ggplot2_minimal_examples.Rmd")
