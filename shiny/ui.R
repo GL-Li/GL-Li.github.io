@@ -1,9 +1,9 @@
 library(shiny)
 
 ui <- fluidPage(
-
-# css ===================================================================
-tags$head(tags$style(HTML('
+  
+  # css ===================================================================
+  tags$head(tags$style(HTML('
                           .container-fluid {
                             max-width: 1024px;
                           }
@@ -43,10 +43,13 @@ tags$head(tags$style(HTML('
                           font-size: 100%;
                           background-color: #f7f7f7;
                           }
+                          h3 {
+                          margin-top: 0;
+                          }
 '))),
-
-# navigation ====================================================================
-HTML('
+  
+  # navigation ====================================================================
+  HTML('
     <div id="navBar">
         <div class="title">
             <a href="#projects"><h4>Projects</h4></a>
@@ -66,169 +69,161 @@ HTML('
         <h4 style="color:gray;">Welcome to Guanglai Li&#39;s Portfolio</h4>
     </div>
 '),
-
-
-# Projects ==========================================================
-h2("Projects", id = "projects"),
-HTML('<hr style="height:1px;border:none;color:#333;background-color:#333;" />'),
-
-
-# .. totalcensus ====
-fluidRow(
+  
+  
+  # Projects ==========================================================
+  h2("Projects", id = "projects"),
+  HTML('<hr style="height:1px;border:none;color:#333;background-color:#333;" />'),
+  
+  
+  # .. totalcensus ====
+  fluidRow(
     column(
-        width = 7,
-        tags$a(h3("R package development: totalcensus package"),
-               href = "https://github.com/GL-Li/totalcensus",
-               target = "blank"),
-        includeMarkdown("./included_Rmd/totalcensus.Rmd")
+      width = 7,
+      tags$a(h3("R package development: totalcensus package"),
+             href = "https://github.com/GL-Li/totalcensus",
+             target = "blank"),
+      includeMarkdown("./included_Rmd/totalcensus.Rmd")
     ),
     column(
-        width = 5,
-        tags$img(src = "hierarchy_census_geographic_entities.png", width = "100%"),
-        p("Available census geographic entities", align = "center")
+      width = 5,
+      tags$img(src = "hierarchy_census_geographic_entities.png", 
+               width = "100%"),
+      p("Available census geographic entities", align = "center")
     )
-),
-hr(),
-
-
-# .. ggtiger ====
-fluidRow(
+  ),
+  hr(),
+  
+  
+  # .. ggtiger ====
+  fluidRow(
     column(
-        width = 7,
-        tags$a(h3("R package development: ggtiger package"),
-               href = "https://github.com/GL-Li/ggtiger",
-               target = "blank"),
-        includeMarkdown("./included_Rmd/ggtiger.Rmd")
+      width = 7,
+      tags$a(h3("R package development: ggtiger package"),
+             href = "https://github.com/GL-Li/ggtiger",
+             target = "blank"),
+      includeMarkdown("./included_Rmd/ggtiger.Rmd")
     ),
     column(
-        width = 5,
-        tags$img(src = "congressional_disctrict.png", width = "100%"),
-        p("Gerrymandering of congressional districts", align = "center")
+      width = 5,
+      tags$img(src = "congressional_disctrict.png", width = "100%"),
+      p("Gerrymandering of congressional districts", align = "center")
     )
-),
-
-hr(),
-
-
-# Shiny Apps
-#h3("Shiny Apps", id = "shinyApps"),
-
-# .. China census ====
-fluidRow(
+  ),
+  
+  hr(),
+  
+  
+  # Shiny Apps
+  #h3("Shiny Apps", id = "shinyApps"),
+  
+  # .. China census ====
+  fluidRow(
     column(
-        width = 7,
-        tags$a(h3("Shiny visualization: China census 2010"),
-               href = "https://gl-li.shinyapps.io/China_2010_cencus/",
-               target = "blank"),
-        includeMarkdown("./included_Rmd/China_census_2010.Rmd")
+      width = 7,
+      tags$a(h3("Shiny visualization: China census 2010"),
+             href = "https://gl-li.shinyapps.io/China_2010_cencus/",
+             target = "blank"),
+      includeMarkdown("./included_Rmd/China_census_2010.Rmd")
     ),
     column(
-        width = 5,
-        tags$img(src = "china_2010_census_population.gif", width = "100%"),
-        p("Why are the big dips?", align = "center")
+      width = 5,
+      tags$img(src = "china_2010_census_population.gif", width = "100%"),
+      p("Why are the big dips?", align = "center")
     )
-),
-hr(),
-
-
-# .. clinical notes ====
-fluidRow(
+  ),
+  hr(),
+  
+  
+  # .. clinical notes ====
+  fluidRow(
     column(
-        width = 7,
-        tags$a(h3("Predict medical specialties of clinical notes"),
-               href = "https://gl-li.shinyapps.io/Clinical_notes/",
-               target = "blank"),
-        includeMarkdown("./included_Rmd/clinical_notes.Rmd")
+      width = 7,
+      tags$a(h3("Predict medical specialties of clinical notes"),
+             href = "https://gl-li.shinyapps.io/Clinical_notes/",
+             target = "blank"),
+      includeMarkdown("./included_Rmd/clinical_notes.Rmd")
     ),
     column(
-        width = 5,
-        tags$img(src = "svm_confusion_matrix.png", width = "100%"),
-        p("Confusion matrix of the deployed model", align = "center")
+      width = 5,
+      tags$img(src = "svm_confusion_matrix.png", width = "100%"),
+      p("Confusion matrix of the deployed model", align = "center")
     )
-),
-
-hr(),
-
-
-# .. predict next words ====
-fluidRow(
+  ),
+  
+  hr(),
+  
+  
+  # .. predict next words ====
+  fluidRow(
     column(
-        width = 7,
-        includeMarkdown("./included_Rmd/predict_next_words.Rmd")
+      width = 7,
+      tags$a(h3("Predict next words"),
+             href = "https://gl-li.shinyapps.io/nextWord_ShinyApp",
+             target = "blank"),
+      includeMarkdown("./included_Rmd/predict_next_words.Rmd")
     ),
     column(
-        width = 5,
-        tags$img(src = "predict_next_words.gif", width = "100%")
+      width = 5,
+      tags$img(src = "predict_next_words.gif", width = "100%")
     )
-),
-hr(),
-br(),
-br(),
-
-#  Tutorials ===================================================================
-h2("Tutorials", id = "tutorials"),
-HTML('<hr style="height:1px;border:none;color:#333;background-color:#333;" />'),
-
-
-# .. ggplot2: minimal examples ====
-fluidRow(
+  ),
+  hr(),
+  br(),
+  br(),
+  
+  #  Tutorials ===================================================================
+  h2("Tutorials", id = "tutorials"),
+  HTML('<hr style="height:1px;border:none;color:#333;background-color:#333;" />'),
+  
+  
+  # .. ggplot2: minimal examples ====
+  fluidRow(
     column(
-        width = 7,
-        tags$a(h3("Plot with ggplot2 following minimal examples"),
-               href = "https://gl-li.github.io/tutorials/ggplot2_review_and_summary.html",
-               target = "blank"),
-        includeMarkdown("./included_Rmd/ggplot2_minimal_examples.Rmd")
+      width = 7,
+      tags$a(h3("ggplot2 minimal examples"),
+             href = "https://gl-li.github.io/tutorials/ggplot2_review_and_summary.html",
+             target = "blank"),
+      includeMarkdown("./included_Rmd/ggplot2_minimal_examples.Rmd")
     ),
     column(
-        width = 5,
-        tags$img(src = "ggplot2_minimal_examples.png", width = "100%")
+      width = 5,
+      tags$img(src = "ggplot2_minimal_examples.png", width = "100%")
     )
-),
-hr(),
-
-
-# .. shiny: click on a figure ====
-fluidRow(
+  ),
+  hr(),
+  
+  
+  # .. shiny: click on a figure ====
+  fluidRow(
     column(
-        width = 7,
-        # only excute in shiny server
-        tags$a(h3("Shiny: click on one figure to get another"),
-               href = "https://gl-li.github.io/tutorials/shiny_click_to_get_figure.html",
-               target = "blank"),
-        includeMarkdown("./included_Rmd/shiny_tutorials_click_figure.Rmd")
+      width = 7,
+      tags$a(h3("Shiny: click on one figure to get another"),
+             href = "https://gl-li.github.io/tutorials/shiny_click_to_get_figure.html",
+             target = "blank"),
+      includeMarkdown("./included_Rmd/shiny_tutorials_click_figure.Rmd")
     ),
     column(
-        width = 5,
-        tags$img(src = "click_to_get_figure.gif", width = "100%")
+      width = 5,
+      tags$img(src = "click_to_get_figure.gif", width = "100%")
     )
-),
-hr(),
-
-
-# .. shiny: click on a map ====
-fluidRow(
+  ),
+  hr(),
+  
+  
+  # .. shiny: click on a map ====
+  fluidRow(
     column(
-        width = 7,
-        tags$a(h3("Shiny: click on a map"),
-               href = "https://gl-li.github.io/tutorials/shiny_click_on_a_map.html",
-               target = "blank"),
-        includeMarkdown("./included_Rmd/shiny_tutorials_click_map.Rmd")
+      width = 7,
+      tags$a(h3("Shiny: click on a map"),
+             href = "https://gl-li.github.io/tutorials/shiny_click_on_a_map.html",
+             target = "blank"),
+      includeMarkdown("./included_Rmd/shiny_tutorials_click_map.Rmd")
     ),
     column(
-        width = 5,
-        tags$img(src = "click_on_map.gif", width = "100%")
+      width = 5,
+      tags$img(src = "click_on_map.gif", width = "100%")
     )
-),
-
-
-
-HTML('<hr style="height:1px;border:none;color:#333;background-color:#333;" />')
-
-# # machine leaning
-# h3("Machine Learning", id = "notes"),
-# tags$a(h4("Basic procedure of using machine learning package mlr"),
-#        href = "../static_webpage/mlr_basic_procedure.html",
-#        target = "blank")
-
-#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  )
+  
 ) # end of fluidPage
