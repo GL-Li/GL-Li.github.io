@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- saved from url=(0022)http://127.0.0.1:5799/ -->
+<!-- saved from url=(0022)http://127.0.0.1:3167/ -->
 <html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
   
@@ -41,6 +41,11 @@
                             border: 1px solid #CCC;
                             font-size: 18px;
                           }
+                          code {
+                          color: #333;
+                          font-size: 100%;
+                          background-color: #f7f7f7;
+                          }
 </style>
 
 </head>
@@ -50,11 +55,11 @@
     
     <div id="navBar">
         <div class="title">
-            <a href="https://gl-li.github.io//#projects"><h4>Projects</h4></a>
+            <a href="https://gl-li.github.io/#projects"><h4>Projects</h4></a>
         </div>
 
         <div class="title">
-            <a href="https://gl-li.github.io//#tutorials"><h4>Tutorials</h4></a>
+            <a href="https://gl-li.github.io/#tutorials"><h4>Tutorials</h4></a>
         </div>
 
         <div class="title">
@@ -64,39 +69,64 @@
 
     <div id="intro">
         <h1>R, Data, and More</h1>
+        <h4 style="color:gray;">Welcome to Guanglai Li's Portfolio</h4>
     </div>
 
     <h2 id="projects">Projects</h2>
     <hr style="height:1px;border:none;color:#333;background-color:#333;">
     <div class="row">
-      <div class="col-sm-7"><p><a href="https://github.com/GL-Li/totalcensus" target="_blank"></a></p><h3><a href="https://github.com/GL-Li/totalcensus" target="_blank">totalcensus package</a></h3> <p></p>
+      <div class="col-sm-7">
+        <a href="https://github.com/GL-Li/totalcensus" target="blank">
+          <h3>R package development: totalcensus package</h3>
+        </a>
+        <p>The R totalcensus package makes it easy to find out the age of people in your neighborhood, the house price in your town, and the ethnic composition of your city. It extracts data directly from the original summary files of Decennial Censuses and American Community Surveys, and hence you won't miss any piece of data the Census Bureau offers in the summary files. The summary files contain thousands of social, economic, and demographic variables in dozens of geographic entities, which can be quickly explored with the totalcensus package.</p>
 
-<p>Download summary files from Census Bureau and extract data of decennial censuses and American Community Surveys from your local computer.</p>
-</div>
+      </div>
       <div class="col-sm-5">
         <img src="./index_files/hierarchy_census_geographic_entities.png" width="100%">
+        <p align="center">Available census geographic entities</p>
       </div>
     </div>
     <hr>
     <div class="row">
-      <div class="col-sm-7"><p><a href="https://github.com/GL-Li/ggtiger" target="_blank"></a></p><h3><a href="https://github.com/GL-Li/ggtiger" target="_blank">ggtiger package</a></h3> <p></p>
+      <div class="col-sm-7">
+        <a href="https://github.com/GL-Li/ggtiger" target="blank">
+          <h3>R package development: ggtiger package</h3>
+        </a>
+        <p>This package draws TIGER census boundaries on ggmap with a single function <code>geom_boundary()</code> and plot census data on map with <code>geom_census()</code>. As extensions to ggplot2, <code>geom_boundary()</code> and <code>geom_census()</code> work similarly to native ggplot2 <code>geom_xxxx()</code> functions. It currently draws boundaries of states, counties, county subdivisions, tracts, block groups, zip code tabulation areas, and congressional districts. More geographies are being added.</p>
 
-<p>This package draws TIGER census boundaries on ggmap with a single function geom_bounday() and plot census data on map with geom_census(). As extensions to ggplot2, geom_boundary() and geom_census() work similarly to native ggplot2 geom_xxxx() functions.</p>
-
-<p>It currently draws boundaries of states, counties, county subdivisions, tracts, block groups, zip code tabulation areas, and congressional districts. More geographies are being added.</p>
-</div>
+      </div>
       <div class="col-sm-5">
         <img src="./index_files/congressional_disctrict.png" width="100%">
+        <p align="center">Gerrymandering of congressional districts</p>
       </div>
     </div>
     <hr>
     <div class="row">
-      <div class="col-sm-7"><p><a href="http://gl-li.be/apps/China_census" target="_blank"></a></p><h3><a href="http://gl-li.be/apps/China_census" target="_blank">China census 2010</a></h3> <p></p>
+      <div class="col-sm-7">
+        <a href="https://gl-li.shinyapps.io/China_2010_cencus/" target="blank">
+          <h3>Shiny visualization: China census 2010</h3>
+        </a>
+        <p>Want to learn China's history and society from reliable data? China has conducted a national census covering all population every ten years since 1990, collecting data such as age, gender, education and housing. The most recent one was carried out in November 01, 2010. The official summary of the census is published on the webpage of <a href="http://www.stats.gov.cn/tjsj/pcsj/rkpc/6rp/indexch.htm">National Bureau of Statistics of China</a>. This app conveys the information essential to understanding China through interactive visualization. </p>
 
-<p>This application visualizes the China 2010 census. China has conducted a national census covering all population every ten years since 1990, collecting data such as age, gender, education and housing. The most recent one was carried out in November 01, 2010. The official summary of the census is published on the webpage of <a href="http://www.stats.gov.cn/tjsj/pcsj/rkpc/6rp/indexch.htm">National Bureau of Statistics of China</a> as Excel sheets. This app conveys the information essential to understanding China through interactive visualization. </p>
-</div>
+      </div>
       <div class="col-sm-5">
-        <img src="./index_files/China_census.gif" width="100%">
+        <img src="./index_files/china_2010_census_population.gif" width="100%">
+        <p align="center">Why are the big dips?</p>
+      </div>
+    </div>
+    <hr>
+    <div class="row">
+      <div class="col-sm-7">
+        <a href="https://gl-li.shinyapps.io/Clinical_notes/" target="blank">
+          <h3>Predict medical specialties of clinical notes</h3>
+        </a>
+        <p>A full machine learning project from data collection to model deployment. Clinical notes were scraped from <a href="https://www.mtsamples.com/">mtsamples.com</a>. Medical named entities were extracted with <a href="https://aws.amazon.com/comprehend/medical/">Amazon Comprehension Medical</a> and <a href="https://github.com/NLPatVCU/medaCy">medaCy</a>. Features were extracted with term frequency inverse document frequency (TFIDF) technique. The clinical notes were analyzed with principle component analysis, hierarchical clustering, and K-means clustering. Predictive models were built with support vector machine, XGBoost, and neural network. A best performed support vector machine model was deployed to predict specialties of new clinical notes. </p>
+
+      </div>
+      <div class="col-sm-5">
+        <img src="./index_files/svm_confusion_matrix.png" width="100%">
+        <p align="center">Confusion matrix of the deployed model</p>
       </div>
     </div>
     <hr>
@@ -108,16 +138,6 @@
 </div>
       <div class="col-sm-5">
         <img src="./index_files/predict_next_words.gif" width="100%">
-      </div>
-    </div>
-    <hr>
-    <div class="row">
-      <div class="col-sm-7"><p><a href="https://gl-li.shinyapps.io/Clinical_notes/" target="_blank"></a></p><h3><a href="https://gl-li.shinyapps.io/Clinical_notes/" target="_blank">Predict medical specialties of clinical notes</a></h3>  <p></p>
-
-<p>This R Shiny dashboard analyzes clinical notes with unsupervised learning and supervised learning techniques, including principle component analysis, hierarchical clustering, K-means clustering, support vector machine, XGBoost, neural network, and Amazon machine learning. R packages used include Shiny, data.table, ggplot2, stringr, text2vec, Keras, and TensorFlow.  </p>
-</div>
-      <div class="col-sm-5">
-        <img src="./index_files/clinical_note.png" width="100%">
       </div>
     </div>
     <hr>

@@ -1,9 +1,1 @@
----
-title: "predict medical specialties of clinical notes"
-author: "GL Li"
-output: html_document
----
-
-<a href="https://gl-li.shinyapps.io/Clinical_notes/" target="_blank"><h3>Predict medical specialties of clinical notes</h3></a>  
-
-This R Shiny dashboard analyzes clinical notes with unsupervised learning and supervised learning techniques, including principle component analysis, hierarchical clustering, K-means clustering, support vector machine, XGBoost, neural network, and Amazon machine learning. R packages used include Shiny, data.table, ggplot2, stringr, text2vec, Keras, and TensorFlow.  
+A full machine learning project from data collection to model deployment. Clinical notes were scraped from [mtsamples.com](https://www.mtsamples.com/). Medical named entities were extracted with [Amazon Comprehension Medical](https://aws.amazon.com/comprehend/medical/) and [medaCy](https://github.com/NLPatVCU/medaCy). Features were extracted with term frequency inverse document frequency (TFIDF) technique. The clinical notes were analyzed with principle component analysis, hierarchical clustering, and K-means clustering. Predictive models were built with support vector machine, XGBoost, and neural network. A best performed support vector machine model was deployed to predict specialties of new clinical notes. 

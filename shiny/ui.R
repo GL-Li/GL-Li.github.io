@@ -38,6 +38,11 @@ tags$head(tags$style(HTML('
                             border: 1px solid #CCC;
                             font-size: 18px;
                           }
+                          code {
+                          color: #333;
+                          font-size: 100%;
+                          background-color: #f7f7f7;
+                          }
 '))),
 
 # navigation ====================================================================
@@ -58,7 +63,7 @@ HTML('
 
     <div id="intro">
         <h1>R, Data, and More</h2>
-        <h4>Welcome to Guanglai Li&#39;s Portfolio</h4>
+        <h4 style="color:gray;">Welcome to Guanglai Li&#39;s Portfolio</h4>
     </div>
 '),
 
@@ -72,11 +77,15 @@ HTML('<hr style="height:1px;border:none;color:#333;background-color:#333;" />'),
 fluidRow(
     column(
         width = 7,
+        tags$a(h3("R package development: totalcensus package"),
+               href = "https://github.com/GL-Li/totalcensus",
+               target = "blank"),
         includeMarkdown("./included_Rmd/totalcensus.Rmd")
     ),
     column(
         width = 5,
-        tags$img(src = "hierarchy_census_geographic_entities.png", width = "100%")
+        tags$img(src = "hierarchy_census_geographic_entities.png", width = "100%"),
+        p("Available census geographic entities", align = "center")
     )
 ),
 hr(),
@@ -86,11 +95,15 @@ hr(),
 fluidRow(
     column(
         width = 7,
+        tags$a(h3("R package development: ggtiger package"),
+               href = "https://github.com/GL-Li/ggtiger",
+               target = "blank"),
         includeMarkdown("./included_Rmd/ggtiger.Rmd")
     ),
     column(
         width = 5,
-        tags$img(src = "congressional_disctrict.png", width = "100%")
+        tags$img(src = "congressional_disctrict.png", width = "100%"),
+        p("Gerrymandering of congressional districts", align = "center")
     )
 ),
 
@@ -104,13 +117,36 @@ hr(),
 fluidRow(
     column(
         width = 7,
+        tags$a(h3("Shiny visualization: China census 2010"),
+               href = "https://gl-li.shinyapps.io/China_2010_cencus/",
+               target = "blank"),
         includeMarkdown("./included_Rmd/China_census_2010.Rmd")
     ),
     column(
         width = 5,
-        tags$img(src = "China_census.gif", width = "100%")
+        tags$img(src = "china_2010_census_population.gif", width = "100%"),
+        p("Why are the big dips?", align = "center")
     )
 ),
+hr(),
+
+
+# .. clinical notes ====
+fluidRow(
+    column(
+        width = 7,
+        tags$a(h3("Predict medical specialties of clinical notes"),
+               href = "https://gl-li.shinyapps.io/Clinical_notes/",
+               target = "blank"),
+        includeMarkdown("./included_Rmd/clinical_notes.Rmd")
+    ),
+    column(
+        width = 5,
+        tags$img(src = "svm_confusion_matrix.png", width = "100%"),
+        p("Confusion matrix of the deployed model", align = "center")
+    )
+),
+
 hr(),
 
 
@@ -126,26 +162,10 @@ fluidRow(
     )
 ),
 hr(),
-
-
-# .. clinical notes ====
-fluidRow(
-    column(
-        width = 7,
-        includeMarkdown("./included_Rmd/clinical_notes.Rmd")
-    ),
-    column(
-        width = 5,
-        tags$img(src = "clinical_note.png", width = "100%")
-    )
-),
-
-hr(),
 br(),
 br(),
 
-
-#  Tutoruals ===================================================================
+#  Tutorials ===================================================================
 h2("Tutorials", id = "tutorials"),
 HTML('<hr style="height:1px;border:none;color:#333;background-color:#333;" />'),
 
