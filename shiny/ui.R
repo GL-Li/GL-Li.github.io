@@ -46,6 +46,9 @@ ui <- fluidPage(
                           h3 {
                           margin-top: 0;
                           }
+                          h2 {
+                          padding-top: 30px;
+                          }
 '))),
   
   # navigation ====================================================================
@@ -150,7 +153,6 @@ ui <- fluidPage(
       p("Confusion matrix of the deployed model", align = "center")
     )
   ),
-  
   hr(),
   
   
@@ -169,9 +171,7 @@ ui <- fluidPage(
     )
   ),
   hr(),
-  br(),
-  br(),
-  
+
   #  Tutorials ===================================================================
   h2("Tutorials", id = "tutorials"),
   HTML('<hr style="height:1px;border:none;color:#333;background-color:#333;" />'),
