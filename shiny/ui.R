@@ -59,7 +59,7 @@ ui <- fluidPage(
         </div>
 
         <div class="title">
-            <a href="#tutorials"><h4>Tutorials</h4></a>
+            <a href="#study-notes"><h4>Study Notes</h4></a>
         </div>
 
         <div class="title">
@@ -172,8 +172,8 @@ ui <- fluidPage(
   ),
   hr(),
 
-  #  Tutorials ===================================================================
-  h2("Tutorials", id = "tutorials"),
+  #  Study Notes ===================================================================
+  h2("Study Notes", id = "study-notes"),
   HTML('<hr style="height:1px;border:none;color:#333;background-color:#333;" />'),
   
   
@@ -182,7 +182,7 @@ ui <- fluidPage(
     column(
       width = 7,
       tags$a(h3("ggplot2 minimal examples"),
-             href = "https://gl-li.github.io/tutorials/ggplot2_review_and_summary.html",
+             href = "https://gl-li.github.io/study-notes/ggplot2_review_and_summary.html",
              target = "blank"),
       includeMarkdown("./included_Rmd/ggplot2_minimal_examples.Rmd")
     ),
@@ -199,7 +199,7 @@ ui <- fluidPage(
     column(
       width = 7,
       tags$a(h3("Shiny: click on one figure to get another"),
-             href = "https://gl-li.github.io/tutorials/shiny_click_to_get_figure.html",
+             href = "https://gl-li.github.io/study-notes/shiny_click_to_get_figure.html",
              target = "blank"),
       includeMarkdown("./included_Rmd/shiny_tutorials_click_figure.Rmd")
     ),
@@ -216,7 +216,7 @@ ui <- fluidPage(
     column(
       width = 7,
       tags$a(h3("Shiny: click on a map"),
-             href = "https://gl-li.github.io/tutorials/shiny_click_on_a_map.html",
+             href = "https://gl-li.github.io/study-notes/shiny_click_on_a_map.html",
              target = "blank"),
       includeMarkdown("./included_Rmd/shiny_tutorials_click_map.Rmd")
     ),
