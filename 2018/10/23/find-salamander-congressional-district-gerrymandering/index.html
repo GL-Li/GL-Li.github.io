@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="">
+  <meta name="generator" content="Hugo 0.69.0" />
+
+  <title>Find Salamander -- Congressional District Gerrymandering &middot; R &amp; Census</title>
+
+  
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/1.0.0/pure-min.css">
+
+  <!--[if lte IE 8]>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/1.0.0/grids-responsive-old-ie-min.css">
+  <![endif]-->
+  <!--[if gt IE 8]><!-->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/1.0.0/grids-responsive-min.css">
+  <!--<![endif]-->
+
+  <!--[if lte IE 8]>
+  <link rel="stylesheet" href="/css/side-menu-old-ie.css">
+  <![endif]-->
+  <!--[if gt IE 8]><!-->
+  <link rel="stylesheet" href="/css/side-menu.css">
+  <!--<![endif]-->
+
+  <link rel="stylesheet" href="/css/blackburn.css">
+
+  
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+
+  
+  <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet" type="text/css">
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+ 
+  
+
+  
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css">
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  
+  <script>hljs.initHighlightingOnLoad();</script>
+  
+
+  <link rel="shortcut icon" href="/img/favicon.ico" type="image/x-icon" />
+
+  
+  
+
+</head>
+
+
+<body>
+<div id="layout">
+
+  
+<a href="#menu" id="menuLink" class="menu-link">
+  
+  <span></span>
+</a>
+<div id="menu">
+
+  
+
+  <div class="pure-menu">
+    <ul class="pure-menu-list">
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="/"><i class='fa fa-home fa-fw'></i>Home</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="/post/"><i class='fa fa-list fa-fw'></i>Archive</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://www.r-bloggers.com/"><i class='fa fa-comments fa-fw'></i>R-bloggers</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://rweekly.org/"><i class='fa fa-book fa-fw'></i>R Weekly</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://www.census.gov/newsroom/blogs/about.html"><i class='fa fa-microphone fa-fw'></i>Census Blogs</a>
+      
+        </li>
+      
+    </ul>
+  </div>
+
+  <div class="pure-menu social">
+  <ul class="pure-menu-list">
+
+    
+
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="https://twitter.com/guanglai_li" target="_blank"><i class="fa fa-twitter-square fa-fw"></i>Twitter</a>
+    </li>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="https://github.com/GL-Li" target="_blank"><i class="fa fa-github-square fa-fw"></i>GitHub</a>
+    </li>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+  </ul>
+</div>
+
+
+  <div>
+  <div class="small-print">
+    <small>&copy; 2017 - 2019. All rights reserved.</small>
+  </div>
+  <div class="small-print">
+    <small>Built with&nbsp;<a href="https://gohugo.io/" target="_blank">Hugo</a></small>
+    <small>Theme&nbsp;<a href="https://github.com/yoshiharuyamashita/blackburn" target="_blank">Blackburn</a></small>
+  </div>
+</div>
+
+</div>
+
+
+  <div id="main">
+
+
+<div class="header">
+  <h1>Find Salamander -- Congressional District Gerrymandering</h1>
+  <span>GL Li</span>, <span>2018/10/23</span>
+</div>
+<div class="content">
+
+  
+
+  
+
+
+<p>When Republicans or Democrats are in charge, they tend to draw election district boundaries to their favor. This can go very ugly, creating wacky boundaries by a practice called <a href="https://en.wikipedia.org/wiki/Gerrymandering">Gerrymandering</a>.</p>
+<p>The word “Gerrymander” is a blend of two species: the Massachusetts Governor Elbridge Gerry and a mythological salamander, a dragon-like monster. Governor Gerry signed a bill 200 year ago that drew an state senate election district in a shape resembling a salamander.</p>
+<p>Nobody has seen the mythological salamander, but we are quite familiar with the amphibian salamander, which also has a dragon-like shape.</p>
+<p>One of my favorite Gerrymandering example is the 6th congressional district of Pennsylvania (115th congress). Check the picture below; you will find two salamanders.</p>
+<div class="figure">
+<img src="/post/2018-03-23-find-salamander-congressional-district-gerrymandering_files/PA_6th_congress_distric.png" style="width:100.0%" />
+
+</div>
+<p>We can visualize the Gerrymandering easily with <code>ggtiger</code> package in R. The figure below shows a few congressional districts near Philadelphia in Pennsylvania for 115th Congress, including the 6th district above and the (in)famous 7th congressional district.</p>
+<pre class="r"><code># install ggtiger package from https://github.com/GL-Li/ggtiger
+# devtools::install_github(&quot;GL-Li/ggtiger&quot;)
+library(ggtiger)
+# use your own Google cloud API to replace Sys.genenv(&quot;GOOGLE_API&quot;) below
+register_google(Sys.getenv(&quot;GOOGLE_API&quot;))
+library(viridis)
+
+# download map near philly in PA
+philly &lt;- get_map(&quot;pottstown, PA,  usa&quot;, zoom = 9, color = &quot;bw&quot;)
+
+### congressional district boudaries
+ggmap(philly) +
+    geom_boundary(&quot;congressional district&quot;, states = &quot;PA&quot;,
+                  mapping = aes(fill = ..GEOID..),
+                  alpha = 0.6, color = &quot;red&quot;, size = 0.3) +
+    scale_fill_viridis(discrete = TRUE)</code></pre>
+<p><img src="/post/2018-03-23-find-salamander-congressional-district-gerrymandering_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
+<p>We can do this for any locations, for example Texas. Did you see a salamander with a long tail?</p>
+<pre class="r"><code>tx &lt;- get_map(&quot;san antonio, texas, usa&quot;, zoom = 8, color = &quot;bw&quot;)
+ggmap(tx) +
+    geom_boundary(&quot;congressional district&quot;,
+                  mapping = aes(fill = ..GEOID..),
+                  alpha = 0.6, color = &quot;red&quot;, size = 0.3) +
+    scale_fill_viridis(discrete = TRUE)</code></pre>
+<p><img src="/post/2018-03-23-find-salamander-congressional-district-gerrymandering_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
+
+
+  
+<div class="prev-next-post pure-g">
+  <div class="pure-u-1-24" style="text-align: left;">
+    
+    <a href="/2018/02/05/map-prisons-in-the-united-states/"><i class="fa fa-chevron-left"></i></a>
+    
+  </div>
+  <div class="pure-u-10-24">
+    
+    <nav class="prev">
+      <a href="/2018/02/05/map-prisons-in-the-united-states/">Map prisons in the United States</a>
+    </nav>
+    
+  </div>
+  <div class="pure-u-2-24">
+    &nbsp;
+  </div>
+  <div class="pure-u-10-24">
+    
+    <nav class="next">
+      <a href="/2018/12/15/population-change/">Cities boomed and doomed</a>
+    </nav>
+    
+  </div>
+  <div class="pure-u-1-24" style="text-align: right;">
+    
+    <a href="/2018/12/15/population-change/"><i class="fa fa-chevron-right"></i></a>
+    
+  </div>
+</div>
+
+
+
+  
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+
+(function() {
+    
+    
+    if (window.location.hostname == "localhost")
+        return;
+
+    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+    var disqus_shortname = 'gl-li-github-io';
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com/" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+</div>
+
+</div>
+</div>
+<script src="/js/ui.js"></script>
+<script src="/js/menus.js"></script>
+
+
+<script>
+  
+  if (window.location.hostname != "localhost") {
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-132163439-1', 'auto');
+    ga('send', 'pageview');
+  }
+</script>
+
+
+
+
+
+</body>
+</html>
+

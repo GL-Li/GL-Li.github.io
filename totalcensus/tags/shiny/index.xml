@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>shiny on R &amp; Census</title>
+    <link>/tags/shiny/</link>
+    <description>Recent content in shiny on R &amp; Census</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>&amp;copy; 2017 - 2019. All rights reserved.</copyright>
+    <lastBuildDate>Mon, 13 Apr 2020 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="/tags/shiny/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Build a static website with R Shiny</title>
+      <link>/2020/04/13/build-static-website-with-r-shiny/</link>
+      <pubDate>Mon, 13 Apr 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/2020/04/13/build-static-website-with-r-shiny/</guid>
+      <description>Sounds stupid? Yes, it’s kind of throwing away 99% of Shiny’s power; and you can always build a static website with R markdown, blogdown, or bookdown.
+Anyway, please keep reading as it will save you time if you are an R users who
+ want to make a portfolio website to showcase your work, but know little about web development, and yet prefer designing your own interface rather than using a popular theme.</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,93 @@
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>R &amp; Census</title>
+    <link>/</link>
+    <description>Recent content on R &amp; Census</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>&amp;copy; 2017 - 2019. All rights reserved.</copyright>
+    <lastBuildDate>Wed, 11 Nov 2020 00:00:00 +0000</lastBuildDate>
+    
+        <atom:link href="/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Posts</title>
+      <link>/post/</link>
+      <pubDate>Wed, 11 Nov 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/post/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>/about/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/about/</guid>
+      <description>&lt;p&gt;This is Guanglai Li&amp;rsquo;s personal website. I love to dig into census data with R to find interesting numbers and apply the data to political, social, and economic problems. A main focus of this site is to discuss how to process census data with R, in particular, using the &lt;a href=&#34;https://github.com/GL-Li/totalcensus&#34;&gt;totalcensus package&lt;/a&gt; I am developing. As a lifelong learner, I also like to share skills and tricks I have learned about R.&lt;/p&gt;
+&lt;p&gt;I was a physicist. Here is a list of my publications on &lt;a href=&#34;https://scholar.google.com/citations?user=sR3XnrkAAAAJ&amp;amp;hl=en&#34;&gt;Google Scholar&lt;/a&gt;.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>/blogroll/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/blogroll/</guid>
+      <description>&lt;h1 id=&#34;list-of-r-and-census-blogs&#34;&gt;List of R and census blogs&lt;/h1&gt;
+&lt;h3 id=&#34;r-weeklyhttpsrweeklyorg&#34;&gt;&lt;a href=&#34;https://rweekly.org/&#34;&gt;R Weekly&lt;/a&gt;&lt;/h3&gt;
+&lt;p&gt;Weekly updates from the entire R community&lt;/p&gt;
+&lt;h3 id=&#34;r-bloggershttpswwwr-bloggerscom&#34;&gt;&lt;a href=&#34;https://www.r-bloggers.com/&#34;&gt;R-Bloggers&lt;/a&gt;&lt;/h3&gt;
+&lt;p&gt;R news and tutorials contributed by (750) R bloggers&lt;/p&gt;
+&lt;h3 id=&#34;census-bureaus-blogshttpswwwcensusgovnewsroomblogsabouthtml&#34;&gt;&lt;a href=&#34;https://www.census.gov/newsroom/blogs/about.html&#34;&gt;Census Bureau&amp;rsquo;s Blogs&lt;/a&gt;&lt;/h3&gt;
+&lt;p&gt;Including &lt;a href=&#34;https://www.census.gov/newsroom/blogs/director.html&#34;&gt;Director&amp;rsquo;s Blog&lt;/a&gt;, &lt;a href=&#34;https://www.census.gov/newsroom/blogs/random-samplings.html&#34;&gt;Random Sampling&lt;/a&gt;, &lt;a href=&#34;https://www.census.gov/newsroom/blogs/research-matters.html&#34;&gt;Research Matters&lt;/a&gt;, and &lt;a href=&#34;https://www.census.gov/newsroom/blogs/global-reach.html&#34;&gt;Global Reach&lt;/a&gt;&lt;/p&gt;
+&lt;h3 id=&#34;the-census-project-bloghttpsthecensusprojectorgblog&#34;&gt;&lt;a href=&#34;https://thecensusproject.org/blog/&#34;&gt;The Census Project Blog&lt;/a&gt;&lt;/h3&gt;
+&lt;p&gt;Commentary on Census and ACS policy and operational issues.&lt;/p&gt;
+&lt;h3 id=&#34;kyle-walker-datahttpswalkerkegithubio&#34;&gt;&lt;a href=&#34;https://walkerke.github.io/&#34;&gt;Kyle Walker Data&lt;/a&gt;&lt;/h3&gt;
+&lt;p&gt;Blog of the author of &lt;code&gt;tidycensus&lt;/code&gt; and &lt;code&gt;tigris&lt;/code&gt; packages.&lt;/p&gt;
+&lt;h3 id=&#34;yihuis-bloghttpsyihuinameen&#34;&gt;&lt;a href=&#34;https://yihui.name/en/&#34;&gt;Yihui&amp;rsquo;s blog&lt;/a&gt;&lt;/h3&gt;
+&lt;p&gt;Blog of the author of popular packages such as &lt;code&gt;knitr&lt;/code&gt; and &lt;code&gt;blogdown&lt;/code&gt;.&lt;/p&gt;
+&lt;h3 id=&#34;r-spatialhttpr-spatialorg&#34;&gt;&lt;a href=&#34;http://r-spatial.org/&#34;&gt;r-spatial&lt;/a&gt;&lt;/h3&gt;
+&lt;p&gt;Website and blog for those interested in using R to analyse spatial or spatio-temporal data.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>/collections/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/collections/</guid>
+      <description>&lt;h1 id=&#34;a-collection-of-interesting-online-articles&#34;&gt;A collection of Interesting online articles&lt;/h1&gt;
+&lt;h3 id=&#34;building-dot-density-maps-with-uk-census-data-in-rhttpswwwblogcultureofinsightcom201706building-dot-density-maps-with-uk-census-data-in-r&#34;&gt;&lt;a href=&#34;https://www.blog.cultureofinsight.com/2017/06/building-dot-density-maps-with-uk-census-data-in-r/&#34;&gt;Building Dot Density Maps with UK Census Data in R&lt;/a&gt;&lt;/h3&gt;
+&lt;h3 id=&#34;scatterpie-for-plotting-pies-on-ggplothttpsguangchuangyugithubio201612scatterpie-for-plotting-pies-on-ggplot&#34;&gt;&lt;a href=&#34;https://guangchuangyu.github.io/2016/12/scatterpie-for-plotting-pies-on-ggplot/&#34;&gt;scatterpie for plotting pies on ggplot&lt;/a&gt;&lt;/h3&gt;
+&lt;h3 id=&#34;8-useful-shell-commands-for-data-sciencehttpswwwdatacampcomcommunitytutorialsshell-commands-data-scientist&#34;&gt;&lt;a href=&#34;https://www.datacamp.com/community/tutorials/shell-commands-data-scientist&#34;&gt;8 Useful Shell Commands For Data Science&lt;/a&gt;&lt;/h3&gt;
+</description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>/projects/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/projects/</guid>
+      <description>&lt;h1 id=&#34;totalcensus-package-extract-census-data-from-summary-fileshttpsgithubcomgl-litotalcensus&#34;&gt;&lt;a href=&#34;https://github.com/GL-Li/totalcensus&#34;&gt;totalcensus package: extract census data from summary files&lt;/a&gt;&lt;/h1&gt;
+&lt;p&gt;The totalcensus package downloads summary files from Census Bureau and extracts data, in particular high resolution data at block, block group, and tract level, from decennial censuses and American Community Survey 1-year and 5-year estimates..&lt;/p&gt;
+&lt;hr&gt;
+&lt;h1 id=&#34;fatal-police-shooting-in-the-united-states&#34;&gt;Fatal police shooting in the United States&lt;/h1&gt;
+&lt;h3 id=&#34;black-people-are-more-likely-to-be-killed-by-police-in-blue-states-than-in-red-stateshttpsgithubcomgl-lipolice_shooting&#34;&gt;&lt;a href=&#34;https://github.com/GL-Li/police_shooting&#34;&gt;Black people are more likely to be killed by police in blue states than in red states&lt;/a&gt;&lt;/h3&gt;
+&lt;p&gt;In large urban areas, black people are 1.96 time as likely to be fatally shot by police as non-black people in red states while it is 3.00 times in blue states. For those unarmed victims, the disparity is 3.02 in red states and as high as 4.66 in blue states.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h1 id=&#34;china-census-2010httpuseshinycomappschina_census&#34;&gt;&lt;a href=&#34;http://useshiny.com/apps/China_census/&#34;&gt;China census 2010&lt;/a&gt;&lt;/h1&gt;
+&lt;p&gt;This &lt;code&gt;Shiny&lt;/code&gt; application visualizes the China 2010 census. China has conducted a national census of all population every ten years since 1990, collecting data such as age, gender, education and housing. The most recent one was carried out in November 01, 2010. The official summary of the census is published on the webpage of &lt;a href=&#34;http://www.stats.gov.cn/tjsj/pcsj/rkpc/6rp/indexch.htm&#34;&gt;National Bureau of Statistics of China&lt;/a&gt; as Excel sheets. This app attempts to convey the information essential to understanding China through interactive visualization.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h1 id=&#34;predict-next-wordshttpsgl-lishinyappsionextword_shinyapp&#34;&gt;&lt;a href=&#34;https://gl-li.shinyapps.io/nextWord_ShinyApp/&#34;&gt;Predict next words&lt;/a&gt;&lt;/h1&gt;
+&lt;p&gt;This is the 2015 capstone project of &lt;a href=&#34;https://www.coursera.org/specializations/jhu-data-science&#34;&gt;Data Science Specialization&lt;/a&gt; offered by Johns Hopkins University. In this project we build a web application to predict the next words following each key press. This kind of applications have been widely used for text input in mobile devices such as cell phones and tablets.&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

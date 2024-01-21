@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Data.table on R &amp; Census</title>
+    <link>/categories/data.table/</link>
+    <description>Recent content in Data.table on R &amp; Census</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Tue, 25 Jul 2017 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="/categories/data.table/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Compare data.table pipes and magrittr pipes</title>
+      <link>/2017/07/25/compare-data.table-pipes-and-magrittr-pipes/</link>
+      <pubDate>Tue, 25 Jul 2017 00:00:00 +0000</pubDate>
+      
+      <guid>/2017/07/25/compare-data.table-pipes-and-magrittr-pipes/</guid>
+      <description>We have two ways to chain data.table operations, using data.table pipes or using magrittr pipes. For a data.table dt, the data.table pipes take the form of dt[][][]... and magrittr pipes dt %&amp;gt;% .[] %&amp;gt;% .[] %&amp;gt;% ....
+Let’s first compare the readability of the two pipes in the following examples. Hadley Wickham criticized the readability of data.table pipes in this stackoverflow post. The data.table pipes, however, are not that hard to follow for those who are familiar with data.</description>
+    </item>
+    
+  </channel>
+</rss>

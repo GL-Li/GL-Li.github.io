@@ -1,0 +1,116 @@
+---
+title: Determine relationship between census geographic entities with totalcensus package
+author: GL Li
+date: '2017-12-28'
+slug: use-totalcensus-package-to-determine-relationship-between-geographic-entities
+categories:
+  - package
+tags:
+  - census
+---
+
+This is an application example of [totalcensus package](https://github.com/GL-Li/totalcensus).
+
+The geographic hierarchy primer in [Census 2010 summary file 1 technical documentation](https://www.census.gov/prod/cen2010/doc/sf1.pdf) displays the relationship between geographic entities. The lower one of the two entities connected by a line is entirely within the boundary of the upper one. For example, a county subdivision is always within the boundaries of a county and a school district always within the boundaries of a state. If two entities are not connected, they may not belong to each other. For example, the ZIP code tabulation areas may cross state borders though they are much smaller than states. 
+
+<br>
+![](https://s3.amazonaws.com/gl-shared-pictures/hierarchy_census_geographic_entities.png)
+  
+<br> 
+
+
+It is easy to get the summary statistics of lower geographies within a higher one when they are connected. For example, if we want the race population of all county subdivision in Kent county, RI, we can run
+
+```{r eval=FALSE}
+library(totalcensus)
+library(data.table)
+library(magrittr)
+sub_kent <- read_acs5year(
+    year = 2016,
+    states = "RI",
+    areas = "Kent county, RI",
+    table_contents = c(
+        "white = B02001_002",
+        "black = B02001_003",
+        "asian = B02001_005"
+    ),
+    summary_level = "070"  # of county subdivision
+)
+
+print(sub_kent)
+    #               area                  GEOID       lon      lat state population white black asian GEOCOMP SUMLEV                                                                 NAME
+    # 1: Kent County, RI 07000US440031864031240 -71.73078 41.69073    RI        728   724     0     4     all    070                 Greene CDP, Coventry town, Kent County, Rhode Island
+    # 2: Kent County, RI 07000US440031864099999 -71.59396 41.69140    RI      34225 32994   384   187     all    070 Remainder of Coventry town, Coventry town, Kent County, Rhode Island
+    # 3: Kent County, RI 07000US440032224099999 -71.48331 41.64415    RI      13104 12120    77   404     all    070  East Greenwich town, East Greenwich town, Kent County, Rhode Island
+    # 4: Kent County, RI 07000US440037430074300 -71.42452 41.71389    RI      81881 74990  1163  2237     all    070                Warwick city, Warwick city, Kent County, Rhode Island
+    # 5: Kent County, RI 07000US440037772099999 -71.65790 41.62810    RI       6112  5611    26   314     all    070  West Greenwich town, West Greenwich town, Kent County, Rhode Island
+    # 6: Kent County, RI 07000US440037844099999 -71.51749 41.70306    RI      28836 26196   704   806     all    070      West Warwick town, West Warwick town, Kent County, Rhode Island
+```
+
+
+If two geographic entities are not connected by a line, how do we know, for example, how many ZIP code tabulation areas are in or partially in Boston city?
+
+The key to answer this question is that census blocks are connected to and lower than all other geographies. We can connect any two geographic entities through census blocks: if an ZIP code tabulation area and Boston city share a census block, the ZIP code is in or partially in the city. The decennial census 2010 has data down to block level, with which we can find all zip codes in Boston using `totalcensus` package.
+
+```{r eval=FALSE}
+zip_boston <- read_decennial(
+    year = 2010,
+    states = "MA",
+    geo_headers = c("ZCTA5", "PLACE"),
+    summary_level = "block"
+) %>%
+    # use search_fips("boston", "MA") to find its PLACE code is "07000"
+    .[PLACE == "07000", unique(ZCTA5)] 
+
+zip_boston
+# all zip code in Boston:
+    #  [1] "02134" "02135" "02467" "02215" "02163" "02115" "02116" "02199"
+    #  [9] "02108" "02114" "02113" "02109" "02110" "02203" "02129" "02128"
+    # [17] "02127" "02210" "02118" "02111" "02119" "02120" "02130" "02121"
+    # [25] "02125" "02122" "02124" "02126" "02131" "02132" "02136" "99999"
+    # [33] "02152" "02151"
+```
+
+Now let's read race population by zip code in or partially in Boston city from the latest 2016 ACS 5-year survey.
+
+```{r eval=FALSE}
+# read data for all zip code
+race_zip_boston <- read_acs5year(
+    year = 2016,
+    states = "US",   # ZCTA5 only in national files
+    geo_headers = "ZCTA5",
+    table_contents = c(
+        "white = B02001_002",
+        "black = B02001_003",
+        "asian = B02001_005"
+    ),
+    summary_level = "860"  # of ZCTA5
+) %>%
+    # select zip codes in or partially in Boston city
+    .[ZCTA5 %in% zip_boston]
+
+head(race_zip_boston, 3)
+     #           GEOID       lon      lat ZCTA5 state population white black asian GEOCOMP SUMLEV        NAME
+     # 1: 86000US02108 -71.06485 42.35777 02108    NA       4049  3515   209   172     all    860 ZCTA5 02108
+     # 2: 86000US02109 -71.05063 42.36722 02109    NA       4015  3497   135   249     all    860 ZCTA5 02109
+     # 3: 86000US02110 -71.04785 42.36196 02110    NA       2124  1814    83   206     all    860 ZCTA5 02110
+```
+
+
+Let's examine another example: congressional districts (CD for 111th congress) and state legislative districts (SLDU for Upper Chamber year 1 and SLDL for Lower Chamber year 1). Both CD and SLDs descend from states but do not belong to each other. Usually SLDs are smaller than CD. So which SLDs are in or partially in each CD? Again, we can connect CD and SLD with census blocks using decennial census 2010 data.
+
+```{r eval=FALSE}
+vote_RI <- read_decennial(
+    year = 2010,
+    states = "RI",
+    geo_headers = c("CD", "SLDU", "SLDL"),
+    summary_level = "block"
+) %>%
+    .[, .(SLDU = list(unique(SLDU)), SLDL = list(unique(SLDL))), by = CD] 
+
+# each CD contains a vector of SLDUs and a vector of SLDLs
+    #    CD                             SLDU                             SLDL
+    # 1: 01  c(009,011,010,012,013,023, ...)  c(066,067,069,068,072,075, ...)
+    # 2: 02  c(024,033,035,031,029,028, ...)  c(040,026,028,025,029,027, ...)
+```
+

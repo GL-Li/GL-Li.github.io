@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Hugo 0.25.1" />
+
+
+<title>Place object at right location - learn R and use R</title>
+<meta property="og:title" content="Place object at right location - learn R and use R">
+
+
+
+  
+
+
+
+
+
+
+
+
+<link href='//cdn.bootcss.com/highlight.js/9.11.0/styles/github.min.css' rel='stylesheet' type='text/css' />
+
+
+
+<link rel="stylesheet" href="../../../../css/fonts.css" media="all">
+<link rel="stylesheet" href="../../../../css/main.css" media="all">
+
+
+
+  </head>
+  <body>
+    <div class="wrapper">
+      <header class="header">
+        <nav class="nav">
+  <a href="../../../../" class="nav-logo">
+    <img src="../../../../images/logo.png"
+         width="50"
+         height="50"
+         alt="Logo">
+  </a>
+
+  <ul class="nav-links">
+    
+    <li><a href="../../../../about/">About</a></li>
+    
+    <li><a href="../../../../projects">Projects</a></li>
+    
+    <li><a href="https://twitter.com/difo_li">Twitter</a></li>
+    
+  </ul>
+</nav>
+
+      </header>
+
+
+<main class="content" role="main">
+
+  <article class="article">
+    
+    <span class="article-duration">4 min read</span>
+    
+
+    <h1 class="article-title">Place object at right location</h1>
+
+    
+    <span class="article-date">2017/08/18</span>
+    
+
+    <div class="article-content">
+      <p>A common tast in plotting is adding texts as labels or annotations to specific locations. <code>ggplot()</code> has functions <code>geom_text()</code>, <code>geom_label()</code> and <code>annotate()</code> for this purpose. In this post we discuss how <code>ggplot2</code> controls positioning of text.</p>
+<p>First we need to specify <code>(x, y)</code> coordinate in the plot to where the text is placed. As shown in the following example, the actual positioning of the text is sometimes not what you want. The problem is that <code>x</code> and <code>y</code> are usually vectors or columns of a data frame, which are not easily to be modified.</p>
+<pre class="r"><code>library(ggplot2)
+df &lt;- data.frame(x = 1:3, 
+                 y = 1:3, 
+                 z = c(&quot;aa\nnew line&quot;, &quot;bb\nnew line 1\nand new line 2&quot;, &quot;cc&quot;))
+g &lt;- ggplot(df, aes(x = x, y = y)) +
+    geom_col() +
+    geom_point(color = &quot;red&quot;) +
+    coord_cartesian(xlim = c(0.3, 3.5), ylim = c(0.5, 3.5))
+g + geom_text(aes(label = z)) +
+    labs(subtitle = &quot;(x, y) set the position of text but usually is not as desired&quot;)</code></pre>
+<p><img src="../../../../post/2017-08-18-place-object-at-right-location_files/figure-html/unnamed-chunk-2-1.png" width="480" /></p>
+<p>As the text has its own shape and size, we need to determine which part of the text to be superimposed at <code>(x, y)</code>. This positioning is controlled by parameters <code>hjust</code> and <code>vjust</code>. Imaging the text is surrounded by a rectangle and a local coordinate originates at the bottom left corner of the rectangle, <code>(hjust, vjust)</code> then is a local position in the local coordinate. By default, <code>hjust = 0.5</code> and <code>vjust = 0.5</code>, that is, the center of the rectangle is at <code>(x, y)</code>. We can change them to match to <code>(x, y)</code> by borders or corners, as shown in the examples below. The positioning of text is still not ideal as it is too close to <code>(x, y)</code>.</p>
+<pre class="r"><code>library(grid)
+library(gridExtra)
+
+g1 &lt;- g + geom_text(aes(label = z), hjust = 0) +
+    labs(subtitle = &quot;hjust = 0 place left side of the text to (x, y)&quot;)
+g2 &lt;- g + geom_text(aes(label = z), vjust = 1) +
+    labs(subtitle = &quot;vjust = 1 place top of the text to (x, y)&quot;)
+g3 &lt;- g + geom_text(aes(label = z), hjust = 1, vjust = 0) +
+    labs(subtitle = &quot;hjust = 1 and vjust = 0 place tottom\nright cornor of the text to (x, y)&quot;)
+
+grid.arrange(g1, g2, g3, nrow = 1)</code></pre>
+<p><img src="../../../../post/2017-08-18-place-object-at-right-location_files/figure-html/unnamed-chunk-3-1.png" width="960" /></p>
+<p>The parameters <code>nudge_x</code> and <code>nudge_y</code> shift whole text along <code>x</code> and <code>y</code> axis. With them we can add a space between text and <code>(x, y)</code>.</p>
+<pre class="r"><code>g1 &lt;- g + geom_text(aes(label = z), hjust = 0, nudge_x = 0.1) +
+    labs(subtitle = &quot;nudge_x = 0.1 moves text to the right by 0.1&quot;)
+g2 &lt;- g + geom_text(aes(label = z), vjust = 1, nudge_y = -0.1) +
+    labs(subtitle = &quot;nudge_y = -0.1 moves text down by 0.1&quot;)
+g3 &lt;- g + geom_text(aes(label = z), hjust = 1, vjust = 0, nudge_x = -0.1, nudge_y = 0.1) +
+    labs(subtitle = &quot;nudge_x = -0.1 nudge_y = 0.1 to northwest&quot;)
+
+grid.arrange(g1, g2, g3, nrow = 1)</code></pre>
+<p><img src="../../../../post/2017-08-18-place-object-at-right-location_files/figure-html/unnamed-chunk-4-1.png" width="960" /></p>
+<p>For multiline text, we also want to adjust the line space. The linespace is set by parameter <code>lineheight</code>.</p>
+<pre class="r"><code>g1 &lt;- g + geom_text(aes(label = z), hjust = 1, vjust = 0, nudge_x = -0.1, lineheight = 0) +
+    labs(subtitle = &quot;lineheight = 0&quot;)
+g2 &lt;- g + geom_text(aes(label = z), hjust = 1, vjust = 0, nudge_x = -0.1, lineheight = 0.9) +
+    labs(subtitle = &quot;lineheight = 0.9&quot;)
+g3 &lt;- g + geom_text(aes(label = z), hjust = 1, vjust = 0, nudge_x = -0.1, lineheight = 2) +
+    labs(subtitle = &quot;lineheight = 2&quot;)
+
+grid.arrange(g1, g2, g3, nrow = 1)</code></pre>
+<p><img src="../../../../post/2017-08-18-place-object-at-right-location_files/figure-html/unnamed-chunk-5-1.png" width="960" /></p>
+<p>As a final note, some people use <code>hjust</code> and <code>vjust</code> to shift text from <code>(x, y)</code>. This works well to move up and down a single line text but not good to move left and right or multi-line text, as <code>hjust</code> and <code>vjust</code> are relative to dimension of the text. Some bad examples are shown below. So it is better to use <code>nudge_x</code> and <code>nudge_y</code> to shift whole text.</p>
+<pre class="r"><code>g1 &lt;- g + geom_text(aes(label = z), vjust = 1.3) +
+    labs(subtitle = &quot;vjust = 1.3, more line more space&quot;)
+g2 &lt;- g + geom_text(aes(label = z), hjust = -0.2) +
+    labs(subtitle = &quot;hjust = -0.1, longer lines more space&quot;)
+
+grid.arrange(g1, g2, nrow = 1)</code></pre>
+<p><img src="../../../../post/2017-08-18-place-object-at-right-location_files/figure-html/unnamed-chunk-6-1.png" width="768" /></p>
+
+    </div>
+  </article>
+
+  
+<section id="comments">
+  <div id="disqus_thread"></div>
+  <script>
+  var disqus_config = function () {
+  
+  };
+  (function() {
+    var inIFrame = function() {
+      var iframe = true;
+      try { iframe = window.self !== window.top; } catch (e) {}
+      return iframe;
+    };
+    if (inIFrame()) return;
+    var d = document, s = d.createElement('script');
+    s.src = '//gl-li-github-io.disqus.com/embed.js'; s.async = true;
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
+  })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</section>
+
+
+
+</main>
+
+      <footer class="footer">
+        <ul class="footer-links">
+          <li>
+            <a href="../../../../index.xml" type="application/rss+xml" target="_blank">RSS feed</a>
+          </li>
+          <li>
+            <a href="https://gohugo.io/" class="footer-links-kudos">Made with <img src="../../../../images/hugo-logo.png" width="22" height="22"></a>
+          </li>
+        </ul>
+      </footer>
+
+    </div>
+    
+
+
+
+<script src="//cdn.bootcss.com/highlight.js/9.11.0/highlight.min.js"></script>
+
+
+
+<script src="//cdn.bootcss.com/highlight.js/9.11.0/languages/r.min.js"></script>
+<script src="//cdn.bootcss.com/highlight.js/9.11.0/languages/yaml.min.js"></script>
+<script>hljs.configure({languages: []}); hljs.initHighlightingOnLoad();</script>
+
+
+
+    
+<script src="../../../../js/math-code.js"></script>
+<script async src="//cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+
+    
+  </body>
+</html>
+

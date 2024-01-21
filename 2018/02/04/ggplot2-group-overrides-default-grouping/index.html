@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Hugo 0.31.1" />
+
+
+<title>ggplot2: aes(group = ...) overrides default grouping - R &amp; Census</title>
+<meta property="og:title" content="ggplot2: aes(group = ...) overrides default grouping - R &amp; Census">
+
+
+
+  
+
+
+
+
+
+
+
+
+<link href='//cdn.bootcss.com/highlight.js/9.11.0/styles/github.min.css' rel='stylesheet' type='text/css' />
+
+
+
+<link rel="stylesheet" href="../../../../css/fonts.css" media="all">
+<link rel="stylesheet" href="../../../../css/main.css" media="all">
+
+
+
+    
+
+  </head>
+  <body>
+    <div class="wrapper">
+      <header class="header">
+        <nav class="nav">
+  <a href="../../../../" class="nav-logo">
+    <img src="../../../../images/logo.png"
+         width="50"
+         height="50"
+         alt="Logo">
+  </a>
+
+  <ul class="nav-links">
+    
+    <li><a href="../../../../about/">About</a></li>
+    
+    <li><a href="../../../../projects/">Projects</a></li>
+    
+    <li><a href="../../../../links/">Blogroll</a></li>
+    
+    <li><a href="../../../../collections/">Collections</a></li>
+    
+  </ul>
+</nav>
+
+      </header>
+
+
+<main class="content" role="main">
+
+  <article class="article">
+    
+    <span class="article-duration">5 min read</span>
+    
+
+    <h1 class="article-title">ggplot2: aes(group = ...) overrides default grouping</h1>
+
+    
+    <span class="article-date">2018/02/04</span>
+    
+
+    <div class="article-content">
+      <div id="default-grouping-in-ggplot2" class="section level2">
+<h2>Default grouping in <code>ggplot2</code></h2>
+<p><code>ggplot2</code> can subset all data into groups and give each group its own appearance or transformation. In many cases new users are not aware that default groups have been created, and are surprised to see the unwanted plot.</p>
+<p>There are two ways in which groups are created implicitly:</p>
+<ul>
+<li>If <code>x</code> or <code>y</code> are categorical variables, the rows of date with the same level form a group. Users often overlook this type of default grouping.</li>
+<li>If aesthetic mapping, such as <code>color</code>, <code>shape</code>, and <code>fill</code>, map to categorical variables, they subset the data into groups. All users know these mappings create groups as data are displayed in different colors or shapes as the names suggest. Many, however, do not know that the default grouping also apply to statistic transformation such as boxplot and smooth.</li>
+</ul>
+<p>Let’s use boxplot to explain the default dgrouping. Boxplot displays summary statistics of a group of data. In the left figure, the <code>x</code> axis is the categorical <code>drv</code>, which split all data into three groups: <code>4</code>, <code>f</code>, and <code>r</code>. Each group has its own boxplot. In the right figure, aesthetic mapping is included in <code>ggplot(..., aes(..., color = factor(year))</code>. It displays data points of different years with different colors as expected. It also further split each <code>drv</code> group into <code>factor(year)</code> subgroups. The boxplot now applies to all the subgroups, which may or may not be what you want.</p>
+<pre class="r"><code>library(ggplot2)
+library(grid)
+library(gridExtra)
+
+g1 &lt;- ggplot(mpg, aes(drv, hwy)) +
+    geom_jitter() +
+    stat_boxplot(fill = NA) +
+    labs(subtitle = &quot;stat_boxplot runs on the default groups set by categorical drv&quot;)
+
+g2 &lt;- ggplot(mpg, aes(drv, hwy, color = factor(year))) +
+    geom_jitter() +
+    stat_boxplot(fill = NA) +
+    labs(subtitle = &quot;aes(color) further divides data into more groups&quot;)
+
+grid.arrange(g1, g2, nrow = 1,
+             top = textGrob(&quot;Examples of default grouping created by categorical axis and aesthetic mapping&quot;))</code></pre>
+<p><img src="../../../../post/2017-08-13-ggplot2-group-overrides-default-group_files/figure-html/unnamed-chunk-2-1.png" width="960" /></p>
+</div>
+<div id="what-if-you-do-not-want-the-default-grouping" class="section level2">
+<h2>What if you do not want the default grouping</h2>
+<p>The simplest solution to remove default grouping if it is caused by aesthetic mapping: do not include the mapping in the <code>ggplot(aes())</code> as they are inherited by all layers.</p>
+<p>In all cases we can break the default grouping with <code>aes(group = ...)</code>. It overrides default grouping by explicitly setting the <code>group</code>. I will demonstrate how it works using the simple examples below.</p>
+<p>We have the following data and we want connect the path of all data in <code>x</code> and <code>y</code> space. With the default grouping, the path, however, only connect within each group of <code>x</code>, as <code>x</code> is categorical.</p>
+<pre class="r"><code># make up a simple dummy data frame
+df &lt;- data.frame(x = c(&quot;a&quot;, &quot;a&quot;, &quot;a&quot;, &quot;a&quot;, &quot;b&quot;, &quot;b&quot;, &quot;b&quot;, &quot;b&quot;),
+                 y = c(1, 2, 3, 4, 4, 3, 2, 1),
+                 z = c(&quot;A&quot;, &quot;A&quot;, &quot;B&quot;, &quot;B&quot;, &quot;B&quot;, &quot;B&quot;, &quot;A&quot;, &quot;A&quot;))
+df</code></pre>
+<pre><code>##   x y z
+## 1 a 1 A
+## 2 a 2 A
+## 3 a 3 B
+## 4 a 4 B
+## 5 b 4 B
+## 6 b 3 B
+## 7 b 2 A
+## 8 b 1 A</code></pre>
+<pre class="r"><code>ggplot(df, aes(x, y)) +
+    geom_point() +
+    geom_path() +
+    labs(subtitle = &quot;x set the default groups as it is categorical&quot;)</code></pre>
+<p><img src="../../../../post/2017-08-13-ggplot2-group-overrides-default-group_files/figure-html/unnamed-chunk-3-1.png" width="384" /></p>
+<p>A constant <code>group</code> removes the default grouping. In the following code, the number <code>123</code> be any constant such as <code>1</code> or <code>&quot;abc&quot;</code>, and <code>group = 123</code> can be placed outside <code>aes()</code> as it is a constant. After removing the default grouping, <code>geom_path()</code> treat all rows as one groups so that there is only one path.</p>
+<pre class="r"><code>ggplot(df, aes(x, y)) +
+    geom_point() +
+    geom_path(aes(group = 123)) +   # constant group can stay outside of aes()
+    labs(subtitle = &quot;constant group removes categorical grouping in x&quot;)</code></pre>
+<p><img src="../../../../post/2017-08-13-ggplot2-group-overrides-default-group_files/figure-html/unnamed-chunk-4-1.png" width="384" /></p>
+</div>
+<div id="group-is-for-collective-geoms" class="section level1">
+<h1>Group is for collective geoms</h1>
+<p>To better understand the role of <code>group</code>, we need to know <a href="https://rpubs.com/hadley/ggplot2-toolbox">individual geoms and collective geoms</a>. Geom stands for geometric object. Point plotted with <code>geom_point()</code> uses one row of data and is an individual geom. Bar plotted with <code>geom_col()</code> is also an individual geom. A polygon consists of multiple rows of data so it is a collcetive geom. A boxplot is also a collective geom as it is based on the statistic transformation of many rows of data. Individual geoms only depend on one row and do not need <code>group</code>. Collective geoms need to know groups before making plots.</p>
+<p>Line and path plot use multiple rows, which qualify them as collective geoms. They, however, retain features of individual geom: each segments can have different style. This is different from polygon, of which all segments must of the same type.</p>
+<p>Now let’s see how <code>group</code> acts on individual geoms and collective geoms.</p>
+<p>We want to connect the path within <code>z</code> and label them in different colors, what should we do? The first thing jumps out may be <code>aes(color = z)</code>, but it further breaks the data into four groups, which is not unexpected as we already know how grouping works.</p>
+<pre class="r"><code>ggplot(df, aes(x, y, color = z)) +
+    geom_point() +
+    geom_path() +
+    labs(subtitle = &quot;x and color = z split data into 4 groups&quot;)</code></pre>
+<p><img src="../../../../post/2017-08-13-ggplot2-group-overrides-default-group_files/figure-html/unnamed-chunk-5-1.png" width="384" /></p>
+<p>The correct way is to explicitly set the group with <code>aes(group = z)</code></p>
+<pre class="r"><code>ggplot(df, aes(x, y, color = z)) +
+    geom_point() +
+    geom_path(aes(group = z)) +
+    labs(subtitle = &quot;group = z overrides the default grouping by x&quot;)</code></pre>
+<p><img src="../../../../post/2017-08-13-ggplot2-group-overrides-default-group_files/figure-html/unnamed-chunk-6-1.png" width="384" /></p>
+<p>What if we remove all default grouping with constant <code>group</code>? It does removes all default grouping for <code>geom_path</code> as all data points are connected with one path. It, however, preserves color of each segments.</p>
+<pre class="r"><code>ggplot(df, aes(x, y, color = z)) +
+    geom_point() +
+    geom_path(aes(group = 123)) +
+    labs(subtitle = &quot;group = 123 removes all default grouping but segments of path retain color&quot;)</code></pre>
+<p><img src="../../../../post/2017-08-13-ggplot2-group-overrides-default-group_files/figure-html/unnamed-chunk-7-1.png" width="384" /></p>
+<p>This will not happen to polygon, a pure collective geom. To draw polygons into groups based on <code>z</code>, we need to specify <code>group = z</code> for <code>geom_polygon()</code>. It overrides all default grouping and we get two distinct polygons.</p>
+<pre class="r"><code>ggplot(df, aes(x, y, color = z)) +
+    geom_point() +
+    geom_polygon(aes(group = z), fill = &quot;grey80&quot;) +
+    labs(subtitle = &quot;group = z overrides the default grouping by x&quot;)</code></pre>
+<p><img src="../../../../post/2017-08-13-ggplot2-group-overrides-default-group_files/figure-html/unnamed-chunk-8-1.png" width="384" /></p>
+<p>Set <code>group = 123</code> removes all the default grouping by both <code>x</code> and <code>color = z</code>. The new group is the one of all data. The <code>color</code> of the segments of the polygon only takes the color of <code>z == &quot;A&quot;</code> and ignores all other.</p>
+<pre class="r"><code>ggplot(df, aes(x, y, color = z)) +
+    geom_point() +
+    geom_polygon(aes(group = 123), fill = &quot;grey80&quot;) +
+    labs(subtitle = &quot;group = 123 removes all default grouping&quot;)</code></pre>
+<p><img src="../../../../post/2017-08-13-ggplot2-group-overrides-default-group_files/figure-html/unnamed-chunk-9-1.png" width="384" /></p>
+</div>
+
+    </div>
+  </article>
+
+  
+<section id="comments">
+  <div id="disqus_thread"></div>
+  <script>
+  var disqus_config = function () {
+  
+  };
+  (function() {
+    var inIFrame = function() {
+      var iframe = true;
+      try { iframe = window.self !== window.top; } catch (e) {}
+      return iframe;
+    };
+    if (inIFrame()) return;
+    var d = document, s = d.createElement('script');
+    s.src = '//gl-li-github-io.disqus.com/embed.js'; s.async = true;
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
+  })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</section>
+
+
+
+</main>
+
+      <footer class="footer">
+          
+        <ul class="footer-links">
+          <li>
+              &copy;<a href="http://www.gl-li.com/about/">Guanglai Li</a>
+          </li>
+          <li>
+            <a href="https://twitter.com/guanglai_li" target="_blank">Twitter</a>
+          </li>
+          <li>
+            <a href="https://github.com/GL-Li" class="footer-links-kudos">Github</a>
+          </li>
+        </ul>
+      </footer>
+
+    </div>
+    
+
+
+
+<script src="//cdn.bootcss.com/highlight.js/9.11.0/highlight.min.js"></script>
+
+
+
+<script src="//cdn.bootcss.com/highlight.js/9.11.0/languages/r.min.js"></script>
+<script src="//cdn.bootcss.com/highlight.js/9.11.0/languages/yaml.min.js"></script>
+<script>hljs.configure({languages: []}); hljs.initHighlightingOnLoad();</script>
+
+
+
+    
+
+    
+  </body>
+</html>
+

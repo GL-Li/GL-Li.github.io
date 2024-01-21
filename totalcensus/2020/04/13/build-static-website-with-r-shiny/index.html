@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="">
+  <meta name="generator" content="Hugo 0.69.0" />
+
+  <title>Build a static website with R Shiny &middot; R &amp; Census</title>
+
+  
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/1.0.0/pure-min.css">
+
+  <!--[if lte IE 8]>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/1.0.0/grids-responsive-old-ie-min.css">
+  <![endif]-->
+  <!--[if gt IE 8]><!-->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/1.0.0/grids-responsive-min.css">
+  <!--<![endif]-->
+
+  <!--[if lte IE 8]>
+  <link rel="stylesheet" href="/css/side-menu-old-ie.css">
+  <![endif]-->
+  <!--[if gt IE 8]><!-->
+  <link rel="stylesheet" href="/css/side-menu.css">
+  <!--<![endif]-->
+
+  <link rel="stylesheet" href="/css/blackburn.css">
+
+  
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+
+  
+  <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet" type="text/css">
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+ 
+  
+
+  
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css">
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  
+  <script>hljs.initHighlightingOnLoad();</script>
+  
+
+  <link rel="shortcut icon" href="/img/favicon.ico" type="image/x-icon" />
+
+  
+  
+
+</head>
+
+
+<body>
+<div id="layout">
+
+  
+<a href="#menu" id="menuLink" class="menu-link">
+  
+  <span></span>
+</a>
+<div id="menu">
+
+  
+
+  <div class="pure-menu">
+    <ul class="pure-menu-list">
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="/"><i class='fa fa-home fa-fw'></i>Home</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="/post/"><i class='fa fa-list fa-fw'></i>Archive</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://www.r-bloggers.com/"><i class='fa fa-comments fa-fw'></i>R-bloggers</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://rweekly.org/"><i class='fa fa-book fa-fw'></i>R Weekly</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://www.census.gov/newsroom/blogs/about.html"><i class='fa fa-microphone fa-fw'></i>Census Blogs</a>
+      
+        </li>
+      
+    </ul>
+  </div>
+
+  <div class="pure-menu social">
+  <ul class="pure-menu-list">
+
+    
+
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="https://twitter.com/guanglai_li" target="_blank"><i class="fa fa-twitter-square fa-fw"></i>Twitter</a>
+    </li>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="https://github.com/GL-Li" target="_blank"><i class="fa fa-github-square fa-fw"></i>GitHub</a>
+    </li>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+  </ul>
+</div>
+
+
+  <div>
+  <div class="small-print">
+    <small>&copy; 2017 - 2019. All rights reserved.</small>
+  </div>
+  <div class="small-print">
+    <small>Built with&nbsp;<a href="https://gohugo.io/" target="_blank">Hugo</a></small>
+    <small>Theme&nbsp;<a href="https://github.com/yoshiharuyamashita/blackburn" target="_blank">Blackburn</a></small>
+  </div>
+</div>
+
+</div>
+
+
+  <div id="main">
+
+
+<div class="header">
+  <h1>Build a static website with R Shiny</h1>
+  <span>GL Li</span>, <span>2020/04/13</span>
+</div>
+<div class="content">
+
+  
+
+  
+
+
+<p>Sounds stupid? Yes, it’s kind of throwing away 99% of Shiny’s power; and you can always build a static website with R markdown, blogdown, or bookdown.</p>
+<p>Anyway, please keep reading as it will save you time if you are an R users who</p>
+<ul>
+<li>want to make a portfolio website to showcase your work,</li>
+<li>but know little about web development,</li>
+<li>and yet prefer designing your own interface rather than using a popular theme.</li>
+</ul>
+<p>The idea is to take advantage of Shiny’s convenient user interface design without relying on a Shiny server. Here is <a href="https://gl-li.github.io/">my portfolio website</a>. It is nowhere near fancy, but is exactly what I want.</p>
+<p>Without further ado, let’s get started. We will host the website on Github pages. Follow <a href="https://pages.github.com/">this instructions</a> to create a repository called <code>johndoe.github.io</code> (replace johndoe with your username) and clone the repository to your computer.</p>
+<p>Now let’s create a Shiny project in the cloned directory. All the files can be found <a href="https://github.com/GL-Li/johndoe.github.io">here</a>. The file structure for this project is:</p>
+<p><img src="/post/2020-04-11-build-static-website-with-r-shiny_files/create_static_website_with_shiny_file_structure.png" /></p>
+<p>As a simple example, this <code>ui.R</code> contains a picture (<code>birds.png</code>), some text (<code>birds.Rmd</code>), an internal link to a section in the same page, an external link to <a href="https://www.wikipedia.org/">Wikipedia</a> and a link to <code>sample.html</code> in subdirectory <code>/samples</code>. For the link to <code>sample.html</code>, we will use the true url at your website: <code>href = &quot;https://johndoe.github.io/samples/sample.html&quot;</code>.</p>
+<pre class="r"><code>library(shiny)
+ui &lt;- fluidPage(
+    sidebarLayout(
+        sidebarPanel(
+            width = 3,
+            h2(&quot;My Static website&quot;),
+            h3(&quot;Internal link example&quot;),
+            a(h4(&quot;Birds&quot;),
+              href = &quot;#birds&quot;),
+            hr(),
+            h3(&quot;External link example&quot;),
+            a(h4(&quot;Wikipedia&quot;),
+              href = &quot;https://en.wikipedia.org/wiki/Main_Page&quot;,
+              target = &quot;blank&quot;)
+        ),
+        
+        mainPanel(
+            width = 9,
+            h2(&quot;Link to a saved sample.html&quot;),
+            p(&quot;The url is https://johndoe.github.io/samples/sample.html&quot;),
+            a(h3(&quot;Lovely Birds&quot;),
+              href = &quot;https://johndoe.github.io/samples/sample.html&quot;,
+              target = &quot;blank&quot;),
+            hr(),
+            h2(&quot;Text and image example&quot;, id = &quot;birds&quot;),
+            fluidRow(
+                column(
+                    7,
+                    includeMarkdown(&quot;markdown/birds.Rmd&quot;)
+                ),
+                column(
+                    5,
+                    img(src = &quot;birds.png&quot;, width = &quot;100%&quot;)
+                )
+            ),
+        )
+    )
+)</code></pre>
+<p>The <code>serve.R</code> file has an empty function as we do not have any interactive features in <code>ui.R</code>.</p>
+<pre class="r"><code>library(shiny)
+server &lt;- function(input, output) {
+    # empty
+}</code></pre>
+<p>With all the files in place, follow these steps to create the static website on github page.</p>
+<p><strong>Step 1</strong>: Run the Shiny app in RStudio and then open it in browser. The webpage is at localhost <code>127.0.0.1:6230</code> (may differ from yours) and looks like:</p>
+<p><img src="/post/2020-04-11-build-static-website-with-r-shiny_files/website_screen_shot.png" /></p>
+<p><strong>Step 2</strong>: Save this webpage as <code>index.html</code> under directory <code>johndoe.github.io</code> as complete html. An subdirectory <code>index_files</code> contains associated files is created automatically.</p>
+<p><strong>Step 3</strong>: Open <code>index.html</code> in a text editor.</p>
+<ul>
+<li><p>delete all <code>&lt;script&gt; xxxx &lt;/script&gt;</code>
+<img src="/post/2020-04-11-build-static-website-with-r-shiny_files/script.png" /></p></li>
+<li><p>replace all <code>https://127.0.0.1:6230</code> with <code>https://johndoe.github.io</code>
+<img src="/post/2020-04-11-build-static-website-with-r-shiny_files/local_host.png" /></p></li>
+</ul>
+<p><strong>Step 4</strong>: Push all files to the Github repository. Wait for a couple of minutes and your website is ready at https:<span></span>//johndoe.github.io.</p>
+
+
+  
+<div class="prev-next-post pure-g">
+  <div class="pure-u-1-24" style="text-align: left;">
+    
+    <a href="/2019/02/03/navigate-through-decennial-census-and-american-community-survey/"><i class="fa fa-chevron-left"></i></a>
+    
+  </div>
+  <div class="pure-u-10-24">
+    
+    <nav class="prev">
+      <a href="/2019/02/03/navigate-through-decennial-census-and-american-community-survey/">Navigate through Decennial Census and American Community Survey</a>
+    </nav>
+    
+  </div>
+  <div class="pure-u-2-24">
+    &nbsp;
+  </div>
+  <div class="pure-u-10-24">
+    
+    <nav class="next">
+      <a href="/2020/11/11/benford-s-law-and-census-data/">Benford&#39;s Law and Census Data</a>
+    </nav>
+    
+  </div>
+  <div class="pure-u-1-24" style="text-align: right;">
+    
+    <a href="/2020/11/11/benford-s-law-and-census-data/"><i class="fa fa-chevron-right"></i></a>
+    
+  </div>
+</div>
+
+
+
+  
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+
+(function() {
+    
+    
+    if (window.location.hostname == "localhost")
+        return;
+
+    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+    var disqus_shortname = 'gl-li-github-io';
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com/" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+</div>
+
+</div>
+</div>
+<script src="/js/ui.js"></script>
+<script src="/js/menus.js"></script>
+
+
+<script>
+  
+  if (window.location.hostname != "localhost") {
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-132163439-1', 'auto');
+    ga('send', 'pageview');
+  }
+</script>
+
+
+
+
+
+</body>
+</html>
+

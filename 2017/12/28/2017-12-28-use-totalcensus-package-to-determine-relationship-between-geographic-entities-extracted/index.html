@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html prefix="og: http://ogp.me/ns#">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title>Determine relationship between census geographic entities with totalcensus package &middot; My Name</title>
+        <meta name="description" content="This is an application example of totalcensus package.
+The geographic hierarchy primer in Census 2010 summary file 1 technical documentation displays the relationship between geographic entities. The lower one of the two entities connected by a line is entirely within the boundary of the upper one. For example, a county subdivision is always within the boundaries of a county and a school district always within the boundaries of a state. If two entities are not connected, they may not belong to each other.">
+        <meta name="HandheldFriendly" content="True">
+        <meta name="MobileOptimized" content="320">
+        <meta name="generator" content="Hugo 0.31.1" />
+        <meta name="robots" content="index,follow">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta property="og:title" content="Determine relationship between census geographic entities with totalcensus package">
+<meta property="og:description" content="This is an application example of totalcensus package.
+The geographic hierarchy primer in Census 2010 summary file 1 technical documentation displays the relationship between geographic entities. The lower one of the two entities connected by a line is entirely within the boundary of the upper one. For example, a county subdivision is always within the boundaries of a county and a school district always within the boundaries of a state. If two entities are not connected, they may not belong to each other.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="/2017/12/28/2017-12-28-use-totalcensus-package-to-determine-relationship-between-geographic-entities-extracted/">
+        <link rel="stylesheet" href="/dist/styles.css">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,400,600,700,300&subset=latin,cyrillic-ext,latin-ext,cyrillic">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+        
+        
+    </head>
+    <body>
+        
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'XXX', 'auto');
+ga('send', 'pageview');
+</script>
+
+
+        <div id="wrapper">
+            <header class="site-header">
+                <div class="container">
+                    <div class="site-title-wrapper">
+                        
+                            <h1 class="site-title">
+                                <a title="Ghostwriter example" href="/">Ghostwriter example</a>
+                            </h1>
+                        
+                        <a class="button-square" href="/index.xml"><i class="fa fa-rss"></i></a>
+                        
+                            <a class="button-square button-social hint--top" data-hint="Twitter" title="Twitter" href="https://twitter.com/XXX">
+                                <i class="fa fa-twitter"></i>
+                            </a>
+                        
+                        
+                            <a class="button-square button-social hint--top" data-hint="Gitlab" title="Gitlab" href="https://gitlab.com/XXX">
+                                <i class="fa fa-gitlab"></i>
+                            </a>
+                        
+                        
+                            <a class="button-square button-social hint--top" data-hint="Github" title="Github" href="https://github.com/XXX">
+                                <i class="fa fa-github-alt"></i>
+                            </a>
+                        
+                        
+                            <a class="button-square button-social hint--top" data-hint="Stack Overflow" title="Stack Overflow" href="https://stackoverflow.com/users/XXX/YYY">
+                                <i class="fa fa-stack-overflow"></i>
+                            </a>
+                        
+                        
+                            <a class="button-square button-social hint--top" data-hint="LinkedIn" title="LinkedIn" href="https://linkedin.com/in/XXX/">
+                                <i class="fa fa-linkedin"></i>
+                            </a>
+                        
+                        
+                            <a class="button-square button-social hint--top" data-hint="Google+" title="Google+" href="https://google.com/&#43;XXX">
+                                <i class="fa fa-google-plus"></i>
+                            </a>
+                        
+                        
+                            <a class="button-square button-social hint--top" data-hint="Email" title="Email" href="mailto:XXX@example.com">
+                                <i class="fa fa-envelope"></i>
+                            </a>
+                        
+                    </div>
+
+                    <ul class="site-nav">
+                        
+    <li class="site-nav-item">
+        <a title="Blog" href="/">Blog</a>
+    </li>
+
+    <li class="site-nav-item">
+        <a title="Projects" href="/project/">Projects</a>
+    </li>
+
+    <li class="site-nav-item">
+        <a title="Contact" href="/page/contact/">Contact</a>
+    </li>
+
+    <li class="site-nav-item">
+        <a title="About" href="/page/about/">About</a>
+    </li>
+
+                    </ul>
+                </div>
+            </header>
+
+            <div id="container">
+
+
+<div class="container">
+    <article class="post-container" itemscope="" itemtype="http://schema.org/BlogPosting">
+        <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">Determine relationship between census geographic entities with totalcensus package</h1>
+    
+    <p class="post-date">
+        <span>Published <time datetime="2017-12-28" itemprop="datePublished">Thu, Dec 28, 2017</time></span>
+        <span>by</span>
+        <span itemscope="" itemprop="author" itemtype="https://schema.org/Person">
+            <span itemprop="name">
+                <a href="https://google.com/&#43;XXX" itemprop="url" rel="author">GL Li</a>
+            </span>
+        </span>
+    </p>
+</header>
+
+        <div class="post-content clearfix" itemprop="articleBody">
+    
+
+    <p>This is an application example of <a href="https://github.com/GL-Li/totalcensus">totalcensus package</a>.</p>
+<p>The geographic hierarchy primer in <a href="https://www.census.gov/prod/cen2010/doc/sf1.pdf">Census 2010 summary file 1 technical documentation</a> displays the relationship between geographic entities. The lower one of the two entities connected by a line is entirely within the boundary of the upper one. For example, a county subdivision is always within the boundaries of a county and a school district always within the boundaries of a state. If two entities are not connected, they may not belong to each other. For example, the ZIP code tabulation areas may cross state borders though they are much smaller than states.</p>
+<p><br> <img src="https://s3.amazonaws.com/gl-shared-pictures/hierarchy_census_geographic_entities.png" /></p>
+<p><br></p>
+<p>It is easy to get the summary statistics of lower geographies within a higher one when they are connected. For example, if we want the race population of all county subdivision in Kent county, RI, we can run</p>
+<pre class="r"><code>library(totalcensus)
+library(data.table)
+library(magrittr)
+sub_kent &lt;- read_acs5year(
+    year = 2016,
+    states = &quot;RI&quot;,
+    areas = &quot;Kent county, RI&quot;,
+    table_contents = c(
+        &quot;white = B02001_002&quot;,
+        &quot;black = B02001_003&quot;,
+        &quot;asian = B02001_005&quot;
+    ),
+    summary_level = &quot;070&quot;  # of county subdivision
+)
+
+print(sub_kent)
+    #               area                  GEOID       lon      lat state population white black asian GEOCOMP SUMLEV                                                                 NAME
+    # 1: Kent County, RI 07000US440031864031240 -71.73078 41.69073    RI        728   724     0     4     all    070                 Greene CDP, Coventry town, Kent County, Rhode Island
+    # 2: Kent County, RI 07000US440031864099999 -71.59396 41.69140    RI      34225 32994   384   187     all    070 Remainder of Coventry town, Coventry town, Kent County, Rhode Island
+    # 3: Kent County, RI 07000US440032224099999 -71.48331 41.64415    RI      13104 12120    77   404     all    070  East Greenwich town, East Greenwich town, Kent County, Rhode Island
+    # 4: Kent County, RI 07000US440037430074300 -71.42452 41.71389    RI      81881 74990  1163  2237     all    070                Warwick city, Warwick city, Kent County, Rhode Island
+    # 5: Kent County, RI 07000US440037772099999 -71.65790 41.62810    RI       6112  5611    26   314     all    070  West Greenwich town, West Greenwich town, Kent County, Rhode Island
+    # 6: Kent County, RI 07000US440037844099999 -71.51749 41.70306    RI      28836 26196   704   806     all    070      West Warwick town, West Warwick town, Kent County, Rhode Island</code></pre>
+<p>If two geographic entities are not connected by a line, how do we know, for example, how many ZIP code tabulation areas are in or partially in Boston city?</p>
+<p>The key to answer this question is that census blocks are connected to and lower than all other geographies. We can connect any two geographic entities through census blocks: if an ZIP code tabulation area and Boston city share a census block, the ZIP code is in or partially in the city. The decennial census 2010 has data down to block level, with which we can find all zip codes in Boston using <code>totalcensus</code> package.</p>
+<pre class="r"><code>zip_boston &lt;- read_decennial(
+    year = 2010,
+    states = &quot;MA&quot;,
+    geo_headers = c(&quot;ZCTA5&quot;, &quot;PLACE&quot;),
+    summary_level = &quot;block&quot;
+) %&gt;%
+    # use search_fips(&quot;boston&quot;, &quot;MA&quot;) to find its PLACE code is &quot;07000&quot;
+    .[PLACE == &quot;07000&quot;, unique(ZCTA5)] 
+
+zip_boston
+# all zip code in Boston:
+    #  [1] &quot;02134&quot; &quot;02135&quot; &quot;02467&quot; &quot;02215&quot; &quot;02163&quot; &quot;02115&quot; &quot;02116&quot; &quot;02199&quot;
+    #  [9] &quot;02108&quot; &quot;02114&quot; &quot;02113&quot; &quot;02109&quot; &quot;02110&quot; &quot;02203&quot; &quot;02129&quot; &quot;02128&quot;
+    # [17] &quot;02127&quot; &quot;02210&quot; &quot;02118&quot; &quot;02111&quot; &quot;02119&quot; &quot;02120&quot; &quot;02130&quot; &quot;02121&quot;
+    # [25] &quot;02125&quot; &quot;02122&quot; &quot;02124&quot; &quot;02126&quot; &quot;02131&quot; &quot;02132&quot; &quot;02136&quot; &quot;99999&quot;
+    # [33] &quot;02152&quot; &quot;02151&quot;</code></pre>
+<p>Now let’s read race population by zip code in or partially in Boston city from the latest 2016 ACS 5-year survey.</p>
+<pre class="r"><code># read data for all zip code
+race_zip_boston &lt;- read_acs5year(
+    year = 2016,
+    states = &quot;US&quot;,   # ZCTA5 only in national files
+    geo_headers = &quot;ZCTA5&quot;,
+    table_contents = c(
+        &quot;white = B02001_002&quot;,
+        &quot;black = B02001_003&quot;,
+        &quot;asian = B02001_005&quot;
+    ),
+    summary_level = &quot;860&quot;  # of ZCTA5
+) %&gt;%
+    # select zip codes in or partially in Boston city
+    .[ZCTA5 %in% zip_boston]
+
+head(race_zip_boston, 3)
+     #           GEOID       lon      lat ZCTA5 state population white black asian GEOCOMP SUMLEV        NAME
+     # 1: 86000US02108 -71.06485 42.35777 02108    NA       4049  3515   209   172     all    860 ZCTA5 02108
+     # 2: 86000US02109 -71.05063 42.36722 02109    NA       4015  3497   135   249     all    860 ZCTA5 02109
+     # 3: 86000US02110 -71.04785 42.36196 02110    NA       2124  1814    83   206     all    860 ZCTA5 02110</code></pre>
+<p>Let’s examine another example: congressional districts (CD for 111th congress) and state legislative districts (SLDU for Upper Chamber year 1 and SLDL for Lower Chamber year 1). Both CD and SLDs descend from states but do not belong to each other. Usually SLDs are smaller than CD. So which SLDs are in or partially in each CD? Again, we can connect CD and SLD with census blocks using decennial census 2010 data.</p>
+<pre class="r"><code>vote_RI &lt;- read_decennial(
+    year = 2010,
+    states = &quot;RI&quot;,
+    geo_headers = c(&quot;CD&quot;, &quot;SLDU&quot;, &quot;SLDL&quot;),
+    summary_level = &quot;block&quot;
+) %&gt;%
+    .[, .(SLDU = list(unique(SLDU)), SLDL = list(unique(SLDL))), by = CD] 
+
+# each CD contains a vector of SLDUs and a vector of SLDLs
+    #    CD                             SLDU                             SLDL
+    # 1: 01  c(009,011,010,012,013,023, ...)  c(066,067,069,068,072,075, ...)
+    # 2: 02  c(024,033,035,031,029,028, ...)  c(040,026,028,025,029,027, ...)</code></pre>
+
+</div>
+
+        <footer class="post-footer clearfix">
+    
+        <p class="post-tags">
+            <span>Tagged:</span>
+            
+            
+                <a href="/tags/census/">census</a>
+            
+        </p>
+    
+
+    <div class="share">
+        
+            <a class="icon-twitter" href="https://twitter.com/share?text=Determine%20relationship%20between%20census%20geographic%20entities%20with%20totalcensus%20package&url=%2f2017%2f12%2f28%2f2017-12-28-use-totalcensus-package-to-determine-relationship-between-geographic-entities-extracted%2f"
+                onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+                <i class="fa fa-twitter"></i>
+                <span class="hidden">Twitter</span>
+            </a>
+        
+
+        
+            <a class="icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=%2f2017%2f12%2f28%2f2017-12-28-use-totalcensus-package-to-determine-relationship-between-geographic-entities-extracted%2f"
+                onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+                <i class="fa fa-facebook"></i>
+                <span class="hidden">Facebook</span>
+            </a>
+        
+
+        
+            <a class="icon-google-plus" href="https://plus.google.com/share?url=%2f2017%2f12%2f28%2f2017-12-28-use-totalcensus-package-to-determine-relationship-between-geographic-entities-extracted%2f"
+              onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+              <i class="fa fa-google-plus"></i>
+                <span class="hidden">Google+</span>
+            </a>
+        
+        
+    </div>
+</footer>
+
+        
+    <div class="comments">
+        <div id="disqus_thread"></div>
+<script>
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "XXX" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+    </div>
+
+    </article>
+</div>
+
+            </div>
+        </div>
+
+        <footer class="footer">
+            <div class="container">
+                <div class="site-title-wrapper">
+                    <h1 class="site-title">
+                        <a title="Ghostwriter example" href="/">Ghostwriter example</a>
+                    </h1>
+                    <a class="button-square button-jump-top js-jump-top" href="#">
+                        <i class="fa fa-angle-up"></i>
+                    </a>
+                </div>
+
+                <p class="footer-copyright">
+                    <span>&copy; 2018 / Powered by <a href="https://gohugo.io/">Hugo</a></span>
+                </p>
+                <p class="footer-copyright">
+                    <span><a href="https://github.com/roryg/ghostwriter">Ghostwriter theme</a> By <a href="http://jollygoodthemes.com">JollyGoodThemes</a></span>
+                    <span>/ <a href="https://github.com/jbub/ghostwriter">Ported</a> to Hugo By <a href="https://github.com/jbub">jbub</a></span>
+                </p>
+            </div>
+        </footer>
+
+        <script src="/js/jquery-1.11.3.min.js"></script>
+        <script src="/js/jquery.fitvids.js"></script>
+        
+        
+            <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.11.0/r.min.js"></script>
+        
+        
+        <script src="/js/scripts.js"></script>
+    </body>
+</html>
+

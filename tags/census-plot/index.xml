@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>census plot on R &amp; Census</title>
+    <link>/tags/census-plot/</link>
+    <description>Recent content in census plot on R &amp; Census</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>&amp;copy; 2017 - 2019. All rights reserved.</copyright>
+    <lastBuildDate>Wed, 17 Jan 2018 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="/tags/census-plot/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Plot pie charts of racial composition in largest metro areas on a map in R</title>
+      <link>/2018/01/17/create-pie-plots-on-a-map-in-r/</link>
+      <pubDate>Wed, 17 Jan 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/2018/01/17/create-pie-plots-on-a-map-in-r/</guid>
+      <description>Pie chart has been criticized for being a poor visualization and is not recommended in R community. The popular ggplot2 package discourages the use of pie charts and there is no dedicated geom_pie for it.
+Although the criticism is mostly valid, there is a case that pie chart can be useful: pie charts on maps. Pie charting on map is a compact way to show composition by locations.
+A recent R package, scatterpie by Guangchuang Yu, specializes in making pie charts at multiple locations.</description>
+    </item>
+    
+  </channel>
+</rss>

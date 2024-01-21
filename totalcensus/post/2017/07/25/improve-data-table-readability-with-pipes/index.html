@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Compare data.table pipes and magrittr pipes | A minimal Hugo website</title>
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/fonts.css" />
+    
+  </head>
+
+  <body>
+    <nav>
+    <ul class="menu">
+      
+      <li><a href="/">Home</a></li>
+      
+      <li><a href="/about/">About</a></li>
+      
+      <li><a href="/categories/">Categories</a></li>
+      
+      <li><a href="/tags/">Tags</a></li>
+      
+      <li><a href="/index.xml">Subscribe</a></li>
+      
+    </ul>
+    <hr/>
+    </nav>
+
+<div class="article-meta">
+<h1><span class="title">Compare data.table pipes and magrittr pipes</span></h1>
+<h2 class="author">GL</h2>
+<h2 class="date">2017/07/25</h2>
+</div>
+
+<main>
+<p>There are two ways to chain <code>data.table</code> operation, using <code>data.table</code> pipes or using <code>magrittr</code> pipes. For a data.table <code>dt</code>, the <code>data.table</code> pipes take the form of <code>dt[][][]...</code> and <code>magrittr</code> pipes <code>dt %&gt;% .[] %&gt;% .[] %&gt;% ...</code>.</p>
+<p>Below is an example that compares their readability. The readability of <code>data.table</code> pipes has been criticized in this <a href="https://stackoverflow.com/questions/21435339/data-table-vs-dplyr-can-one-do-something-well-the-other-cant-or-does-poorly">stackoverflow post</a>. It seems, however, not that hard to follow for those who have basic knowledge of <code>data.table</code>. To my eyes, the <code>magrittr</code> pipes improves the readability but not enough to replace the <code>data.table</code> pipes. It is more of a personal choice.</p>
+<pre class="r"><code>library(data.table)
+library(magrittr)
+
+# the data.table pipes
+data.table(iris)[
+    # add a new column &quot;is_setosa&quot;, 1 if yes and 0 if no, use two lines of codes 
+    # to clearly show the values
+    Species == &quot;setosa&quot;, is_setosa := 1
+][
+    Species != &quot;setosa&quot;, is_setosa := 0
+][
+    # changes the Petal.Length of Species &quot;versicolor&quot;, other species not affected
+    Species == &quot;versicolor&quot;, Petal.Length := 999
+][
+    # calculate sepal area when length &gt; 5. Area is NA if length &lt;= 5
+    Sepal.Length &gt; 5, Sepal.Area := Sepal.Length * Sepal.Width
+][
+    # select columns
+    , .(Species, is_setosa, Petal.Length, Sepal.Area)
+][
+    # average of each column grouped by species
+    , lapply(.SD, mean, na.rm = TRUE), by = Species
+]</code></pre>
+<pre><code>##       Species is_setosa Petal.Length Sepal.Area
+## 1:     setosa         1        1.462   19.76364
+## 2: versicolor         0      999.000   16.87340
+## 3:  virginica         0        5.552   19.83633</code></pre>
+<pre class="r"><code># the magrittr pipes
+data.table(iris) %&gt;%
+    # add a new column &quot;is_setosa&quot;, 1 if yes and 0 if no, use two lines of codes 
+    # to clearly show the values
+    .[Species == &quot;setosa&quot;, is_setosa := 1] %&gt;%                         
+    .[Species != &quot;setosa&quot;, is_setosa := 0] %&gt;%
+    
+    # changes the Petal.Length of Species &quot;versicolor&quot;, other species not affected
+    .[Species == &quot;versicolor&quot;, Petal.Length := 999] %&gt;%   
+    
+    # calculate sepal area when length &gt; 5. Area is NA if length &lt;= 5
+    .[Sepal.Length &gt; 5, Sepal.Area := Sepal.Length * Sepal.Width] %&gt;%  
+    
+    # select columns
+    .[, .(Species, is_setosa, Petal.Length, Sepal.Area)] %&gt;%    
+    
+    # average of each column grouped by species
+    .[, lapply(.SD, mean, na.rm = TRUE), by = Species]                  </code></pre>
+<pre><code>##       Species is_setosa Petal.Length Sepal.Area
+## 1:     setosa         1        1.462   19.76364
+## 2: versicolor         0      999.000   16.87340
+## 3:  virginica         0        5.552   19.83633</code></pre>
+<p>Will the use of pipes <code>%&gt;%</code> slow down the computing? In the following code, we add three new columns to a made-up data table with <code>data.table</code> pipes and <code>magrittr</code> pipes. They almost have the same speed.</p>
+<pre class="r"><code>set.seed(123)
+dt &lt;- data.table(a = sample(letters, 1e5, replace = TRUE),
+                 b = abs(rnorm(1e5)))
+
+datatable_pipe &lt;- function(){
+    dt[, x := sqrt(b)][
+        , y := b^2
+    ][
+        , z := paste0(a , b)
+    ]
+}
+
+magrittr_pipe &lt;- function(){
+    dt[, x := sqrt(b)] %&gt;%
+        .[, y := b^2] %&gt;%
+        .[, z := paste0(a , b)]
+}
+
+rbenchmark::benchmark(datatable_pipe(), magrittr_pipe(), replications=10)</code></pre>
+<pre><code>##               test replications elapsed relative user.self sys.self
+## 1 datatable_pipe()           10   1.866    1.049     1.864    0.004
+## 2  magrittr_pipe()           10   1.779    1.000     1.776    0.004
+##   user.child sys.child
+## 1          0         0
+## 2          0         0</code></pre>
+
+</main>
+
+  <footer>
+  
+  
+  <hr/>
+  &copy; <a href="https://yihui.name">Yihui Xie</a> 2017 | <a href="https://github.com/yihui">Github</a> | <a href="https://twitter.com/xieyihui">Twitter</a>
+  
+  </footer>
+  </body>
+</html>
+

@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Hugo 0.31.1" />
+
+
+<title>Plot pie charts of racial composition in largest metro areas on a map in R - R &amp; Census</title>
+<meta property="og:title" content="Plot pie charts of racial composition in largest metro areas on a map in R - R &amp; Census">
+
+
+
+  
+
+
+
+
+
+
+
+
+<link href='//cdn.bootcss.com/highlight.js/9.11.0/styles/github.min.css' rel='stylesheet' type='text/css' />
+
+
+
+<link rel="stylesheet" href="../../../../css/fonts.css" media="all">
+<link rel="stylesheet" href="../../../../css/main.css" media="all">
+
+
+
+    
+
+  </head>
+  <body>
+    <div class="wrapper">
+      <header class="header">
+        <nav class="nav">
+  <a href="../../../../" class="nav-logo">
+    <img src="../../../../images/logo.png"
+         width="50"
+         height="50"
+         alt="Logo">
+  </a>
+
+  <ul class="nav-links">
+    
+    <li><a href="../../../../about/">About</a></li>
+    
+    <li><a href="../../../../projects/">Projects</a></li>
+    
+    <li><a href="../../../../links/">Blogroll</a></li>
+    
+    <li><a href="../../../../collections/">Collections</a></li>
+    
+  </ul>
+</nav>
+
+      </header>
+
+
+<main class="content" role="main">
+
+  <article class="article">
+    
+    <span class="article-duration">3 min read</span>
+    
+
+    <h1 class="article-title">Plot pie charts of racial composition in largest metro areas on a map in R</h1>
+
+    
+    <span class="article-date">2018/01/16</span>
+    
+
+    <div class="article-content">
+      <p>Pie chart has been criticized for being a poor visualization and is not recommended in R community. The popular <code>ggplot2</code> package discourages the use of pie charts and there is no dedicated <code>geom_pie</code> for it.</p>
+<p>Although the criticism is mostly valid, there is a case that pie chart can be useful: pie charts on maps. Pie charting on map is a compact way to show composition by locations.</p>
+<p>A recent <code>R</code> package, <a href="https://github.com/GuangchuangYu/scatterpie"><code>scatterpie</code></a> by Guangchuang Yu, specializes in making pie charts at multiple locations. This package is an extension of <code>ggplot2</code> so it will be easy for <code>ggplot2</code> users.</p>
+<p>We will use <code>scatterpie</code> package to plot the racial composition in largest metropolitan areas in the United state. The demographics data is extracted from 2016 American Community Survey 1-year estimate with <a href="https://github.com/GL-Li/totalcensus"><code>totalcensus</code></a> package.</p>
+<p>Let’s first load the required packages.</p>
+<pre class="r"><code>library(scatterpie)
+library(totalcensus)
+library(dplyr)</code></pre>
+<p>Now we extract total population and population of selected races in metro areas from 2016 ACS 1-year estimate. We will only keep metro areas with population over one million.</p>
+<pre class="r"><code># read all metro data
+metro &lt;- read_acs1year(
+    year = 2016,
+    states = &quot;US&quot;,
+    table_contents = c(
+        &quot;white = C02003_003&quot;, 
+        &quot;black = C02003_004&quot;, 
+        &quot;asian = C02003_006&quot;
+    ),
+    geo_headers = &quot;CBSA&quot;,
+    summary_level = &quot;310&quot;
+) %&gt;%
+    .[, others := population - white - black - asian]</code></pre>
+<pre><code>## Reading US 2016 ACS 1-year survey geography file</code></pre>
+<pre class="r"><code># keep only largest metro and make some cleaning
+largest &lt;- metro[population &gt; 1e6][order(-population)] %&gt;%
+    # Los Angeles metro changed CBSA from 31100 to 31080, hand correct the coordinate
+    .[GEOID == &quot;31000US31080&quot;, &quot;:=&quot; (area = &quot;Metro: Los Angeles&quot;, lon = -118.18194, lat = 34.10939)] %&gt;%
+    .[, .(NAME, lon, lat, total = population, white, black, asian, others)]
+head(largest, 3)</code></pre>
+<pre><code>##                                                NAME       lon      lat
+## 1: New York-Newark-Jersey City, NY-NJ-PA Metro Area  -73.8745 40.77432
+## 2:    Los Angeles-Long Beach-Anaheim, CA Metro Area -118.1819 34.10939
+## 3:    Chicago-Naperville-Elgin, IL-IN-WI Metro Area  -87.8283 41.82352
+##       total    white   black   asian  others
+## 1: 20153634 11704438 3430610 2215765 2802821
+## 2: 13310447  7080092  880118 2112197 3238040
+## 3:  9512968  6202988 1577873  617341 1114766</code></pre>
+<p>With the race data, we are ready to make pie plot on a map with package <code>scatterpie</code>.</p>
+<pre class="r"><code>us &lt;- map_data(&#39;state&#39;)
+ggplot(us, aes(long, lat)) +
+    geom_map(map=us, aes(map_id=region), fill=&quot;grey97&quot;, color=&quot;grey&quot;) +
+    geom_scatterpie(data = largest, 
+                    aes(lon, lat, r = sqrt(total)/2000),
+                    cols = c(&quot;white&quot;, &quot;black&quot;, &quot;asian&quot;, &quot;others&quot;), 
+                    alpha = 0.5) +
+    scale_fill_manual(
+        breaks = c(&quot;white&quot;, &quot;black&quot;, &quot;asian&quot;, &quot;others&quot;),
+        labels = c(&quot;white alone&quot;, &quot;black alone&quot;, &quot;asian alone&quot;, &quot;others&quot;),
+        values = c(
+            &quot;asian&quot; = &quot;orange&quot;,
+            &quot;white&quot; = &quot;white&quot;,
+            &quot;black&quot; = &quot;black&quot;,
+            &quot;others&quot; = &quot;cyan&quot;
+        )
+    ) +
+    #geom_scatterpie_legend(radius = sqrt(largest$population)/2000, x = -120, y = 27)
+    labs(title = &quot;Races in metro areas over one million population&quot;,
+         subtitle = &quot;others includes mixed races and American indians, Alaska natives, native Hawaiians and pacific islanders&quot;,
+         caption = &quot;Source: 2016 ACS 1-year estimate&quot;,
+        fill = NULL) +
+        coord_fixed() +
+    theme_bw() +
+    theme(
+        legend.position = c(0.96, 0.02),
+        legend.justification = c(1, 0),
+        panel.grid = element_blank(),
+        panel.border = element_blank(),
+        axis.title = element_blank(),
+        axis.text = element_blank(),
+        axis.ticks = element_blank()
+    )</code></pre>
+<p><img src="../../../../post/2018-01-16-create-pie-plots-on-a-map-in-r_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+
+    </div>
+  </article>
+
+  
+<section id="comments">
+  <div id="disqus_thread"></div>
+  <script>
+  var disqus_config = function () {
+  
+  };
+  (function() {
+    var inIFrame = function() {
+      var iframe = true;
+      try { iframe = window.self !== window.top; } catch (e) {}
+      return iframe;
+    };
+    if (inIFrame()) return;
+    var d = document, s = d.createElement('script');
+    s.src = '//gl-li-github-io.disqus.com/embed.js'; s.async = true;
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
+  })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</section>
+
+
+
+</main>
+
+      <footer class="footer">
+          
+        <ul class="footer-links">
+          <li>
+              &copy;<a href="http://www.gl-li.com/about/">Guanglai Li</a>
+          </li>
+          <li>
+            <a href="https://twitter.com/guanglai_li" target="_blank">Twitter</a>
+          </li>
+          <li>
+            <a href="https://github.com/GL-Li" class="footer-links-kudos">Github</a>
+          </li>
+        </ul>
+      </footer>
+
+    </div>
+    
+
+
+
+<script src="//cdn.bootcss.com/highlight.js/9.11.0/highlight.min.js"></script>
+
+
+
+<script src="//cdn.bootcss.com/highlight.js/9.11.0/languages/r.min.js"></script>
+<script src="//cdn.bootcss.com/highlight.js/9.11.0/languages/yaml.min.js"></script>
+<script>hljs.configure({languages: []}); hljs.initHighlightingOnLoad();</script>
+
+
+
+    
+<script src="../../../../js/math-code.js"></script>
+<script async src="//cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+
+    
+  </body>
+</html>
+

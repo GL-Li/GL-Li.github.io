@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+    <meta http-equiv="Content-Type" content="text/html" charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
+    <title>Compare data.table pipes and magrittr pipes &middot; learneR &amp; useR</title>
+    <meta name="author" content="John Doe">
+    <meta name="description" content="Your description of the blog">
+    <meta name="generator" content="Hugo 0.25.1" />
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+
+    <!-- RSS autodiscovery -->
+    
+
+    <link rel="shortcut icon" href="/img/favicon.ico">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
+
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="/css/screen.css">
+    <link rel="stylesheet" href="/css/github.css">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.8.0/styles/default.min.css">
+    
+
+    
+    <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    
+
+    <!-- Stylesheet for theme color -->
+    <style type="text/css">
+    a, a:visited {color: #33cc99;}
+    .pagination a {color: #33cc99;}
+    .gist .gist-file .gist-meta a:visited {color: #33cc99 !important;}
+    a:focus, a:hover {color: #178b6b;}
+    h1.post-title a:focus, h1.post-title a:hover, h1.blog-title a:focus, h1.blog-title a:hover {color: #178b6b;}
+    .older-posts:hover, .newer-posts:hover {color: #178b6b;}
+</style>
+</head>
+
+<body class="home-template">
+    <header id="site-head">
+	
+	<h1 class="blog-title"><a href="/">learneR &amp; useR</a></h1>
+	
+	
+	<h1 class="blog-subtitle">learn R and use R</h1>
+	
+</header>
+    
+    
+    <main class="content" role="main">
+    
+<article class="post">
+    <header>
+        <h1 class="post-title">Compare data.table pipes and magrittr pipes</h1>
+        <div class="post-meta">
+            <time datetime="25 July 2017">
+                25 July 2017
+            </time>
+        </div>
+    </header>
+
+    <section class="post-content">
+        <p>There are two ways to chain <code>data.table</code> operation, using <code>data.table</code> pipes or using <code>magrittr</code> pipes. For a data.table <code>dt</code>, the <code>data.table</code> pipes take the form of <code>dt[][][]...</code> and <code>magrittr</code> pipes <code>dt %&gt;% .[] %&gt;% .[] %&gt;% ...</code>.</p>
+<p>Below is an example that compares their readability. The readability of <code>data.table</code> pipes has been criticized in this <a href="https://stackoverflow.com/questions/21435339/data-table-vs-dplyr-can-one-do-something-well-the-other-cant-or-does-poorly">stackoverflow post</a>. It seems, however, not that hard to follow for those who have basic knowledge of <code>data.table</code>. To my eyes, the <code>magrittr</code> pipes improves the readability but not enough to replace the <code>data.table</code> pipes. It is more of a personal choice.</p>
+<pre class="r"><code>library(data.table)
+library(magrittr)
+
+# the data.table pipes
+data.table(iris)[
+    # add a new column &quot;is_setosa&quot;, 1 if yes and 0 if no, use two lines of codes 
+    # to clearly show the values
+    Species == &quot;setosa&quot;, is_setosa := 1
+][
+    Species != &quot;setosa&quot;, is_setosa := 0
+][
+    # changes the Petal.Length of Species &quot;versicolor&quot;, other species not affected
+    Species == &quot;versicolor&quot;, Petal.Length := 999
+][
+    # calculate sepal area when length &gt; 5. Area is NA if length &lt;= 5
+    Sepal.Length &gt; 5, Sepal.Area := Sepal.Length * Sepal.Width
+][
+    # select columns
+    , .(Species, is_setosa, Petal.Length, Sepal.Area)
+][
+    # average of each column grouped by species
+    , lapply(.SD, mean, na.rm = TRUE), by = Species
+]</code></pre>
+<pre><code>##       Species is_setosa Petal.Length Sepal.Area
+## 1:     setosa         1        1.462   19.76364
+## 2: versicolor         0      999.000   16.87340
+## 3:  virginica         0        5.552   19.83633</code></pre>
+<pre class="r"><code># the magrittr pipes
+data.table(iris) %&gt;%
+    # add a new column &quot;is_setosa&quot;, 1 if yes and 0 if no, use two lines of codes 
+    # to clearly show the values
+    .[Species == &quot;setosa&quot;, is_setosa := 1] %&gt;%                         
+    .[Species != &quot;setosa&quot;, is_setosa := 0] %&gt;%
+    
+    # changes the Petal.Length of Species &quot;versicolor&quot;, other species not affected
+    .[Species == &quot;versicolor&quot;, Petal.Length := 999] %&gt;%   
+    
+    # calculate sepal area when length &gt; 5. Area is NA if length &lt;= 5
+    .[Sepal.Length &gt; 5, Sepal.Area := Sepal.Length * Sepal.Width] %&gt;%  
+    
+    # select columns
+    .[, .(Species, is_setosa, Petal.Length, Sepal.Area)] %&gt;%    
+    
+    # average of each column grouped by species
+    .[, lapply(.SD, mean, na.rm = TRUE), by = Species]                  </code></pre>
+<pre><code>##       Species is_setosa Petal.Length Sepal.Area
+## 1:     setosa         1        1.462   19.76364
+## 2: versicolor         0      999.000   16.87340
+## 3:  virginica         0        5.552   19.83633</code></pre>
+<p>Will the use of pipes <code>%&gt;%</code> slow down the computing? In the following code, we add three new columns to a made-up data table with <code>data.table</code> pipes and <code>magrittr</code> pipes. They almost have the same speed.</p>
+<pre class="r"><code>set.seed(123)
+dt &lt;- data.table(a = sample(letters, 1e5, replace = TRUE),
+                 b = abs(rnorm(1e5)))
+
+datatable_pipe &lt;- function(){
+    dt[, x := sqrt(b)][
+        , y := b^2
+    ][
+        , z := paste0(a , b)
+    ]
+}
+
+magrittr_pipe &lt;- function(){
+    dt[, x := sqrt(b)] %&gt;%
+        .[, y := b^2] %&gt;%
+        .[, z := paste0(a , b)]
+}
+
+rbenchmark::benchmark(datatable_pipe(), magrittr_pipe(), replications=10)</code></pre>
+<pre><code>##               test replications elapsed relative user.self sys.self
+## 1 datatable_pipe()           10   2.019    1.068     2.020        0
+## 2  magrittr_pipe()           10   1.890    1.000     1.888        0
+##   user.child sys.child
+## 1          0         0
+## 2          0         0</code></pre>
+
+    </section>
+
+    
+    <section class="post-tags" style="padding-bottom:60px;">
+        <div class="post-meta tags">
+            <i class="fa fa-fw fa-tag"></i>
+            
+                
+                <a href="/tags/data-wrangling">data wrangling </a>
+            
+        </div>
+    </section>
+    
+    <div id="disqus_thread"></div>
+<script>
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "gl-li-github-io" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+    <section class="share">
+    <p class="backtotop"><a data-scroll href="#site-head"><i class="fa fa-lg fa-fw fa-angle-double-up"></i></a><a data-scroll class="backtotoptext" href="#site-head"> Back to top</a></p>
+    <p class="info prompt">Share</p>
+    <a href="http://twitter.com/share?text=Compare%20data.table%20pipes%20and%20magrittr%20pipes&url=%2fpost%2fimprove-data-table-readability-with-pipes%2f" title="Share on Twitter"
+        onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+        <i class="fa fa-2x fa-fw fa-twitter-square"></i> <span class="hidden">Twitter</span>
+    </a>
+    <a href="https://www.facebook.com/sharer/sharer.php?u=%2fpost%2fimprove-data-table-readability-with-pipes%2f" title="Share on Facebook"
+        onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+        <i class="fa fa-2x fa-fw fa-facebook-square" style="margin-left: -8px"></i> <span class="hidden">Facebook</span>
+    </a>
+    <a href="https://plus.google.com/share?url=%2fpost%2fimprove-data-table-readability-with-pipes%2f" title="Share on Google+"
+       onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+        <i class="fa fa-2x fa-fw fa-google-plus-square" style="margin-left: -8px"></i> <span class="hidden">Google+</span>
+    </a>
+</section>
+
+    <footer class="post-footer">
+        <section class="author">
+    <div class="authorimage" style="background: url(/img/avatar.jpg)"></div>
+    <h4>John Doe</h4>
+    <p class="bio">programmer - blogger - coffee aficionado</p>
+    <p class="meta">
+      
+    </p>
+</section>
+    </footer>
+    
+</article>
+
+    </main>
+
+    <footer class="site-footer">
+	<div class="inner">
+		<section class="footer-social">
+      
+      <a href="//twitter.com/gl-li-github-io" target="_blank" title="Twitter"><i class="fa fa-2x fa-fw fa-twitter"></i> <span class="hidden">Twitter</span></a>&nbsp;
+      
+      
+      
+      
+      
+      
+      <a href="//github.com/GL-Li" target="_blank" title="GitHub"><i class="fa fa-2x fa-fw fa-github"></i> <span class="hidden">GitHub</span></a>&nbsp;
+      
+      
+      
+      
+  </section>
+
+		<section class="copyright">&copy; 2017 <a href="/">John Doe</a>. Released under the MIT license.</section>
+	</div>
+</footer>
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<script src="/js/index.js"></script>
+<script src="/js/smooth-scroll.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.8.0/highlight.min.js"></script>
+
+
+<script>
+    smoothScroll.init({
+        speed: 800,
+        easing: 'easeInOutCubic',
+        updateURL: false,
+        offset: 125,
+    });
+</script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+</body>
+</html>

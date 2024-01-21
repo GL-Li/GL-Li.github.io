@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Test on learn R and use R</title>
+    <link>/categories/test/</link>
+    <description>Recent content in Test on learn R and use R</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Wed, 02 Aug 2017 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="/categories/test/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>test heading size</title>
+      <link>/2017/08/02/test-heading-size/</link>
+      <pubDate>Wed, 02 Aug 2017 00:00:00 +0000</pubDate>
+      
+      <guid>/2017/08/02/test-heading-size/</guid>
+      <description>This is h1 heading normal text size
+This is h2 normal text size
+This is h3 normal text size
+This is h4 normal text size
+This is h5 normal text size</description>
+    </item>
+    
+  </channel>
+</rss>

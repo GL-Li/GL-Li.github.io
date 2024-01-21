@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html prefix="og: http://ogp.me/ns#">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title>My uniform way of using ggplot2 &middot; My Name</title>
+        <meta name="description" content="Just finished reading Hadley Wickham’s ggplot2 book, (second eition). Before that I have been using ggplot2 for a couple of years, mainly learned by reading documentation and searching for help online.
+The ggplot2 package is a powerful and comprehensive tool for generating static plots, but I also feel it is a little bit too flexible; the same plot can be made with many different ways. This fexibility provides obvious convenience but also introduces a lot of confusion and extra burden of memorization.">
+        <meta name="HandheldFriendly" content="True">
+        <meta name="MobileOptimized" content="320">
+        <meta name="generator" content="Hugo 0.31.1" />
+        <meta name="robots" content="index,follow">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta property="og:title" content="My uniform way of using ggplot2">
+<meta property="og:description" content="Just finished reading Hadley Wickham’s ggplot2 book, (second eition). Before that I have been using ggplot2 for a couple of years, mainly learned by reading documentation and searching for help online.
+The ggplot2 package is a powerful and comprehensive tool for generating static plots, but I also feel it is a little bit too flexible; the same plot can be made with many different ways. This fexibility provides obvious convenience but also introduces a lot of confusion and extra burden of memorization.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="/2017/08/03/2017-08-03-a-uniform-way-to-use-ggplot2/">
+        <link rel="stylesheet" href="/dist/styles.css">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,400,600,700,300&subset=latin,cyrillic-ext,latin-ext,cyrillic">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+        
+        
+    </head>
+    <body>
+        
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'XXX', 'auto');
+ga('send', 'pageview');
+</script>
+
+
+        <div id="wrapper">
+            <header class="site-header">
+                <div class="container">
+                    <div class="site-title-wrapper">
+                        
+                            <h1 class="site-title">
+                                <a title="Ghostwriter example" href="/">Ghostwriter example</a>
+                            </h1>
+                        
+                        <a class="button-square" href="/index.xml"><i class="fa fa-rss"></i></a>
+                        
+                            <a class="button-square button-social hint--top" data-hint="Twitter" title="Twitter" href="https://twitter.com/XXX">
+                                <i class="fa fa-twitter"></i>
+                            </a>
+                        
+                        
+                            <a class="button-square button-social hint--top" data-hint="Gitlab" title="Gitlab" href="https://gitlab.com/XXX">
+                                <i class="fa fa-gitlab"></i>
+                            </a>
+                        
+                        
+                            <a class="button-square button-social hint--top" data-hint="Github" title="Github" href="https://github.com/XXX">
+                                <i class="fa fa-github-alt"></i>
+                            </a>
+                        
+                        
+                            <a class="button-square button-social hint--top" data-hint="Stack Overflow" title="Stack Overflow" href="https://stackoverflow.com/users/XXX/YYY">
+                                <i class="fa fa-stack-overflow"></i>
+                            </a>
+                        
+                        
+                            <a class="button-square button-social hint--top" data-hint="LinkedIn" title="LinkedIn" href="https://linkedin.com/in/XXX/">
+                                <i class="fa fa-linkedin"></i>
+                            </a>
+                        
+                        
+                            <a class="button-square button-social hint--top" data-hint="Google+" title="Google+" href="https://google.com/&#43;XXX">
+                                <i class="fa fa-google-plus"></i>
+                            </a>
+                        
+                        
+                            <a class="button-square button-social hint--top" data-hint="Email" title="Email" href="mailto:XXX@example.com">
+                                <i class="fa fa-envelope"></i>
+                            </a>
+                        
+                    </div>
+
+                    <ul class="site-nav">
+                        
+    <li class="site-nav-item">
+        <a title="Blog" href="/">Blog</a>
+    </li>
+
+    <li class="site-nav-item">
+        <a title="Projects" href="/project/">Projects</a>
+    </li>
+
+    <li class="site-nav-item">
+        <a title="Contact" href="/page/contact/">Contact</a>
+    </li>
+
+    <li class="site-nav-item">
+        <a title="About" href="/page/about/">About</a>
+    </li>
+
+                    </ul>
+                </div>
+            </header>
+
+            <div id="container">
+
+
+<div class="container">
+    <article class="post-container" itemscope="" itemtype="http://schema.org/BlogPosting">
+        <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">My uniform way of using ggplot2</h1>
+    
+    <p class="post-date">
+        <span>Published <time datetime="2017-08-03" itemprop="datePublished">Thu, Aug 3, 2017</time></span>
+        <span>by</span>
+        <span itemscope="" itemprop="author" itemtype="https://schema.org/Person">
+            <span itemprop="name">
+                <a href="https://google.com/&#43;XXX" itemprop="url" rel="author">GL Li</a>
+            </span>
+        </span>
+    </p>
+</header>
+
+        <div class="post-content clearfix" itemprop="articleBody">
+    
+
+    <p>Just finished reading Hadley Wickham’s <code>ggplot2</code> book, (<a href="http://www.springer.com/us/book/9783319242750">second eition</a>). Before that I have been using <code>ggplot2</code> for a couple of years, mainly learned by reading documentation and searching for help online.</p>
+<p>The <code>ggplot2</code> package is a powerful and comprehensive tool for generating static plots, but I also feel it is a little bit too flexible; the same plot can be made with many different ways. This fexibility provides obvious convenience but also introduces a lot of confusion and extra burden of memorization. Being flexible is not a good feature for a lazy user like me. I just can not memorize all these different methods. What I want is an appoach that gets the job done, is easy to apply to many tasks, and does not have much to memorize. I need a uniform way to use <code>ggplot2</code>.</p>
+<p>Here I discuss how I like to make <code>ggplot2</code> plots. It is my personal preference. Every one can find their best way. I will give the reason why I am doing so.</p>
+<div id="what-to-be-included-in-ggplot" class="section level2">
+<h2>What to be included in <code>ggplot()</code></h2>
+<p>Every <code>ggplot2</code> plotting starts with the function <code>ggplot()</code>. Typically <code>data</code> and <code>aes()</code> are included as arguments. The <code>aes()</code> can include <code>x</code>, <code>y</code> and more aesthetic mapping such as <code>color</code>, <code>shape</code>, <code>fill</code>, …, as in the code below,</p>
+<pre class="r"><code>ggplot(data = mpg, aes(x = displ, y = cty, color = drv, shape = year, fill = cyl))
+# or to simplify
+ggplot((mpg, aes(displ, cty, color = drv, shape = year, fill = cyl)))</code></pre>
+<p>My preference for this part is to include as fewer arguments as possible, even without any argument. All these arguments are inherited by all plotting layers by default. If you want them to be used in all layers, then that is good; you save a few keystrokes. But if it is not what you want, it is where troubles hide. For example, if your want to a linear fit to all data points but has <code>color</code> in aesthetic mapping, the fit is applied to each color. You’d better move the <code>color</code> out of <code>ggplot()</code>.</p>
+<pre class="r"><code>library(ggplot2)
+ggplot(mpg, aes(cty, hwy, color = drv)) +
+    geom_point() +
+    stat_smooth(method = &quot;lm&quot;)</code></pre>
+<p><img src="/post/2017-08-03-a-uniform-way-to-use-ggplot2_files/figure-html/unnamed-chunk-3-1.png" width="480" /></p>
+</div>
+<div id="which-to-choose-geom_xxx-or-stat_xxx" class="section level2">
+<h2>Which to choose, <code>geom_xxx()</code> or <code>stat_xxx()</code></h2>
+<p>These two functions caused a lot of headache to me. Both <code>geom_xxx()</code> and <code>stat_xxx()</code> plot layers. Many <code>geom</code>s have equivalent <code>stats</code>, such as <code>geom_smooth()</code> and <code>stat_smooth()</code>, <code>geom_bar()</code> and <code>stat_count</code>, and <code>geom_boxplot()</code> and <code>stat_boxplot()</code>. Even <code>geom_point()</code> has an equivalent <code>stat_identity()</code>. So which one to use?</p>
+<p>I like to use <code>geom_xxx()</code> for layers that directly plot the original data and <code>stat_xxx()</code> for layers that plot statistical transformation of the original data. The former includes <code>geom_point()</code>, <code>geom_line()</code>, and <code>geom_col()</code> etc. The latter includes <code>stat_smooth()</code>, <code>stat_count</code>, and <code>stat_boxplot()</code> etc. This a natural choice to me as I pay more attention to data; whenever statistical transformed data are used, I want to use it explicitly with function starting with <code>stat</code>. Using <code>stat_xxx()</code> has additional benefit: we can choose the right <code>geom</code> as desired without losing sense of what data are being displayed. In the following code, the counts of <code>drv</code> are displayed as bar, point and line. No matter what <code>geom</code> you choose, the <code>stat_count</code> always explicitly tells you that you are plotting the count.</p>
+<pre class="r"><code>ggplot(mpg, aes(drv)) +
+    stat_count(geom = &quot;bar&quot;, fill = &quot;grey70&quot;) +
+    stat_count(geom = &quot;point&quot;, size = 6, color = &quot;blue&quot;) +
+    stat_count(geom = &quot;line&quot;, aes(group = 1), color = &quot;red&quot;)</code></pre>
+<p><img src="/post/2017-08-03-a-uniform-way-to-use-ggplot2_files/figure-html/unnamed-chunk-4-1.png" width="384" /></p>
+<p>A few words about bar plot. Above count of one categorical variable are often plotted with <code>geom_bar()</code>. The awkward thing is that <code>geom_bar(stat = &quot;identity&quot;)</code> also make bar plot when two variables <code>aes(x, y)</code> are provided. To solve this issue, <code>ggplot2</code> version 2.2.0 introduced <code>geom_col(aes(x, y))</code> to take care bar plot from two variables. With <code>stat_count()</code> and <code>geom_col()</code>, <code>geom_bar()</code> are ready to retire.</p>
+</div>
+<div id="how-to-organize-axis-and-legend" class="section level2">
+<h2>How to organize axis and legend</h2>
+<p>Almost all components regarding axis and legend can be specified in <code>scale_xxx_xxx()</code> funtions. You can get the job done by only using them. The code may be too busy though. Several help functions do part of <code>scale_xxx_xxx()</code>’s job and make the code succint, such as <code>xlab()</code> and <code>ylim()</code>. But too many help functions also make code less structured.</p>
+<p>I like two help functions: <code>labs()</code> sets titles of all axis and lengends and <code>guides()</code> arranges multiple legends. Together with <code>scale_xxx_xxx()</code>, the three take care axis and legend in a logical way:</p>
+<ul>
+<li><code>scale_xxx_xxx()</code> determines what to show. They are used to set limits, breaks and labels of each aesthetics, which are the real data to show.</li>
+<li><code>guides()</code> determines how to display. It is a best practice to arrange each legend by considering all others the same time.</li>
+<li><code>labs()</code> determines how to call them. It names axis and legend in one place by treating all axis and legend as a whole, which helps to name them in the same style.</li>
+</ul>
+<pre class="r"><code>ggplot(mpg, aes(hwy, cty, color = factor(cyl), shape = drv)) +
+    geom_point(aes(size = displ)) +
+    # what to display
+    scale_x_continuous(limits = c(0, 50),
+                       breaks = c(0, 20, 40),
+                       labels = c(&quot;zero&quot;, &quot;twenty&quot;, &quot;fourty&quot;), 
+                       minor_breaks = c(5, 10, 15)) +
+    scale_color_discrete(breaks = c(4, 5, 6, 8), 
+                         labels = c(&quot;four&quot;, &quot;five&quot;, &quot;six&quot;, &quot;eight&quot;)) + # asign colors by default
+                                    
+    scale_shape_manual(limits = c(&quot;f&quot;, &quot;r&quot;),      # manually select shape
+                       values = c(f = 0, r = 2)) +
+    # how to display
+    guides(
+        size = &quot;none&quot;,  # hide size
+        color = guide_legend(direction = &quot;horizontal&quot;,
+                             title.position = &quot;top&quot;,
+                             nrow = 2,
+                             byrow = TRUE,  # arrange row by row, default is by column
+                             order = 1),    # first legend to show
+        shape = guide_legend(direction = &quot;vertical&quot;,
+                             reverse = TRUE)  # reverse order of legend keys
+    ) +
+    # what&#39;s your name
+    labs(title = &quot;Use scale_xxx(), guides(), and labs() for legend and axis&quot;,
+         subtitle = &quot;scale_xxx for what to display, guides for how to display, labs for how to name&quot;,
+         x = &quot;highway mileage&quot;,
+         y = &quot;city mileage&quot;, 
+         color = &quot;cylinder&quot;, 
+         shape = &quot;drive train&quot;, 
+         size = &quot;haha you cannot see me&quot;) </code></pre>
+<p><img src="/post/2017-08-03-a-uniform-way-to-use-ggplot2_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+</div>
+<div id="lets-do-a-quick-annotation-with-annotate" class="section level2">
+<h2>Let’s do a quick annotation with <code>annotate()</code></h2>
+<p>Annotation with <code>annotate()</code> is handy when you simply want to draw something using vectors. It can draw <code>text</code>, <code>segment</code>, <code>rect</code>, and pretty much everything <code>geom_xxx()</code> offers. Do not get confused with <code>geom_text()</code> and <code>geom_segment()</code>, and <code>geom_rect</code>, …, which use dataframes. Reserve <code>annotate()</code> for drawing simple things manually.</p>
+<pre class="r"><code>ggplot(mpg, aes(displ, hwy, color = drv)) +
+    geom_point() +
+    annotate(&quot;text&quot;, x = 6, y = 35, label = &quot;These big guys\nare gas efficient.&quot;) +
+    annotate(&quot;segment&quot;, x = c(5.8, 6, 6.2), y = 32.5, 
+             xend = c(5.7, 6.15, 6.9), yend = c(27, 27, 25.1),
+             arrow = arrow(angle = 20, length = unit(2, &quot;mm&quot;), type = &quot;closed&quot;))</code></pre>
+<p><img src="/post/2017-08-03-a-uniform-way-to-use-ggplot2_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+</div>
+<div id="finally-a-comprehensive-example" class="section level2">
+<h2>Finally a comprehensive example</h2>
+<p>In addition to the confusing parts discussed above, a normal <code>ggplot2</code> plot may contains <code>position</code>, <code>facet</code>, and of course <code>theme()</code>. I will conclude this post with an example that covers all major components of a <code>ggplot2</code> plot. This is the uniform way I am using <code>ggplot2</code>.</p>
+<pre class="r"><code>ggplot(mpg, aes(factor(cyl), cty)) +
+    # leave color and size in geom_point() so that stat_boxplot works on all data
+    geom_point(aes(color = drv, size = displ), position = &quot;jitter&quot;) +
+    stat_boxplot(fill = NA) + 
+    facet_wrap(~year) +
+
+    # === take care axis and legend ===
+    
+    # determine what values and labels to display
+    scale_x_discrete(breaks = c(4, 5, 6, 8),
+                     labels = c(&quot;Four&quot;, &quot;Five&quot;, &quot;Six&quot;, &quot;Eight&quot;)) +
+    scale_y_continuous(limits = c(4, 36),
+                       breaks = 1:4 * 8) +
+    scale_color_manual(breaks = c(&quot;4&quot;, &quot;f&quot;, &quot;r&quot;),
+                       values = c(&quot;4&quot; = &quot;red&quot;, &quot;f&quot; = &quot;blue&quot;, &quot;r&quot; = &quot;cyan&quot;),
+                       labels = c(&quot;four-wheel&quot;, &quot;front-wheel&quot;, &quot;rear-wheel&quot;)) +
+    scale_size_area(limits = c(2, 7),
+                          max_size = 4) +
+    
+    # make arrangement for each legend
+    guides(
+        size = guide_legend(
+            title.position = &quot;top&quot;,
+            nrow = 2,
+            byrow = TRUE,
+            override.aes = list(shape = 1),
+            reverse = TRUE
+        ),
+        color = guide_legend(
+            order = 1,
+            nrow = 3,
+            override.aes = list(size = 3)
+        )
+    ) +
+    
+    # using labs() for all of the titles and labels in one place
+    labs(title = &quot;This plot displays all major ggplot components&quot;,
+         subtitle = &quot;including data, aes mapping, geom, stat, position, facet, scale, guides, annotaion, and theme&quot;,
+         caption = &quot;Source: what so ever&quot;,
+         x = &quot;Cylinders&quot;,
+         y = &quot;City Mileage (miles/gallon)&quot;,
+         color = NULL,
+         size = &quot;displacement&quot;) +
+    
+    # === provide extra information ===
+    
+    # annotate extra geoms mannually. Play with geom_text() if want to label in
+    # a specific facet panel
+    annotate(&quot;text&quot;, x = 0.5, y = 6, label = &quot;boxplot is applied to all data&quot;, 
+             hjust = 0, vjust = 1) +
+    
+    # === use theme() to make it beautiful ===
+    
+    theme(plot.background = element_rect(fill = &quot;#F5E6E3&quot;),
+          plot.title = element_text(family = &quot;monospace&quot;),
+          plot.subtitle = element_text(face = &quot;italic&quot;),
+          panel.background = element_rect(fill = &quot;lightblue&quot;, color = &quot;red&quot;),
+          panel.grid.major.y = element_line(color = &quot;grey95&quot;, size = 0.2),
+          panel.grid.minor.y = element_blank(),
+          axis.ticks = element_blank(),
+          axis.title = element_text(family = &quot;monospace&quot;),
+          legend.position = &quot;top&quot;,
+          legend.key = element_blank(),
+          legend.margin = margin(0, 0, 0, 0),
+          legend.background = element_blank(),
+          strip.background = element_blank(),
+          strip.text = element_text(size = 12))</code></pre>
+<p><img src="/post/2017-08-03-a-uniform-way-to-use-ggplot2_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+</div>
+
+</div>
+
+        <footer class="post-footer clearfix">
+    
+        <p class="post-tags">
+            <span>Tagged:</span>
+            
+            
+                <a href="/tags/plot/">plot</a>
+            
+        </p>
+    
+
+    <div class="share">
+        
+            <a class="icon-twitter" href="https://twitter.com/share?text=My%20uniform%20way%20of%20using%20ggplot2&url=%2f2017%2f08%2f03%2f2017-08-03-a-uniform-way-to-use-ggplot2%2f"
+                onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+                <i class="fa fa-twitter"></i>
+                <span class="hidden">Twitter</span>
+            </a>
+        
+
+        
+            <a class="icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=%2f2017%2f08%2f03%2f2017-08-03-a-uniform-way-to-use-ggplot2%2f"
+                onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+                <i class="fa fa-facebook"></i>
+                <span class="hidden">Facebook</span>
+            </a>
+        
+
+        
+            <a class="icon-google-plus" href="https://plus.google.com/share?url=%2f2017%2f08%2f03%2f2017-08-03-a-uniform-way-to-use-ggplot2%2f"
+              onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+              <i class="fa fa-google-plus"></i>
+                <span class="hidden">Google+</span>
+            </a>
+        
+        
+    </div>
+</footer>
+
+        
+    <div class="comments">
+        <div id="disqus_thread"></div>
+<script>
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "XXX" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+    </div>
+
+    </article>
+</div>
+
+            </div>
+        </div>
+
+        <footer class="footer">
+            <div class="container">
+                <div class="site-title-wrapper">
+                    <h1 class="site-title">
+                        <a title="Ghostwriter example" href="/">Ghostwriter example</a>
+                    </h1>
+                    <a class="button-square button-jump-top js-jump-top" href="#">
+                        <i class="fa fa-angle-up"></i>
+                    </a>
+                </div>
+
+                <p class="footer-copyright">
+                    <span>&copy; 2018 / Powered by <a href="https://gohugo.io/">Hugo</a></span>
+                </p>
+                <p class="footer-copyright">
+                    <span><a href="https://github.com/roryg/ghostwriter">Ghostwriter theme</a> By <a href="http://jollygoodthemes.com">JollyGoodThemes</a></span>
+                    <span>/ <a href="https://github.com/jbub/ghostwriter">Ported</a> to Hugo By <a href="https://github.com/jbub">jbub</a></span>
+                </p>
+            </div>
+        </footer>
+
+        <script src="/js/jquery-1.11.3.min.js"></script>
+        <script src="/js/jquery.fitvids.js"></script>
+        
+        
+            <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.11.0/r.min.js"></script>
+        
+        
+        <script src="/js/scripts.js"></script>
+    </body>
+</html>
+

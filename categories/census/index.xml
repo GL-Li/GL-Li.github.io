@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Census on R &amp; Census</title>
+    <link>/categories/census/</link>
+    <description>Recent content in Census on R &amp; Census</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sat, 15 Dec 2018 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="/categories/census/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Cities boomed and doomed</title>
+      <link>/2018/12/15/population-change/</link>
+      <pubDate>Sat, 15 Dec 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/2018/12/15/population-change/</guid>
+      <description>Population in the United States grew by 3.76% from 313.91 million in 2012 to 325.72 million in 2017. The growth, however, is not uniform geographically. One of the geographical areas of particular interest is the city. Some cities are shrinking in population while some others exploding. The purpose of this post is to find cities that decrease and increase most in population. In addition, we will show the population and its change of all cities in an interactive map.</description>
+    </item>
+    
+    <item>
+      <title>Find Salamander -- Congressional District Gerrymandering</title>
+      <link>/2018/10/23/find-salamander-congressional-district-gerrymandering/</link>
+      <pubDate>Tue, 23 Oct 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/2018/10/23/find-salamander-congressional-district-gerrymandering/</guid>
+      <description>When Republicans or Democrats are in charge, they tend to draw election district boundaries to their favor. This can go very ugly, creating wacky boundaries by a practice called Gerrymandering.
+The word “Gerrymander” is a blend of two species: the Massachusetts Governor Elbridge Gerry and a mythological salamander, a dragon-like monster. Governor Gerry signed a bill 200 year ago that drew an state senate election district in a shape resembling a salamander.</description>
+    </item>
+    
+    <item>
+      <title>Map prisons in the United States</title>
+      <link>/2018/02/05/map-prisons-in-the-united-states/</link>
+      <pubDate>Mon, 05 Feb 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/2018/02/05/map-prisons-in-the-united-states/</guid>
+      <description>Despite 1 in every 110 adults are locked behind bars, most ordenary people have no idea where are these prisons. This post helps you find out the location of and number of inmates in federal prisons, state prisons, and local jails.
+The data are extracted from Census 2010. According to the census, a total number of 2,263,602 persons were incarcerated in the United States.</description>
+    </item>
+    
+    <item>
+      <title>Is your hometown named after Lincoln or Washington?</title>
+      <link>/2018/01/27/the-most-popular-president-lincoln-or-washington/</link>
+      <pubDate>Sat, 27 Jan 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/2018/01/27/the-most-popular-president-lincoln-or-washington/</guid>
+      <description>Washington and Lincoln are the two greatest presidents in the history of the United States. This post, however, does not discuss how great they are. Instead, I want to show a fun fact related the two presidents: how many cities and towns (and equivalents) are named after them. I am living in Lincoln, Rhode Island, a town so named in honor of President Lincoln.
+The data are extracted from decennial census 2010, the most detailed census so far.</description>
+    </item>
+    
+    <item>
+      <title>Plot pie charts of racial composition in largest metro areas on a map in R</title>
+      <link>/2018/01/17/create-pie-plots-on-a-map-in-r/</link>
+      <pubDate>Wed, 17 Jan 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/2018/01/17/create-pie-plots-on-a-map-in-r/</guid>
+      <description>Pie chart has been criticized for being a poor visualization and is not recommended in R community. The popular ggplot2 package discourages the use of pie charts and there is no dedicated geom_pie for it.
+Although the criticism is mostly valid, there is a case that pie chart can be useful: pie charts on maps. Pie charting on map is a compact way to show composition by locations.
+A recent R package, scatterpie by Guangchuang Yu, specializes in making pie charts at multiple locations.</description>
+    </item>
+    
+    <item>
+      <title>Determine relationship between census geographic entities with totalcensus package</title>
+      <link>/2017/12/28/use-totalcensus-package-to-determine-relationship-between-geographic-entities/</link>
+      <pubDate>Thu, 28 Dec 2017 00:00:00 +0000</pubDate>
+      
+      <guid>/2017/12/28/use-totalcensus-package-to-determine-relationship-between-geographic-entities/</guid>
+      <description>This is an application example of totalcensus package.
+The geographic hierarchy primer in Census 2010 summary file 1 technical documentation displays the relationship between geographic entities. The lower one of the two entities connected by a line is entirely within the boundary of the upper one. For example, a county subdivision is always within the boundaries of a county and a school district always within the boundaries of a state.</description>
+    </item>
+    
+    <item>
+      <title>Proccess 5-digit ZIP Code Tabulation Area (ZCTA5) data with totalcensus package</title>
+      <link>/2017/12/23/census_data_zip_code/</link>
+      <pubDate>Sat, 23 Dec 2017 00:00:00 +0000</pubDate>
+      
+      <guid>/2017/12/23/census_data_zip_code/</guid>
+      <description>This is an example of applications of totalcensus package. To install the package, follow the instructions at https://github.com/GL-Li/totalcensus.
+In this example, we examine data related to 5-digit ZIP Code Tabulation Area (ZCTA5), using 2016 ACS 5-year survey summary files. Let’s first load the libraries and then answer a couple questions related to zip code
+library(totalcensus) library(data.table) library(magrittr) library(ggplot2) library(ggmap) What’s the population in a ZCTA5 These population data can be easily obtained with the code below.</description>
+    </item>
+    
+    <item>
+      <title>Extract US Census 2010 data with data.table and dplyr</title>
+      <link>/2017/08/29/process-2010-census-data-with-data-table/</link>
+      <pubDate>Tue, 29 Aug 2017 00:00:00 +0000</pubDate>
+      
+      <guid>/2017/08/29/process-2010-census-data-with-data-table/</guid>
+      <description>This post explains how to extract information from the original dataset of the US 2010 census summary file 1 with urban/rural update, using data.table or dplyr package in R.
+Why do we want to work with the original data? You may ask, when there are already R packages, such as UScensus2010, censusapi, and tidycensus, which help user get the data.
+The biggest benefit is that you will have full access to all the census 2010 data.</description>
+    </item>
+    
+  </channel>
+</rss>

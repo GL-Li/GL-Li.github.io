@@ -1,0 +1,19 @@
+---
+title: ggplot test
+author: GL
+date: '2017-07-23'
+slug: ggplot-test
+categories:
+  - R
+tags:
+  - plot
+---
+
+this is just a test
+```{r}
+library(ggplot2)
+ggplot(mpg, aes(hwy, cty, color = drv)) +
+    geom_point() +
+    stat_smooth()
+```
+

@@ -1,0 +1,848 @@
+
+
+  
+    
+  
+
+
+  
+
+
+
+
+  
+
+
+  
+
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="generator" content="Hugo 0.31.1 with theme Tranquilpeak 0.4.3-BETA">
+    <title>Build a R package for yourself</title>
+    <meta name="author" content="Firstname Lastname">
+    <meta name="keywords" content="">
+
+    <link rel="icon" href="/favicon.png">
+    
+
+    
+    <meta name="description" content="A R user can benefit a lot from building packages. I have read people writing about the benefit in various occasions and cannot agree more after building my first package. We don’t have to a be R developer to write packages. Developers write packages for others; we can just write packages for ourselves. As a R user, we must have written functions and collected datasets, and may have used them across projects or may want to use them later on.">
+    <meta property="og:description" content="A R user can benefit a lot from building packages. I have read people writing about the benefit in various occasions and cannot agree more after building my first package. We don’t have to a be R developer to write packages. Developers write packages for others; we can just write packages for ourselves. As a R user, we must have written functions and collected datasets, and may have used them across projects or may want to use them later on.">
+    <meta property="og:type" content="blog">
+    <meta property="og:title" content="Build a R package for yourself">
+    <meta property="og:url" content="/2017/09/build-a-r-package-for-yourself/">
+    <meta property="og:site_name" content="R &amp; Census">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="R &amp; Census">
+    <meta name="twitter:description" content="A R user can benefit a lot from building packages. I have read people writing about the benefit in various occasions and cannot agree more after building my first package. We don’t have to a be R developer to write packages. Developers write packages for others; we can just write packages for ourselves. As a R user, we must have written functions and collected datasets, and may have used them across projects or may want to use them later on.">
+    
+    
+
+    
+    
+
+    
+      <meta property="og:image" content="//www.gravatar.com/avatar/d09dc2d7aa5c467519e8af89f7b3d94c?s=640">
+    
+
+    
+    
+    
+
+    
+
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.4/jquery.fancybox.min.css" integrity="sha256-vuXZ9LGmmwtjqFX1F+EKin1ThZMub58gKULUyf0qECk=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.4/helpers/jquery.fancybox-thumbs.min.css" integrity="sha256-SEa4XYAHihTcEP1f5gARTB2K26Uk8PsndQYHQC1f4jU=" crossorigin="anonymous" />
+    
+    
+    <link rel="stylesheet" href="/css/style-jsjn0006wyhpyzivf6yceb31gvpjatbcs3qzjvlumobfnugccvobqwxnnaj8.min.css" />
+    
+    
+
+    
+      
+    
+    
+  </head>
+
+  <body>
+    <div id="blog">
+      <header id="header" data-behavior="4">
+  <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+  <div class="header-title">
+    <a class="header-title-link" href="/">R &amp; Census</a>
+  </div>
+  
+    
+      <a class="header-right-picture "
+         href="/#about">
+    
+    
+    
+      
+        <img class="header-picture" src="//www.gravatar.com/avatar/d09dc2d7aa5c467519e8af89f7b3d94c?s=90" alt="Author&#39;s picture" />
+      
+    
+    </a>
+  
+</header>
+
+      <nav id="sidebar" data-behavior="4">
+  <div class="sidebar-container">
+    
+      <div class="sidebar-profile">
+        <a href="/#about">
+          <img class="sidebar-profile-picture" src="//www.gravatar.com/avatar/d09dc2d7aa5c467519e8af89f7b3d94c?s=110" alt="Author&#39;s picture" />
+        </a>
+        <h4 class="sidebar-profile-name">Firstname Lastname</h4>
+        
+          <h5 class="sidebar-profile-bio">Super bio with markdown support <strong>COOL</strong></h5>
+        
+      </div>
+    
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-home"></i>
+      
+      <span class="sidebar-button-desc">Home</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/categories">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-bookmark"></i>
+      
+      <span class="sidebar-button-desc">Categories</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/tags">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-tags"></i>
+      
+      <span class="sidebar-button-desc">Tags</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/archives">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-archive"></i>
+      
+      <span class="sidebar-button-desc">Archives</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/#about">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-question"></i>
+      
+      <span class="sidebar-button-desc">About</span>
+    </a>
+  </li>
+
+
+    </ul>
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://github.com/kakawait">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-github"></i>
+      
+      <span class="sidebar-button-desc">GitHub</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://stackoverflow.com/users/636472/kakawait">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-stack-overflow"></i>
+      
+      <span class="sidebar-button-desc">Stack Overflow</span>
+    </a>
+  </li>
+
+
+    </ul>
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/index.xml">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-rss"></i>
+      
+      <span class="sidebar-button-desc">RSS</span>
+    </a>
+  </li>
+
+
+    </ul>
+  </div>
+</nav>
+
+      
+
+      <div id="main" data-behavior="4"
+        class="
+               hasCoverMetaIn
+               ">
+        <article class="post" itemscope itemType="http://schema.org/BlogPosting">
+          
+          
+            <div class="post-header main-content-wrap text-left">
+  
+    <h1 class="post-title" itemprop="headline">
+      Build a R package for yourself
+    </h1>
+  
+  
+  <div class="postShorten-meta post-meta">
+    
+      <time itemprop="datePublished" datetime="2017-09-14T00:00:00Z">
+        
+  September 14, 2017
+
+      </time>
+    
+    
+  
+  
+    <span>in</span>
+    
+      <a class="category-link" href="/categories/package">package</a>
+    
+  
+
+  </div>
+
+</div>
+          
+          <div class="post-content markdown" itemprop="articleBody">
+            <div class="main-content-wrap">
+              <p>A R user can benefit a lot from building packages. I have read people writing about the benefit in various occasions and cannot agree more after building my first package. We don’t have to a be R developer to write packages. Developers write packages for others; we can just write packages for ourselves. As a R user, we must have written functions and collected datasets, and may have used them across projects or may want to use them later on. The conventional way to reuse functions is to copy and paste them to the new project or to load them by <code>source(xxx.R)</code>, and the conventional way to reuse datasets it to load <code>.Rdata</code> files which store the datasets. We will have to know where the functions and datasets are stored, which is not a easy job if we have a large collection. By building functions and datasets into a package, we keep them in one place and use them the same way as using any other packages. With the help of package documentation, these functions and datasets become our great asset.</p>
+<p>Building a R packages is actually far more easier than a R user could have expected. In RStudio, it is nothing but writing normal R code with formatted comments. If this package is just for ourselves, we can save the hassle of publishing it on github or CRAN.</p>
+<p>Below are step by step instructions of building a working package in RStudio. There are many great tutorials for building R packages. I try to make this one to be the simplest and most up to date.</p>
+<div id="prepare-for-a-new-package-project" class="section level2">
+<h2>Prepare for a new package project</h2>
+<p><strong>Step 1 - install necessary packages</strong> Update RStudio if it is very old. Start RStudio and install package <code>roxygen2</code>. This package simplifies package documentation.</p>
+<pre class="r"><code>install.packages(&quot;roxygen2&quot;)</code></pre>
+<p><strong>Step 2 - create a new package</strong> From RStudio menu, click file then new project and choose to create project in a new directory. Select creating R package and name the package, for example, as <code>mytoolbox</code> and place it in the directory of our choice. RStudio automatically creates several subdirectories and files.</p>
+<p><strong>Step 3 - allow roxygen2 to take care of documentation</strong> From RStudio menu click build then configure build tools, verify package is selected in Project build tools, check the box for Generate documentation with roxygen, in the popup dialogue box check all boxes.</p>
+<p><strong>Step 4 - delete NAMESPACE file</strong> to clear way for <code>roxygen2</code> to automatically generate this file. Otherwise we will get a warning when building the package.</p>
+</div>
+<div id="add-functions-to-the-package" class="section level2">
+<h2>Add functions to the package</h2>
+<p>Create a <code>.R</code> files for a function and save it in subdirectory <code>/R</code>. A good practice is to have only one function in a <code>.R</code> file. We can have as many files as needed for all functions under subdirectory <code>/R</code>.</p>
+<p>The <code>.R</code> file, let’s call it <code>mess_up_function.R</code>, has two sections, as shown in the example code below. The first is the Roxygen comment section, of which each line starts with <code>#'</code>. Roxygen2 generates documentation of the function from these comments. Most tags in the comment section are self-explanatory, for example <code>@para</code> for parameters and <code>@examples</code> for examples. Pay attention to these three tags: 1) <code>#' @export</code> exports the function for package users. 2) <code>#' @import package_name</code> or <code>#' @importFrom package_name function_1 function_2</code> are to import whole packages or selected functions, depending on how we use these packages in building our own package. Import the whole package if we use many functions in the package; import only selected functions if we know we only need them.</p>
+<p>The second section is the R code where we define our function. This section is standard R code with one exception: never use <code>library(pkg_name)</code> or <code>require(pkg_name)</code> to load packages, as they may mess up with name space. Instead, use <code>#' @import</code> or <code>#' @importFrom</code> as discussed in the Roxygen comment section, or use <code>pkg_name::func()</code>. The later method takes extra 4 microseconds for each run, which is acceptable for processing small datasets.</p>
+<pre class="r"><code>#&#39; mess up function (This is the title.)
+#&#39; 
+#&#39; @description This function mess up with two strings by extracting vowels from
+#&#39; the first string and attaching them to the second.
+#&#39;
+#&#39; @param string_1 the first string
+#&#39; @param string_2 the second string
+#&#39; 
+#&#39; @return a string 
+#&#39;
+#&#39; @examples
+#&#39; # example 1
+#&#39; mess_up(&quot;The United States&quot;, &quot;Russia&quot;)
+#&#39; 
+#&#39; # example 2
+#&#39; mess_up(&quot;Barack Obama&quot;, &quot;Donald Trump&quot;)
+
+#&#39; @export
+#&#39; 
+#&#39; @importFrom stringr str_extract_all
+
+
+mess_up &lt;- function(string_1, string_2){
+    ## This function extract vowels from string_1 and place it 
+    ## at the end of string_2
+    vowels &lt;- str_extract_all(string_1, &quot;[AEIOUaeiou]&quot;)[[1]]
+    vowels &lt;- paste0(vowels, collapse = &quot;&quot;)
+    paste0(string_2, vowels, collapse = &quot;&quot;)
+}</code></pre>
+</div>
+<div id="add-a-dataset-to-the-package" class="section level2">
+<h2>Add a dataset to the package</h2>
+<div id="save-dataset-in-subdirectory-data" class="section level3">
+<h3>save dataset in subdirectory <code>/data</code></h3>
+<p>This dataset can be a vector, a list, a data frame, or a data.table. Let’s call it <code>my_dataset</code>. To add it to the package, simply save it as a <code>.RData</code> file to the subdirectory <code>/data</code> of the package by running</p>
+<pre class="r"><code># one .RData file has ONLY one dataset
+save(my_dataset, file = &quot;path_to_package/data/my_dataset.RData&quot;)</code></pre>
+</div>
+<div id="create-a-.r-file-in-subdirectory-r-to-document-the-dataset" class="section level3">
+<h3>create a <code>.R</code> file in subdirectory <code>/R</code> to document the dataset</h3>
+<p>This dataset is ready to use, but a good practice is always to have a documentation for it. We can make a <code>doc_my_dataset.R</code> file for data documentation. The file is almost completely Roxygen comments. The only line of non-comment code is the name of the dataset in quotation <code>&quot;my_dataset&quot;</code>.</p>
+<pre class="r"><code>#&#39; Here is the title of the dataset
+#&#39;
+#&#39; @description More description of the dataset is here
+#&#39;
+#&#39; @docType data
+#&#39;
+#&#39; @usage data(&quot;my_dataset&quot;)
+#&#39;
+#&#39; @format data.frame
+#&#39;
+#&#39; @keywords datasets
+#&#39;
+#&#39; @source This is a link to 
+#&#39; \href{http://www.xxx.xxx.com/xxx.csv}{the origin data}
+#&#39;
+
+&quot;my_dataset&quot;</code></pre>
+</div>
+</div>
+<div id="set-up-the-description-file" class="section level2">
+<h2>Set up the DESCRIPTION file</h2>
+<p>This file mostly provides general information of the package. Many of them we may not care if we just write the package for ourselves. But two items are important: 1) If we want to load our dataset whenever loading the package, keep <code>LazyData: true</code>. 2) Place all other packages used in the package under <code>Imports</code>. In case others want to install this package, these packages will be installed automatically.</p>
+<pre class="r"><code>Package: my_package_name
+Type: Package
+Title: Title of package 
+Version: 0.1.2
+Author: my name
+Maintainer: my name &lt;myemail@xxx.com&gt;
+Description: Give a little bit more detailed description of the package which can 
+    span multiple lines. 
+License: your_choice
+Encoding: UTF-8
+LazyData: true
+Imports:
+    stringr (&gt;= 1.2.0), 
+    ggplot2 (&gt;= 2.0.0)</code></pre>
+</div>
+<div id="build-the-package" class="section level2">
+<h2>Build the package</h2>
+<p>The last step is to build the package, which is very easy in RStudio. From the menu select Build and then Build and Reload. RStudio will take care of all that follow. After the package is successfully built, we can use this package as any other package in our work with <code>library(mytoolbox)</code> and enjoy the easy access to our functions and datasets.</p>
+</div>
+
+              
+            </div>
+          </div>
+          <div id="post-footer" class="post-footer main-content-wrap">
+            
+              
+                
+                
+                  <div class="post-footer-tags">
+                    <span class="text-color-light text-small">TAGGED IN</span><br/>
+                    
+  <a class="tag tag--primary tag--small" href="/tags/packages/">packages</a>
+
+                  </div>
+                
+              
+            
+            
+  <div class="post-actions-wrap">
+      <nav >
+        <ul class="post-actions post-action-nav">
+          
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--default tooltip--top" href="/2017/12/census_data_zip_code/" data-tooltip="Proccess 5-digit ZIP Code Tabulation Area (ZCTA5) data with totalcensus package">
+              
+                  <i class="fa fa-angle-left"></i>
+                  <span class="hide-xs hide-sm text-small icon-ml">NEXT</span>
+                </a>
+            </li>
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--default tooltip--top" href="/2017/08/process-2010-census-data-with-data-table/" data-tooltip="Extract US Census 2010 data with data.table and dplyr">
+              
+                  <span class="hide-xs hide-sm text-small icon-mr">PREVIOUS</span>
+                  <i class="fa fa-angle-right"></i>
+                </a>
+            </li>
+          
+        </ul>
+      </nav>
+    <ul class="post-actions post-action-share" >
+      
+        <li class="post-action hide-lg hide-md hide-sm">
+          <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions">
+            <i class="fa fa-share-alt"></i>
+          </a>
+        </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=/2017/09/build-a-r-package-for-yourself/">
+              <i class="fa fa-facebook-official"></i>
+            </a>
+          </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=/2017/09/build-a-r-package-for-yourself/">
+              <i class="fa fa-twitter"></i>
+            </a>
+          </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=/2017/09/build-a-r-package-for-yourself/">
+              <i class="fa fa-google-plus"></i>
+            </a>
+          </li>
+        
+      
+      
+        <li class="post-action">
+          <a class="post-action-btn btn btn--default" href="#disqus_thread">
+            <i class="fa fa-comment-o"></i>
+          </a>
+        </li>
+      
+      <li class="post-action">
+        
+          <a class="post-action-btn btn btn--default" href="#">
+        
+          <i class="fa fa-list"></i>
+        </a>
+      </li>
+    </ul>
+  </div>
+
+
+            
+              
+                <div id="disqus_thread">
+  <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+              
+            
+          </div>
+        </article>
+        <footer id="footer" class="main-content-wrap">
+  <span class="copyrights">
+    &copy; 2018 Firstname Lastname. All Rights Reserved
+  </span>
+</footer>
+
+      </div>
+      <div id="bottom-bar" class="post-bottom-bar" data-behavior="4">
+        
+  <div class="post-actions-wrap">
+      <nav >
+        <ul class="post-actions post-action-nav">
+          
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--default tooltip--top" href="/2017/12/census_data_zip_code/" data-tooltip="Proccess 5-digit ZIP Code Tabulation Area (ZCTA5) data with totalcensus package">
+              
+                  <i class="fa fa-angle-left"></i>
+                  <span class="hide-xs hide-sm text-small icon-ml">NEXT</span>
+                </a>
+            </li>
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--default tooltip--top" href="/2017/08/process-2010-census-data-with-data-table/" data-tooltip="Extract US Census 2010 data with data.table and dplyr">
+              
+                  <span class="hide-xs hide-sm text-small icon-mr">PREVIOUS</span>
+                  <i class="fa fa-angle-right"></i>
+                </a>
+            </li>
+          
+        </ul>
+      </nav>
+    <ul class="post-actions post-action-share" >
+      
+        <li class="post-action hide-lg hide-md hide-sm">
+          <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions">
+            <i class="fa fa-share-alt"></i>
+          </a>
+        </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=/2017/09/build-a-r-package-for-yourself/">
+              <i class="fa fa-facebook-official"></i>
+            </a>
+          </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=/2017/09/build-a-r-package-for-yourself/">
+              <i class="fa fa-twitter"></i>
+            </a>
+          </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=/2017/09/build-a-r-package-for-yourself/">
+              <i class="fa fa-google-plus"></i>
+            </a>
+          </li>
+        
+      
+      
+        <li class="post-action">
+          <a class="post-action-btn btn btn--default" href="#disqus_thread">
+            <i class="fa fa-comment-o"></i>
+          </a>
+        </li>
+      
+      <li class="post-action">
+        
+          <a class="post-action-btn btn btn--default" href="#">
+        
+          <i class="fa fa-list"></i>
+        </a>
+      </li>
+    </ul>
+  </div>
+
+
+      </div>
+      <div id="share-options-bar" class="share-options-bar" data-behavior="4">
+  <i id="btn-close-shareoptions" class="fa fa-close"></i>
+  <ul class="share-options">
+    
+      <li class="share-option">
+        <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=%2F2017%2F09%2Fbuild-a-r-package-for-yourself%2F">
+          <i class="fa fa-facebook-official"></i><span>Share on Facebook</span>
+        </a>
+      </li>
+    
+      <li class="share-option">
+        <a class="share-option-btn" target="new" href="https://twitter.com/intent/tweet?text=%2F2017%2F09%2Fbuild-a-r-package-for-yourself%2F">
+          <i class="fa fa-twitter"></i><span>Share on Twitter</span>
+        </a>
+      </li>
+    
+      <li class="share-option">
+        <a class="share-option-btn" target="new" href="https://plus.google.com/share?url=%2F2017%2F09%2Fbuild-a-r-package-for-yourself%2F">
+          <i class="fa fa-google-plus"></i><span>Share on Google&#43;</span>
+        </a>
+      </li>
+    
+  </ul>
+</div>
+<div id="share-options-mask" class="share-options-mask"></div>
+    </div>
+    
+    <div id="about">
+  <div id="about-card">
+    <div id="about-btn-close">
+      <i class="fa fa-remove"></i>
+    </div>
+    
+      <img id="about-card-picture" src="//www.gravatar.com/avatar/d09dc2d7aa5c467519e8af89f7b3d94c?s=110" alt="Author&#39;s picture" />
+    
+    <h4 id="about-card-name">Firstname Lastname</h4>
+    
+      <div id="about-card-bio">Super bio with markdown support <strong>COOL</strong></div>
+    
+    
+      <div id="about-card-job">
+        <i class="fa fa-briefcase"></i>
+        <br/>
+        Your job title
+      </div>
+    
+    
+      <div id="about-card-location">
+        <i class="fa fa-map-marker"></i>
+        <br/>
+        France
+      </div>
+    
+  </div>
+</div>
+
+    <div id="algolia-search-modal" class="modal-container">
+  <div class="modal">
+    <div class="modal-header">
+      <span class="close-button"><i class="fa fa-close"></i></span>
+      <a href="https://algolia.com" target="_blank" rel="noopener" class="searchby-algolia text-color-light link-unstyled">
+        <span class="searchby-algolia-text text-color-light text-small">by</span>
+        <img class="searchby-algolia-logo" src="https://www.algolia.com/static_assets/images/press/downloads/algolia-light.svg">
+      </a>
+      <i class="search-icon fa fa-search"></i>
+      <form id="algolia-search-form">
+        <input type="text" id="algolia-search-input" name="search"
+          class="form-control input--large search-input" placeholder="Search" />
+      </form>
+    </div>
+    <div class="modal-body">
+      <div class="no-result text-color-light text-center">no post found</div>
+      <div class="results">
+        
+        
+          <div class="media">
+            
+            <div class="media-body">
+              <a class="link-unstyled" href="/2018/02/map-prisons-in-the-united-states/">
+                <h3 class="media-heading">Map prisons in the United States</h3>
+              </a>
+              <span class="media-meta">
+                <span class="media-date text-small">
+                  Feb 2, 2018
+                </span>
+              </span>
+              <div class="media-content hide-xs font-merryweather">According to Census 2010, a total number of 2,263,602 persons were incarcerated in the United States. Among them, 172,020 were in federal prisons, 1,248,167 in state prisons, and 682,043 in local jails. Despite 1 in every 110 adults are behind bars, most ordenary people have no idea where are they locked up.
+library(totalcensus) library(tidyverse) library(ggmap) # federal and state prison location and population ============================= # search tables for fedral prison search_tablecontents(&quot;decennial&quot;) # PCT0200005 has the total population in federal prison # PCT0200006 has state prison population # read prison population data pris_pop &lt;- read_decennial( year = 2010, states = &quot;US&quot;, table_contents = c( &quot;total = PCT0200003&quot;, &quot;fed_pris = PCT0200005&quot;, &quot;state_pris = PCT0200006&quot;, &quot;local_jail = PCT0200007&quot; ), summary_level = &quot;county subdivision&quot;, show_progress = FALSE ) %&gt;% # remove county subdivisions that has no prison popualation filter(total !</div>
+            </div>
+            <div style="clear:both;"></div>
+            <hr>
+          </div>
+        
+          <div class="media">
+            
+            <div class="media-body">
+              <a class="link-unstyled" href="/2018/01/the-most-popular-president-lincoln-or-washington/">
+                <h3 class="media-heading">Is your town named after Lincoln or Washington?</h3>
+              </a>
+              <span class="media-meta">
+                <span class="media-date text-small">
+                  Jan 1, 2018
+                </span>
+              </span>
+              <div class="media-content hide-xs font-merryweather">Washington and Lincoln are the two greatest presidents in the history of the United States. This post, however, does not discuss how great they are. Instead, I want to show a fun fact related the two presidents: how many cities and towns (and equivalents) are named after them. I am living in Lincoln, Rhode Island, a town so named in honor of President Lincoln.
+The data are extracted from decennial census 2010, the most detailed census so far.</div>
+            </div>
+            <div style="clear:both;"></div>
+            <hr>
+          </div>
+        
+          <div class="media">
+            
+            <div class="media-body">
+              <a class="link-unstyled" href="/2018/01/create-pie-plots-on-a-map-in-r/">
+                <h3 class="media-heading">Plot pie charts of racial composition in largest metro areas on a map in R</h3>
+              </a>
+              <span class="media-meta">
+                <span class="media-date text-small">
+                  Jan 1, 2018
+                </span>
+              </span>
+              <div class="media-content hide-xs font-merryweather">Pie chart has been criticized for being a poor visualization and is not recommended in R community. The popular ggplot2 package discourages the use of pie charts and there is no dedicated geom_pie for it.
+Although the criticism is mostly valid, there is a case that pie chart can be useful: pie charts on maps. Pie charting on map is a compact way to show composition by locations.
+A recent R package, scatterpie by Guangchuang Yu, specializes in making pie charts at multiple locations.</div>
+            </div>
+            <div style="clear:both;"></div>
+            <hr>
+          </div>
+        
+          <div class="media">
+            
+            <div class="media-body">
+              <a class="link-unstyled" href="/2017/12/use-totalcensus-package-to-determine-relationship-between-geographic-entities/">
+                <h3 class="media-heading">Determine relationship between census geographic entities with totalcensus package</h3>
+              </a>
+              <span class="media-meta">
+                <span class="media-date text-small">
+                  Dec 12, 2017
+                </span>
+              </span>
+              <div class="media-content hide-xs font-merryweather">This is an application example of totalcensus package.
+The geographic hierarchy primer in Census 2010 summary file 1 technical documentation displays the relationship between geographic entities. The lower one of the two entities connected by a line is entirely within the boundary of the upper one. For example, a county subdivision is always within the boundaries of a county and a school district always within the boundaries of a state. If two entities are not connected, they may not belong to each other.</div>
+            </div>
+            <div style="clear:both;"></div>
+            <hr>
+          </div>
+        
+          <div class="media">
+            
+            <div class="media-body">
+              <a class="link-unstyled" href="/2017/12/census_data_zip_code/">
+                <h3 class="media-heading">Proccess 5-digit ZIP Code Tabulation Area (ZCTA5) data with totalcensus package</h3>
+              </a>
+              <span class="media-meta">
+                <span class="media-date text-small">
+                  Dec 12, 2017
+                </span>
+              </span>
+              <div class="media-content hide-xs font-merryweather">This is an example of applications of totalcensus package. To install the package, follow the instructions at https://github.com/GL-Li/totalcensus.
+In this example, we examine data related to 5-digit ZIP Code Tabulation Area (ZCTA5), using 2016 ACS 5-year survey summary files. Let’s first load the libraries and then answer a couple questions related to zip code
+library(totalcensus) library(data.table) library(magrittr) library(ggplot2) library(ggmap) What’s the population in a ZCTA5 These population data can be easily obtained with the code below.</div>
+            </div>
+            <div style="clear:both;"></div>
+            <hr>
+          </div>
+        
+          <div class="media">
+            
+            <div class="media-body">
+              <a class="link-unstyled" href="/2017/09/build-a-r-package-for-yourself/">
+                <h3 class="media-heading">Build a R package for yourself</h3>
+              </a>
+              <span class="media-meta">
+                <span class="media-date text-small">
+                  Sep 9, 2017
+                </span>
+              </span>
+              <div class="media-content hide-xs font-merryweather">A R user can benefit a lot from building packages. I have read people writing about the benefit in various occasions and cannot agree more after building my first package. We don’t have to a be R developer to write packages. Developers write packages for others; we can just write packages for ourselves. As a R user, we must have written functions and collected datasets, and may have used them across projects or may want to use them later on.</div>
+            </div>
+            <div style="clear:both;"></div>
+            <hr>
+          </div>
+        
+          <div class="media">
+            
+            <div class="media-body">
+              <a class="link-unstyled" href="/2017/08/process-2010-census-data-with-data-table/">
+                <h3 class="media-heading">Extract US Census 2010 data with data.table and dplyr</h3>
+              </a>
+              <span class="media-meta">
+                <span class="media-date text-small">
+                  Aug 8, 2017
+                </span>
+              </span>
+              <div class="media-content hide-xs font-merryweather">This post explains how to extract information from the original dataset of the US 2010 census summary file 1 with urban/rural update, using data.table or dplyr package in R.
+Why do we want to work with the original data? You may ask, when there are already R packages, such as UScensus2010, censusapi, and tidycensus, which help user get the data.
+The biggest benefit is that you will have full access to all the census 2010 data.</div>
+            </div>
+            <div style="clear:both;"></div>
+            <hr>
+          </div>
+        
+          <div class="media">
+            
+            <div class="media-body">
+              <a class="link-unstyled" href="/2017/08/place-text-at-right-location/">
+                <h3 class="media-heading">ggplot2: place text at right location</h3>
+              </a>
+              <span class="media-meta">
+                <span class="media-date text-small">
+                  Aug 8, 2017
+                </span>
+              </span>
+              <div class="media-content hide-xs font-merryweather">A common task in plotting is adding texts as labels or annotations to specific locations. ggplot() has functions geom_text(), geom_label() and annotate() for this purpose. In this post we discuss how ggplot2 controls positioning of text.
+First we need to specify (x, y) coordinate in the plot where the text is placed. By default, the center of the text is at (x, y), which is sometimes not what we want, as shown in the example below.</div>
+            </div>
+            <div style="clear:both;"></div>
+            <hr>
+          </div>
+        
+          <div class="media">
+            
+            <div class="media-body">
+              <a class="link-unstyled" href="/2017/08/ggplot2-group-overrides-default-grouping/">
+                <h3 class="media-heading">ggplot2: aes(group = ...) overrides default grouping</h3>
+              </a>
+              <span class="media-meta">
+                <span class="media-date text-small">
+                  Aug 8, 2017
+                </span>
+              </span>
+              <div class="media-content hide-xs font-merryweather">Default grouping in ggplot2 ggplot2 can subset all data into groups and give each group its own appearance and transformation. In many cases new users are not aware that default groups have been created, and are surprised when seeing unexpected plots.
+There are two ways in which ggplot2 creates groups implicitly:
+ If x or y are categorical variables, the rows with the same level form a group. Users often overlook this type of default grouping.</div>
+            </div>
+            <div style="clear:both;"></div>
+            <hr>
+          </div>
+        
+          <div class="media">
+            
+            <div class="media-body">
+              <a class="link-unstyled" href="/2017/08/a-uniform-way-to-use-ggplot2/">
+                <h3 class="media-heading">My uniform way of using ggplot2</h3>
+              </a>
+              <span class="media-meta">
+                <span class="media-date text-small">
+                  Aug 8, 2017
+                </span>
+              </span>
+              <div class="media-content hide-xs font-merryweather">Just finished reading Hadley Wickham’s ggplot2 book, (second eition). Before that I have been using ggplot2 for a couple of years, mainly learned by reading documentation and searching for help online.
+The ggplot2 package is a powerful and comprehensive tool for generating static plots, but I also feel it is a little bit too flexible; the same plot can be made with many different ways. This fexibility provides obvious convenience but also introduces a lot of confusion and extra burden of memorization.</div>
+            </div>
+            <div style="clear:both;"></div>
+            <hr>
+          </div>
+        
+      </div>
+    </div>
+    <div class="modal-footer">
+      <p class="results-count text-medium"
+         data-message-zero="no post found"
+         data-message-one="1 post found"
+         data-message-other="{n} posts found">
+         11 posts found
+      </p>
+    </div>
+  </div>
+</div>
+    
+  
+    
+    <div id="cover" style="background-image:url('/images/cover.jpg');"></div>
+  
+
+
+    
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js" integrity="sha256-/BfiIkHlHoVihZdc6TFuj7MmJ0TWcWsMXkeDFwhi0zw=" crossorigin="anonymous"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.7/js/jquery.fancybox.min.js" integrity="sha256-GEAnjcTqVP+vBp3SSc8bEDQqvWAZMiHyUSIorrWwH50=" crossorigin="anonymous"></script>
+
+
+<script src="/js/script-qi9wbxp2ya2j6p7wx1i6tgavftewndznf4v0hy2gvivk1rxgc3lm7njqb6bz.min.js"></script>
+
+
+
+<script>
+$(document).ready(function() {
+  hljs.configure({ classPrefix: '', useBR: false });
+  $('pre.code-highlight > code, pre > code').each(function(i, block) {
+    if (!$(this).hasClass('codeblock')) {
+      $(this).addClass('codeblock');
+    }
+    hljs.highlightBlock(block);
+  });
+});
+</script>
+
+
+  
+    
+      <script>
+        var disqus_config = function () {
+          this.page.url = '\/2017\/09\/build-a-r-package-for-yourself\/';
+          
+            this.page.identifier = '\/2017\/09\/build-a-r-package-for-yourself\/'
+          
+        };
+        (function() {
+          
+          
+          if (window.location.hostname == "localhost") {
+            return;
+          }
+          var d = document, s = d.createElement('script');
+          var disqus_shortname = 'hugo-tranquilpeak-theme';
+          s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+
+          s.setAttribute('data-timestamp', +new Date());
+          (d.head || d.body).appendChild(s);
+        })();
+      </script>
+    
+  
+
+
+
+    
+  </body>
+</html>
+

@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Hugo 0.31.1" />
+
+
+<title>Build a R package for ourselves - R &amp; Census</title>
+<meta property="og:title" content="Build a R package for ourselves - R &amp; Census">
+
+
+
+  
+
+
+
+
+
+
+
+
+<link href='//cdn.bootcss.com/highlight.js/9.11.0/styles/github.min.css' rel='stylesheet' type='text/css' />
+
+
+
+<link rel="stylesheet" href="../../../../css/fonts.css" media="all">
+<link rel="stylesheet" href="../../../../css/main.css" media="all">
+
+
+
+    
+
+  </head>
+  <body>
+    <div class="wrapper">
+      <header class="header">
+        <nav class="nav">
+  <a href="../../../../" class="nav-logo">
+    <img src="../../../../images/logo.png"
+         width="50"
+         height="50"
+         alt="Logo">
+  </a>
+
+  <ul class="nav-links">
+    
+    <li><a href="../../../../about/">About</a></li>
+    
+    <li><a href="../../../../projects/">Projects</a></li>
+    
+    <li><a href="../../../../links/">Blogroll</a></li>
+    
+    <li><a href="../../../../collections/">Collections</a></li>
+    
+  </ul>
+</nav>
+
+      </header>
+
+
+<main class="content" role="main">
+
+  <article class="article">
+    
+    <span class="article-duration">6 min read</span>
+    
+
+    <h1 class="article-title">Build a R package for ourselves</h1>
+
+    
+    <span class="article-date">2017/09/14</span>
+    
+
+    <div class="article-content">
+      <p>A R user can benefit a lot from building packages. I have read people writing about the benefit in various occassions and cannot agree more after building my first package. We don’t have to a be R developer to write packages. Developers write packages for others; we can just write packages for ourself. As a R user, we must have written functions and collected datasets, and may have used them across projects or may want to use them later on. The conventional way to reuse functions is to copy and paste them to the new project or to load them by <code>source(xxx.R)</code>, and the conventional way to reuse datasets it to load <code>.Rdata</code> files which store the datasets. We will have to know where the functions and datasets are stored, which is not a easy job if we have a large collection. By building fucntions and datasets into a package, we keep them in one place and use them the same way as using any other packages. With the help of package documentation, these functions and datasets become out great asset.</p>
+<p>Building a R packages is actually far more easier than a R user could have expected. In RStudio, it is nothing but writing normal R code with formatted comments. If this package is just for ourselves, we can save the hassel of publishing it on github or CRAN.</p>
+<p>Below are step by step instructions of building a working package in RStudio. There are many great tutorials for building R packages. I try to make this one to be the simplest and most up to date.</p>
+<div id="prepare-for-a-new-package-project" class="section level2">
+<h2>Prepare for a new package project</h2>
+<p><strong>Step 1 - install necessary packages</strong> Update RStudio if it is very old. Start RStudio and install package <code>roxygen2</code>. This package simplifies package documentation.</p>
+<pre class="r"><code>install.packages(&quot;roxygen2&quot;)</code></pre>
+<p><strong>Step 2 - create a new package</strong> From RStudio menu, click file then new project and choose to create project in a new directory. Select creating R package and name the package, for example, as <code>mytoolbox</code> and place it in the directory of our choice. RStudio automatically creates several subdirectories and files.</p>
+<p><strong>Step 3 - allow roxygen2 to take care of documentation</strong> From RStudio menu click build then configure build tools, verify package is selected in Project build tools, check the box for Generate documentation with roxygen, in the popup dialogue box check all boxes.</p>
+<p><strong>Step 4 - delete NAMESPACE file</strong> to clear way for roxygen2 to automatically generate this file. Otherwise we will get a warning when building the package.</p>
+</div>
+<div id="add-a-function-to-the-package" class="section level2">
+<h2>Add a function to the package</h2>
+<p>Create a <code>.R</code> files for the function and save it in subdirectory <code>/R</code>. A good practice is to have only one function in a <code>.R</code> file. We can have as many files as needed for all functions under subdirectory <code>/R</code>.</p>
+<p>The <code>.R</code> file, let’s call it <code>mess_up_function.R</code>, has two sections, as shown in the example code below. The first is the Roxygen comment section, of which each line starts with <code>#'</code>. Roxygen2 generates documentation of the function from these comments. Most tags in the comment section are self-explainatary, for example <code>@para</code> for parameters and <code>@examples</code> for examples. Pay attention to these three tags: 1) <code>#' @export</code> exports the function for package users. 2) <code>#' @import package_name</code> or <code>#' @importFrom package_name function_1 function_2</code> are to import whole packages or selected functions, depending on how you use these packages in building your own package. Import the whole package if you use many functions in the package; import only selected functions if you know you only need them.</p>
+<p>The second section is the R code where you define your function. This section is standard R code with one exception: never use <code>library(pkg_name)</code> or <code>require(pkg_name)</code> to load packages, as they may mess up with name space. Instead, use <code>#' @import</code> or <code>#' @importFrom</code> as discussed in the Roxygen comment section, or use <code>pkg_name::func()</code>. The later method takes extra 4 microseconds for each run, which is acceptable for processing small datasets.</p>
+<pre class="r"><code>#&#39; mess up function (This is the title.)
+#&#39; 
+#&#39; @description This function mess up with two strings by extracting vowels from
+#&#39; the first string and attaching them to the second.
+#&#39;
+#&#39; @param string_1 the first string
+#&#39; @param string_2 the second string
+#&#39; 
+#&#39; @return a string 
+#&#39;
+#&#39; @examples
+#&#39; # example 1
+#&#39; mess_up(&quot;The United States&quot;, &quot;Russia&quot;)
+#&#39; 
+#&#39; # example 2
+#&#39; mess_up(&quot;Barack Obama&quot;, &quot;Donald Trump&quot;)
+
+#&#39; @export
+#&#39; 
+#&#39; @importFrom stringr str_extract_all
+
+
+mess_up &lt;- function(string_1, string_2){
+    ## This function extract vowels from string_1 and place it 
+    ## at the end of string_2
+    vowels &lt;- str_extract_all(string_1, &quot;[AEIOUaeiou]&quot;)[[1]]
+    vowels &lt;- paste0(vowels, collapse = &quot;&quot;)
+    paste0(string_2, vowels, collapse = &quot;&quot;)
+}</code></pre>
+</div>
+<div id="add-a-dataset-to-the-package" class="section level2">
+<h2>Add a dataset to the package</h2>
+<div id="save-dataset-in-subdirectory-data" class="section level3">
+<h3>save dataset in subdirectory <code>/data</code></h3>
+<p>This dataset can be a vector, a list, a dataframe, or a data table. Let’s call it <code>my_dataset</code>. To add it to the package, simply save it as a <code>.RData</code> file to the subdirectory <code>/data</code> of the package by running</p>
+<pre class="r"><code># one .RData file has ONLY one dataset
+save(my_dataset, file = &quot;path_to_package/data/my_dataset.RData&quot;)</code></pre>
+</div>
+<div id="create-a-.r-file-in-subdirectory-r-to-document-the-dataset" class="section level3">
+<h3>create a <code>.R</code> file in subdirectory <code>/R</code> to document the dataset</h3>
+<p>This dataset is ready to use, but a good practice is always to have a documentation for it. We can make a <code>doc_my_dataset.R</code> file for data documentation. The file is almost completely Roxygen comments. The only line of non-comment code is the name of the dataset in quotation <code>&quot;my_dataset&quot;</code>.</p>
+<pre class="r"><code>#&#39; Here is the title of the dataset
+#&#39;
+#&#39; @description More description of the dataset is here
+#&#39;
+#&#39; @docType data
+#&#39;
+#&#39; @usage data(&quot;my_dataset&quot;)
+#&#39;
+#&#39; @format data.frame
+#&#39;
+#&#39; @keywords datasets
+#&#39;
+#&#39; @source This is a link to 
+#&#39; \href{http://www.xxx.xxx.com/xxx.csv}{the origin data}
+#&#39;
+
+&quot;my_dataset&quot;</code></pre>
+</div>
+</div>
+<div id="set-up-the-description-file" class="section level2">
+<h2>Set up the DESCRIPTION file</h2>
+<p>This file mostly provides general information of your package. Many of them you may not care if you just write the package for yourself. But two items are important: 1) If you want to load your dataset whenever loading the package, keep <code>LazyData: true</code>. 2) Place all other packages used in your package under <code>Imports</code>. In case others want to install your package, these packages will be installed automatically.</p>
+<pre class="r"><code>Package: my_package_name
+Type: Package
+Title: Title of package 
+Version: 0.1.2
+Author: my name
+Maintainer: my name &lt;myemail@xxx.com&gt;
+Description: Give a little bit more detailed description of the package which can 
+    span multiple lines. 
+License: your_choice
+Encoding: UTF-8
+LazyData: true
+Imports:
+    stringr (&gt;= 1.2.0), 
+    ggplot2 (&gt;= 2.0.0)</code></pre>
+</div>
+<div id="build-the-package" class="section level2">
+<h2>Build the package</h2>
+<p>The last step is to build the package, which is very easy in RStudio. From the menu select Build and then Build and Reload. RStudio will take care of all that follow. After the package is successfully built, we can use you package as any other package in our work with <code>library(mytoolbox)</code> and enjoy the easy access to our functions and datasets.</p>
+</div>
+
+    </div>
+  </article>
+
+  
+<section id="comments">
+  <div id="disqus_thread"></div>
+  <script>
+  var disqus_config = function () {
+  
+  };
+  (function() {
+    var inIFrame = function() {
+      var iframe = true;
+      try { iframe = window.self !== window.top; } catch (e) {}
+      return iframe;
+    };
+    if (inIFrame()) return;
+    var d = document, s = d.createElement('script');
+    s.src = '//gl-li-github-io.disqus.com/embed.js'; s.async = true;
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
+  })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</section>
+
+
+
+</main>
+
+      <footer class="footer">
+          
+        <ul class="footer-links">
+          <li>
+              &copy;<a href="http://www.gl-li.com/about/">Guanglai Li</a>
+          </li>
+          <li>
+            <a href="https://twitter.com/guanglai_li" target="_blank">Twitter</a>
+          </li>
+          <li>
+            <a href="https://github.com/GL-Li" class="footer-links-kudos">Github</a>
+          </li>
+        </ul>
+      </footer>
+
+    </div>
+    
+
+
+
+<script src="//cdn.bootcss.com/highlight.js/9.11.0/highlight.min.js"></script>
+
+
+
+<script src="//cdn.bootcss.com/highlight.js/9.11.0/languages/r.min.js"></script>
+<script src="//cdn.bootcss.com/highlight.js/9.11.0/languages/yaml.min.js"></script>
+<script>hljs.configure({languages: []}); hljs.initHighlightingOnLoad();</script>
+
+
+
+    
+<script src="../../../../js/math-code.js"></script>
+<script async src="//cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+
+    
+  </body>
+</html>
+

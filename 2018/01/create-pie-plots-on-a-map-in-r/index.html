@@ -1,0 +1,827 @@
+
+
+  
+    
+  
+
+
+  
+
+
+
+
+  
+
+
+  
+
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="generator" content="Hugo 0.31.1 with theme Tranquilpeak 0.4.3-BETA">
+    <title>Plot pie charts of racial composition in largest metro areas on a map in R</title>
+    <meta name="author" content="Firstname Lastname">
+    <meta name="keywords" content="">
+
+    <link rel="icon" href="/favicon.png">
+    
+
+    
+    <meta name="description" content="Pie chart has been criticized for being a poor visualization and is not recommended in R community. The popular ggplot2 package discourages the use of pie charts and there is no dedicated geom_pie for it.
+Although the criticism is mostly valid, there is a case that pie chart can be useful: pie charts on maps. Pie charting on map is a compact way to show composition by locations.
+A recent R package, scatterpie by Guangchuang Yu, specializes in making pie charts at multiple locations.">
+    <meta property="og:description" content="Pie chart has been criticized for being a poor visualization and is not recommended in R community. The popular ggplot2 package discourages the use of pie charts and there is no dedicated geom_pie for it.
+Although the criticism is mostly valid, there is a case that pie chart can be useful: pie charts on maps. Pie charting on map is a compact way to show composition by locations.
+A recent R package, scatterpie by Guangchuang Yu, specializes in making pie charts at multiple locations.">
+    <meta property="og:type" content="blog">
+    <meta property="og:title" content="Plot pie charts of racial composition in largest metro areas on a map in R">
+    <meta property="og:url" content="/2018/01/create-pie-plots-on-a-map-in-r/">
+    <meta property="og:site_name" content="R &amp; Census">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="R &amp; Census">
+    <meta name="twitter:description" content="Pie chart has been criticized for being a poor visualization and is not recommended in R community. The popular ggplot2 package discourages the use of pie charts and there is no dedicated geom_pie for it.
+Although the criticism is mostly valid, there is a case that pie chart can be useful: pie charts on maps. Pie charting on map is a compact way to show composition by locations.
+A recent R package, scatterpie by Guangchuang Yu, specializes in making pie charts at multiple locations.">
+    
+    
+
+    
+    
+
+    
+      <meta property="og:image" content="//www.gravatar.com/avatar/d09dc2d7aa5c467519e8af89f7b3d94c?s=640">
+    
+
+    
+    
+    
+
+    
+
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.4/jquery.fancybox.min.css" integrity="sha256-vuXZ9LGmmwtjqFX1F+EKin1ThZMub58gKULUyf0qECk=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.4/helpers/jquery.fancybox-thumbs.min.css" integrity="sha256-SEa4XYAHihTcEP1f5gARTB2K26Uk8PsndQYHQC1f4jU=" crossorigin="anonymous" />
+    
+    
+    <link rel="stylesheet" href="/css/style-jsjn0006wyhpyzivf6yceb31gvpjatbcs3qzjvlumobfnugccvobqwxnnaj8.min.css" />
+    
+    
+
+    
+      
+    
+    
+  </head>
+
+  <body>
+    <div id="blog">
+      <header id="header" data-behavior="4">
+  <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+  <div class="header-title">
+    <a class="header-title-link" href="/">R &amp; Census</a>
+  </div>
+  
+    
+      <a class="header-right-picture "
+         href="/#about">
+    
+    
+    
+      
+        <img class="header-picture" src="//www.gravatar.com/avatar/d09dc2d7aa5c467519e8af89f7b3d94c?s=90" alt="Author&#39;s picture" />
+      
+    
+    </a>
+  
+</header>
+
+      <nav id="sidebar" data-behavior="4">
+  <div class="sidebar-container">
+    
+      <div class="sidebar-profile">
+        <a href="/#about">
+          <img class="sidebar-profile-picture" src="//www.gravatar.com/avatar/d09dc2d7aa5c467519e8af89f7b3d94c?s=110" alt="Author&#39;s picture" />
+        </a>
+        <h4 class="sidebar-profile-name">Firstname Lastname</h4>
+        
+          <h5 class="sidebar-profile-bio">Super bio with markdown support <strong>COOL</strong></h5>
+        
+      </div>
+    
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-home"></i>
+      
+      <span class="sidebar-button-desc">Home</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/categories">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-bookmark"></i>
+      
+      <span class="sidebar-button-desc">Categories</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/tags">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-tags"></i>
+      
+      <span class="sidebar-button-desc">Tags</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/archives">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-archive"></i>
+      
+      <span class="sidebar-button-desc">Archives</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/#about">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-question"></i>
+      
+      <span class="sidebar-button-desc">About</span>
+    </a>
+  </li>
+
+
+    </ul>
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://github.com/kakawait">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-github"></i>
+      
+      <span class="sidebar-button-desc">GitHub</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://stackoverflow.com/users/636472/kakawait">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-stack-overflow"></i>
+      
+      <span class="sidebar-button-desc">Stack Overflow</span>
+    </a>
+  </li>
+
+
+    </ul>
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/index.xml">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-rss"></i>
+      
+      <span class="sidebar-button-desc">RSS</span>
+    </a>
+  </li>
+
+
+    </ul>
+  </div>
+</nav>
+
+      
+
+      <div id="main" data-behavior="4"
+        class="
+               hasCoverMetaIn
+               ">
+        <article class="post" itemscope itemType="http://schema.org/BlogPosting">
+          
+          
+            <div class="post-header main-content-wrap text-left">
+  
+    <h1 class="post-title" itemprop="headline">
+      Plot pie charts of racial composition in largest metro areas on a map in R
+    </h1>
+  
+  
+  <div class="postShorten-meta post-meta">
+    
+      <time itemprop="datePublished" datetime="2018-01-17T00:00:00Z">
+        
+  January 17, 2018
+
+      </time>
+    
+    
+  
+  
+    <span>in</span>
+    
+      <a class="category-link" href="/categories/ggplot">ggplot</a>
+    
+  
+
+  </div>
+
+</div>
+          
+          <div class="post-content markdown" itemprop="articleBody">
+            <div class="main-content-wrap">
+              <p>Pie chart has been criticized for being a poor visualization and is not recommended in R community. The popular <code>ggplot2</code> package discourages the use of pie charts and there is no dedicated <code>geom_pie</code> for it.</p>
+<p>Although the criticism is mostly valid, there is a case that pie chart can be useful: pie charts on maps. Pie charting on map is a compact way to show composition by locations.</p>
+<p>A recent <code>R</code> package, <a href="https://github.com/GuangchuangYu/scatterpie"><code>scatterpie</code></a> by Guangchuang Yu, specializes in making pie charts at multiple locations. This package is an extension of <code>ggplot2</code> so it will be easy for <code>ggplot2</code> users.</p>
+<p>We will use <code>scatterpie</code> package to plot the racial composition of largest metropolitan areas in the United state. The demographics data is extracted from 2016 American Community Survey 1-year estimate with <a href="https://github.com/GL-Li/totalcensus"><code>totalcensus</code></a> package.</p>
+<p>Let’s first load the required packages.</p>
+<pre class="r"><code>library(scatterpie)
+library(totalcensus)
+library(dplyr)</code></pre>
+<p>Now we extract total population and population of selected races in metro areas from 2016 ACS 1-year estimate. We will only keep metro areas with population over one million.</p>
+<pre class="r"><code># read all metro data
+metro &lt;- read_acs1year(
+    year = 2016,
+    states = &quot;US&quot;,
+    table_contents = c(
+        &quot;white = C02003_003&quot;, 
+        &quot;black = C02003_004&quot;, 
+        &quot;asian = C02003_006&quot;
+    ),
+    geo_headers = &quot;CBSA&quot;,
+    summary_level = &quot;310&quot;
+) %&gt;%
+    mutate(others = population - white - black - asian)</code></pre>
+<pre><code>## Reading US 2016 ACS 1-year survey geography file</code></pre>
+<pre class="r"><code># keep only largest metro and make some cleaning
+largest &lt;- metro %&gt;%
+    filter(population &gt; 1e6) %&gt;%
+    # Los Angeles metro changed CBSA from 31100 to 31080, hand correct the coordinate
+    # mutate(lon = ifelse(GEOID == &quot;31000US31080&quot;, -118.18194, lon),
+    #        lat = ifelse(GEOID == &quot;31000US31080&quot;, 34.10939, lat)) %&gt;%
+    select(NAME, lon, lat, total = population, white, black, asian, others) %&gt;%
+    arrange(-total)
+
+head(largest, 3)</code></pre>
+<pre><code>##                                               NAME       lon      lat
+## 1 New York-Newark-Jersey City, NY-NJ-PA Metro Area  -73.8745 40.77432
+## 2    Los Angeles-Long Beach-Anaheim, CA Metro Area -118.1819 34.10939
+## 3    Chicago-Naperville-Elgin, IL-IN-WI Metro Area  -87.8283 41.82352
+##      total    white   black   asian  others
+## 1 20153634 11704438 3430610 2215765 2802821
+## 2 13310447  7080092  880118 2112197 3238040
+## 3  9512968  6202988 1577873  617341 1114766</code></pre>
+<p>With the race data, we are ready to make pie plot on a map with package <code>scatterpie</code>.</p>
+<pre class="r"><code>us &lt;- map_data(&#39;state&#39;)
+ggplot(us, aes(long, lat)) +
+    geom_map(map=us, aes(map_id=region), fill=&quot;grey97&quot;, color=&quot;grey&quot;) +
+    geom_scatterpie(data = largest, 
+                    aes(lon, lat, r = sqrt(total)/2000),
+                    cols = c(&quot;white&quot;, &quot;black&quot;, &quot;asian&quot;, &quot;others&quot;), 
+                    alpha = 0.5) +
+    scale_fill_manual(
+        breaks = c(&quot;white&quot;, &quot;black&quot;, &quot;asian&quot;, &quot;others&quot;),
+        labels = c(&quot;white alone&quot;, &quot;black alone&quot;, &quot;asian alone&quot;, &quot;others&quot;),
+        values = c(&quot;asian&quot; = &quot;orange&quot;,
+                   &quot;white&quot; = &quot;white&quot;,
+                   &quot;black&quot; = &quot;black&quot;,
+                   &quot;others&quot; = &quot;cyan&quot;)
+    ) +
+    labs(title = &quot;Races in metro areas over one million population&quot;,
+         subtitle = &quot;others includes mixed races and American indians, Alaska natives, native Hawaiians and pacific islanders&quot;,
+         caption = &quot;Source: 2016 ACS 1-year estimate&quot;,
+         fill = NULL) +
+    coord_fixed() +
+    theme_bw() +
+    theme(legend.position = c(0.96, 0.02),
+          legend.justification = c(1, 0),
+          panel.grid = element_blank(),
+          panel.border = element_blank(),
+          axis.title = element_blank(),
+          axis.text = element_blank(),
+          axis.ticks = element_blank())</code></pre>
+<p><img src="/post/2018-01-16-create-pie-plots-on-a-map-in-r_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+
+              
+            </div>
+          </div>
+          <div id="post-footer" class="post-footer main-content-wrap">
+            
+              
+                
+                
+                  <div class="post-footer-tags">
+                    <span class="text-color-light text-small">TAGGED IN</span><br/>
+                    
+  <a class="tag tag--primary tag--small" href="/tags/census/">census</a>
+
+                  </div>
+                
+              
+            
+            
+  <div class="post-actions-wrap">
+      <nav >
+        <ul class="post-actions post-action-nav">
+          
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--default tooltip--top" href="/2018/01/the-most-popular-president-lincoln-or-washington/" data-tooltip="Is your town named after Lincoln or Washington?">
+              
+                  <i class="fa fa-angle-left"></i>
+                  <span class="hide-xs hide-sm text-small icon-ml">NEXT</span>
+                </a>
+            </li>
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--default tooltip--top" href="/2017/12/use-totalcensus-package-to-determine-relationship-between-geographic-entities/" data-tooltip="Determine relationship between census geographic entities with totalcensus package">
+              
+                  <span class="hide-xs hide-sm text-small icon-mr">PREVIOUS</span>
+                  <i class="fa fa-angle-right"></i>
+                </a>
+            </li>
+          
+        </ul>
+      </nav>
+    <ul class="post-actions post-action-share" >
+      
+        <li class="post-action hide-lg hide-md hide-sm">
+          <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions">
+            <i class="fa fa-share-alt"></i>
+          </a>
+        </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=/2018/01/create-pie-plots-on-a-map-in-r/">
+              <i class="fa fa-facebook-official"></i>
+            </a>
+          </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=/2018/01/create-pie-plots-on-a-map-in-r/">
+              <i class="fa fa-twitter"></i>
+            </a>
+          </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=/2018/01/create-pie-plots-on-a-map-in-r/">
+              <i class="fa fa-google-plus"></i>
+            </a>
+          </li>
+        
+      
+      
+        <li class="post-action">
+          <a class="post-action-btn btn btn--default" href="#disqus_thread">
+            <i class="fa fa-comment-o"></i>
+          </a>
+        </li>
+      
+      <li class="post-action">
+        
+          <a class="post-action-btn btn btn--default" href="#">
+        
+          <i class="fa fa-list"></i>
+        </a>
+      </li>
+    </ul>
+  </div>
+
+
+            
+              
+                <div id="disqus_thread">
+  <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+              
+            
+          </div>
+        </article>
+        <footer id="footer" class="main-content-wrap">
+  <span class="copyrights">
+    &copy; 2018 Firstname Lastname. All Rights Reserved
+  </span>
+</footer>
+
+      </div>
+      <div id="bottom-bar" class="post-bottom-bar" data-behavior="4">
+        
+  <div class="post-actions-wrap">
+      <nav >
+        <ul class="post-actions post-action-nav">
+          
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--default tooltip--top" href="/2018/01/the-most-popular-president-lincoln-or-washington/" data-tooltip="Is your town named after Lincoln or Washington?">
+              
+                  <i class="fa fa-angle-left"></i>
+                  <span class="hide-xs hide-sm text-small icon-ml">NEXT</span>
+                </a>
+            </li>
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--default tooltip--top" href="/2017/12/use-totalcensus-package-to-determine-relationship-between-geographic-entities/" data-tooltip="Determine relationship between census geographic entities with totalcensus package">
+              
+                  <span class="hide-xs hide-sm text-small icon-mr">PREVIOUS</span>
+                  <i class="fa fa-angle-right"></i>
+                </a>
+            </li>
+          
+        </ul>
+      </nav>
+    <ul class="post-actions post-action-share" >
+      
+        <li class="post-action hide-lg hide-md hide-sm">
+          <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions">
+            <i class="fa fa-share-alt"></i>
+          </a>
+        </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=/2018/01/create-pie-plots-on-a-map-in-r/">
+              <i class="fa fa-facebook-official"></i>
+            </a>
+          </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=/2018/01/create-pie-plots-on-a-map-in-r/">
+              <i class="fa fa-twitter"></i>
+            </a>
+          </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=/2018/01/create-pie-plots-on-a-map-in-r/">
+              <i class="fa fa-google-plus"></i>
+            </a>
+          </li>
+        
+      
+      
+        <li class="post-action">
+          <a class="post-action-btn btn btn--default" href="#disqus_thread">
+            <i class="fa fa-comment-o"></i>
+          </a>
+        </li>
+      
+      <li class="post-action">
+        
+          <a class="post-action-btn btn btn--default" href="#">
+        
+          <i class="fa fa-list"></i>
+        </a>
+      </li>
+    </ul>
+  </div>
+
+
+      </div>
+      <div id="share-options-bar" class="share-options-bar" data-behavior="4">
+  <i id="btn-close-shareoptions" class="fa fa-close"></i>
+  <ul class="share-options">
+    
+      <li class="share-option">
+        <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=%2F2018%2F01%2Fcreate-pie-plots-on-a-map-in-r%2F">
+          <i class="fa fa-facebook-official"></i><span>Share on Facebook</span>
+        </a>
+      </li>
+    
+      <li class="share-option">
+        <a class="share-option-btn" target="new" href="https://twitter.com/intent/tweet?text=%2F2018%2F01%2Fcreate-pie-plots-on-a-map-in-r%2F">
+          <i class="fa fa-twitter"></i><span>Share on Twitter</span>
+        </a>
+      </li>
+    
+      <li class="share-option">
+        <a class="share-option-btn" target="new" href="https://plus.google.com/share?url=%2F2018%2F01%2Fcreate-pie-plots-on-a-map-in-r%2F">
+          <i class="fa fa-google-plus"></i><span>Share on Google&#43;</span>
+        </a>
+      </li>
+    
+  </ul>
+</div>
+<div id="share-options-mask" class="share-options-mask"></div>
+    </div>
+    
+    <div id="about">
+  <div id="about-card">
+    <div id="about-btn-close">
+      <i class="fa fa-remove"></i>
+    </div>
+    
+      <img id="about-card-picture" src="//www.gravatar.com/avatar/d09dc2d7aa5c467519e8af89f7b3d94c?s=110" alt="Author&#39;s picture" />
+    
+    <h4 id="about-card-name">Firstname Lastname</h4>
+    
+      <div id="about-card-bio">Super bio with markdown support <strong>COOL</strong></div>
+    
+    
+      <div id="about-card-job">
+        <i class="fa fa-briefcase"></i>
+        <br/>
+        Your job title
+      </div>
+    
+    
+      <div id="about-card-location">
+        <i class="fa fa-map-marker"></i>
+        <br/>
+        France
+      </div>
+    
+  </div>
+</div>
+
+    <div id="algolia-search-modal" class="modal-container">
+  <div class="modal">
+    <div class="modal-header">
+      <span class="close-button"><i class="fa fa-close"></i></span>
+      <a href="https://algolia.com" target="_blank" rel="noopener" class="searchby-algolia text-color-light link-unstyled">
+        <span class="searchby-algolia-text text-color-light text-small">by</span>
+        <img class="searchby-algolia-logo" src="https://www.algolia.com/static_assets/images/press/downloads/algolia-light.svg">
+      </a>
+      <i class="search-icon fa fa-search"></i>
+      <form id="algolia-search-form">
+        <input type="text" id="algolia-search-input" name="search"
+          class="form-control input--large search-input" placeholder="Search" />
+      </form>
+    </div>
+    <div class="modal-body">
+      <div class="no-result text-color-light text-center">no post found</div>
+      <div class="results">
+        
+        
+          <div class="media">
+            
+            <div class="media-body">
+              <a class="link-unstyled" href="/2018/02/map-prisons-in-the-united-states/">
+                <h3 class="media-heading">Map prisons in the United States</h3>
+              </a>
+              <span class="media-meta">
+                <span class="media-date text-small">
+                  Feb 2, 2018
+                </span>
+              </span>
+              <div class="media-content hide-xs font-merryweather">According to Census 2010, a total number of 2,263,602 persons were incarcerated in the United States. Among them, 172,020 were in federal prisons, 1,248,167 in state prisons, and 682,043 in local jails. Despite 1 in every 110 adults are behind bars, most ordenary people have no idea where are they locked up.
+library(totalcensus) library(tidyverse) library(ggmap) # federal and state prison location and population ============================= # search tables for fedral prison search_tablecontents(&quot;decennial&quot;) # PCT0200005 has the total population in federal prison # PCT0200006 has state prison population # read prison population data pris_pop &lt;- read_decennial( year = 2010, states = &quot;US&quot;, table_contents = c( &quot;total = PCT0200003&quot;, &quot;fed_pris = PCT0200005&quot;, &quot;state_pris = PCT0200006&quot;, &quot;local_jail = PCT0200007&quot; ), summary_level = &quot;county subdivision&quot;, show_progress = FALSE ) %&gt;% # remove county subdivisions that has no prison popualation filter(total !</div>
+            </div>
+            <div style="clear:both;"></div>
+            <hr>
+          </div>
+        
+          <div class="media">
+            
+            <div class="media-body">
+              <a class="link-unstyled" href="/2018/01/the-most-popular-president-lincoln-or-washington/">
+                <h3 class="media-heading">Is your town named after Lincoln or Washington?</h3>
+              </a>
+              <span class="media-meta">
+                <span class="media-date text-small">
+                  Jan 1, 2018
+                </span>
+              </span>
+              <div class="media-content hide-xs font-merryweather">Washington and Lincoln are the two greatest presidents in the history of the United States. This post, however, does not discuss how great they are. Instead, I want to show a fun fact related the two presidents: how many cities and towns (and equivalents) are named after them. I am living in Lincoln, Rhode Island, a town so named in honor of President Lincoln.
+The data are extracted from decennial census 2010, the most detailed census so far.</div>
+            </div>
+            <div style="clear:both;"></div>
+            <hr>
+          </div>
+        
+          <div class="media">
+            
+            <div class="media-body">
+              <a class="link-unstyled" href="/2018/01/create-pie-plots-on-a-map-in-r/">
+                <h3 class="media-heading">Plot pie charts of racial composition in largest metro areas on a map in R</h3>
+              </a>
+              <span class="media-meta">
+                <span class="media-date text-small">
+                  Jan 1, 2018
+                </span>
+              </span>
+              <div class="media-content hide-xs font-merryweather">Pie chart has been criticized for being a poor visualization and is not recommended in R community. The popular ggplot2 package discourages the use of pie charts and there is no dedicated geom_pie for it.
+Although the criticism is mostly valid, there is a case that pie chart can be useful: pie charts on maps. Pie charting on map is a compact way to show composition by locations.
+A recent R package, scatterpie by Guangchuang Yu, specializes in making pie charts at multiple locations.</div>
+            </div>
+            <div style="clear:both;"></div>
+            <hr>
+          </div>
+        
+          <div class="media">
+            
+            <div class="media-body">
+              <a class="link-unstyled" href="/2017/12/use-totalcensus-package-to-determine-relationship-between-geographic-entities/">
+                <h3 class="media-heading">Determine relationship between census geographic entities with totalcensus package</h3>
+              </a>
+              <span class="media-meta">
+                <span class="media-date text-small">
+                  Dec 12, 2017
+                </span>
+              </span>
+              <div class="media-content hide-xs font-merryweather">This is an application example of totalcensus package.
+The geographic hierarchy primer in Census 2010 summary file 1 technical documentation displays the relationship between geographic entities. The lower one of the two entities connected by a line is entirely within the boundary of the upper one. For example, a county subdivision is always within the boundaries of a county and a school district always within the boundaries of a state. If two entities are not connected, they may not belong to each other.</div>
+            </div>
+            <div style="clear:both;"></div>
+            <hr>
+          </div>
+        
+          <div class="media">
+            
+            <div class="media-body">
+              <a class="link-unstyled" href="/2017/12/census_data_zip_code/">
+                <h3 class="media-heading">Proccess 5-digit ZIP Code Tabulation Area (ZCTA5) data with totalcensus package</h3>
+              </a>
+              <span class="media-meta">
+                <span class="media-date text-small">
+                  Dec 12, 2017
+                </span>
+              </span>
+              <div class="media-content hide-xs font-merryweather">This is an example of applications of totalcensus package. To install the package, follow the instructions at https://github.com/GL-Li/totalcensus.
+In this example, we examine data related to 5-digit ZIP Code Tabulation Area (ZCTA5), using 2016 ACS 5-year survey summary files. Let’s first load the libraries and then answer a couple questions related to zip code
+library(totalcensus) library(data.table) library(magrittr) library(ggplot2) library(ggmap) What’s the population in a ZCTA5 These population data can be easily obtained with the code below.</div>
+            </div>
+            <div style="clear:both;"></div>
+            <hr>
+          </div>
+        
+          <div class="media">
+            
+            <div class="media-body">
+              <a class="link-unstyled" href="/2017/09/build-a-r-package-for-yourself/">
+                <h3 class="media-heading">Build a R package for yourself</h3>
+              </a>
+              <span class="media-meta">
+                <span class="media-date text-small">
+                  Sep 9, 2017
+                </span>
+              </span>
+              <div class="media-content hide-xs font-merryweather">A R user can benefit a lot from building packages. I have read people writing about the benefit in various occasions and cannot agree more after building my first package. We don’t have to a be R developer to write packages. Developers write packages for others; we can just write packages for ourselves. As a R user, we must have written functions and collected datasets, and may have used them across projects or may want to use them later on.</div>
+            </div>
+            <div style="clear:both;"></div>
+            <hr>
+          </div>
+        
+          <div class="media">
+            
+            <div class="media-body">
+              <a class="link-unstyled" href="/2017/08/process-2010-census-data-with-data-table/">
+                <h3 class="media-heading">Extract US Census 2010 data with data.table and dplyr</h3>
+              </a>
+              <span class="media-meta">
+                <span class="media-date text-small">
+                  Aug 8, 2017
+                </span>
+              </span>
+              <div class="media-content hide-xs font-merryweather">This post explains how to extract information from the original dataset of the US 2010 census summary file 1 with urban/rural update, using data.table or dplyr package in R.
+Why do we want to work with the original data? You may ask, when there are already R packages, such as UScensus2010, censusapi, and tidycensus, which help user get the data.
+The biggest benefit is that you will have full access to all the census 2010 data.</div>
+            </div>
+            <div style="clear:both;"></div>
+            <hr>
+          </div>
+        
+          <div class="media">
+            
+            <div class="media-body">
+              <a class="link-unstyled" href="/2017/08/place-text-at-right-location/">
+                <h3 class="media-heading">ggplot2: place text at right location</h3>
+              </a>
+              <span class="media-meta">
+                <span class="media-date text-small">
+                  Aug 8, 2017
+                </span>
+              </span>
+              <div class="media-content hide-xs font-merryweather">A common task in plotting is adding texts as labels or annotations to specific locations. ggplot() has functions geom_text(), geom_label() and annotate() for this purpose. In this post we discuss how ggplot2 controls positioning of text.
+First we need to specify (x, y) coordinate in the plot where the text is placed. By default, the center of the text is at (x, y), which is sometimes not what we want, as shown in the example below.</div>
+            </div>
+            <div style="clear:both;"></div>
+            <hr>
+          </div>
+        
+          <div class="media">
+            
+            <div class="media-body">
+              <a class="link-unstyled" href="/2017/08/ggplot2-group-overrides-default-grouping/">
+                <h3 class="media-heading">ggplot2: aes(group = ...) overrides default grouping</h3>
+              </a>
+              <span class="media-meta">
+                <span class="media-date text-small">
+                  Aug 8, 2017
+                </span>
+              </span>
+              <div class="media-content hide-xs font-merryweather">Default grouping in ggplot2 ggplot2 can subset all data into groups and give each group its own appearance and transformation. In many cases new users are not aware that default groups have been created, and are surprised when seeing unexpected plots.
+There are two ways in which ggplot2 creates groups implicitly:
+ If x or y are categorical variables, the rows with the same level form a group. Users often overlook this type of default grouping.</div>
+            </div>
+            <div style="clear:both;"></div>
+            <hr>
+          </div>
+        
+          <div class="media">
+            
+            <div class="media-body">
+              <a class="link-unstyled" href="/2017/08/a-uniform-way-to-use-ggplot2/">
+                <h3 class="media-heading">My uniform way of using ggplot2</h3>
+              </a>
+              <span class="media-meta">
+                <span class="media-date text-small">
+                  Aug 8, 2017
+                </span>
+              </span>
+              <div class="media-content hide-xs font-merryweather">Just finished reading Hadley Wickham’s ggplot2 book, (second eition). Before that I have been using ggplot2 for a couple of years, mainly learned by reading documentation and searching for help online.
+The ggplot2 package is a powerful and comprehensive tool for generating static plots, but I also feel it is a little bit too flexible; the same plot can be made with many different ways. This fexibility provides obvious convenience but also introduces a lot of confusion and extra burden of memorization.</div>
+            </div>
+            <div style="clear:both;"></div>
+            <hr>
+          </div>
+        
+      </div>
+    </div>
+    <div class="modal-footer">
+      <p class="results-count text-medium"
+         data-message-zero="no post found"
+         data-message-one="1 post found"
+         data-message-other="{n} posts found">
+         11 posts found
+      </p>
+    </div>
+  </div>
+</div>
+    
+  
+    
+    <div id="cover" style="background-image:url('/images/cover.jpg');"></div>
+  
+
+
+    
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js" integrity="sha256-/BfiIkHlHoVihZdc6TFuj7MmJ0TWcWsMXkeDFwhi0zw=" crossorigin="anonymous"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.7/js/jquery.fancybox.min.js" integrity="sha256-GEAnjcTqVP+vBp3SSc8bEDQqvWAZMiHyUSIorrWwH50=" crossorigin="anonymous"></script>
+
+
+<script src="/js/script-qi9wbxp2ya2j6p7wx1i6tgavftewndznf4v0hy2gvivk1rxgc3lm7njqb6bz.min.js"></script>
+
+
+
+<script>
+$(document).ready(function() {
+  hljs.configure({ classPrefix: '', useBR: false });
+  $('pre.code-highlight > code, pre > code').each(function(i, block) {
+    if (!$(this).hasClass('codeblock')) {
+      $(this).addClass('codeblock');
+    }
+    hljs.highlightBlock(block);
+  });
+});
+</script>
+
+
+  
+    
+      <script>
+        var disqus_config = function () {
+          this.page.url = '\/2018\/01\/create-pie-plots-on-a-map-in-r\/';
+          
+            this.page.identifier = '\/2018\/01\/create-pie-plots-on-a-map-in-r\/'
+          
+        };
+        (function() {
+          
+          
+          if (window.location.hostname == "localhost") {
+            return;
+          }
+          var d = document, s = d.createElement('script');
+          var disqus_shortname = 'hugo-tranquilpeak-theme';
+          s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+
+          s.setAttribute('data-timestamp', +new Date());
+          (d.head || d.body).appendChild(s);
+        })();
+      </script>
+    
+  
+
+
+
+    
+  </body>
+</html>
+

@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html prefix="og: http://ogp.me/ns#">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title>Plot pie charts of racial composition in largest metro areas on a map in R &middot; My Name</title>
+        <meta name="description" content="Pie chart has been criticized for being a poor visualization and is not recommended in R community. The popular ggplot2 package discourages the use of pie charts and there is no dedicated geom_pie for it.
+Although the criticism is mostly valid, there is a case that pie chart can be useful: pie charts on maps. Pie charting on map is a compact way to show composition by locations.
+A recent R package, scatterpie by Guangchuang Yu, specializes in making pie charts at multiple locations.">
+        <meta name="HandheldFriendly" content="True">
+        <meta name="MobileOptimized" content="320">
+        <meta name="generator" content="Hugo 0.31.1" />
+        <meta name="robots" content="index,follow">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta property="og:title" content="Plot pie charts of racial composition in largest metro areas on a map in R">
+<meta property="og:description" content="Pie chart has been criticized for being a poor visualization and is not recommended in R community. The popular ggplot2 package discourages the use of pie charts and there is no dedicated geom_pie for it.
+Although the criticism is mostly valid, there is a case that pie chart can be useful: pie charts on maps. Pie charting on map is a compact way to show composition by locations.
+A recent R package, scatterpie by Guangchuang Yu, specializes in making pie charts at multiple locations.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="/2018/01/17/2018-01-16-create-pie-plots-on-a-map-in-r/">
+        <link rel="stylesheet" href="/dist/styles.css">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,400,600,700,300&subset=latin,cyrillic-ext,latin-ext,cyrillic">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+        
+        
+    </head>
+    <body>
+        
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'XXX', 'auto');
+ga('send', 'pageview');
+</script>
+
+
+        <div id="wrapper">
+            <header class="site-header">
+                <div class="container">
+                    <div class="site-title-wrapper">
+                        
+                            <h1 class="site-title">
+                                <a title="Ghostwriter example" href="/">Ghostwriter example</a>
+                            </h1>
+                        
+                        <a class="button-square" href="/index.xml"><i class="fa fa-rss"></i></a>
+                        
+                            <a class="button-square button-social hint--top" data-hint="Twitter" title="Twitter" href="https://twitter.com/XXX">
+                                <i class="fa fa-twitter"></i>
+                            </a>
+                        
+                        
+                            <a class="button-square button-social hint--top" data-hint="Gitlab" title="Gitlab" href="https://gitlab.com/XXX">
+                                <i class="fa fa-gitlab"></i>
+                            </a>
+                        
+                        
+                            <a class="button-square button-social hint--top" data-hint="Github" title="Github" href="https://github.com/XXX">
+                                <i class="fa fa-github-alt"></i>
+                            </a>
+                        
+                        
+                            <a class="button-square button-social hint--top" data-hint="Stack Overflow" title="Stack Overflow" href="https://stackoverflow.com/users/XXX/YYY">
+                                <i class="fa fa-stack-overflow"></i>
+                            </a>
+                        
+                        
+                            <a class="button-square button-social hint--top" data-hint="LinkedIn" title="LinkedIn" href="https://linkedin.com/in/XXX/">
+                                <i class="fa fa-linkedin"></i>
+                            </a>
+                        
+                        
+                            <a class="button-square button-social hint--top" data-hint="Google+" title="Google+" href="https://google.com/&#43;XXX">
+                                <i class="fa fa-google-plus"></i>
+                            </a>
+                        
+                        
+                            <a class="button-square button-social hint--top" data-hint="Email" title="Email" href="mailto:XXX@example.com">
+                                <i class="fa fa-envelope"></i>
+                            </a>
+                        
+                    </div>
+
+                    <ul class="site-nav">
+                        
+    <li class="site-nav-item">
+        <a title="Blog" href="/">Blog</a>
+    </li>
+
+    <li class="site-nav-item">
+        <a title="Projects" href="/project/">Projects</a>
+    </li>
+
+    <li class="site-nav-item">
+        <a title="Contact" href="/page/contact/">Contact</a>
+    </li>
+
+    <li class="site-nav-item">
+        <a title="About" href="/page/about/">About</a>
+    </li>
+
+                    </ul>
+                </div>
+            </header>
+
+            <div id="container">
+
+
+<div class="container">
+    <article class="post-container" itemscope="" itemtype="http://schema.org/BlogPosting">
+        <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">Plot pie charts of racial composition in largest metro areas on a map in R</h1>
+    
+    <p class="post-date">
+        <span>Published <time datetime="2018-01-17" itemprop="datePublished">Wed, Jan 17, 2018</time></span>
+        <span>by</span>
+        <span itemscope="" itemprop="author" itemtype="https://schema.org/Person">
+            <span itemprop="name">
+                <a href="https://google.com/&#43;XXX" itemprop="url" rel="author">GL Li</a>
+            </span>
+        </span>
+    </p>
+</header>
+
+        <div class="post-content clearfix" itemprop="articleBody">
+    
+
+    <p>Pie chart has been criticized for being a poor visualization and is not recommended in R community. The popular <code>ggplot2</code> package discourages the use of pie charts and there is no dedicated <code>geom_pie</code> for it.</p>
+<p>Although the criticism is mostly valid, there is a case that pie chart can be useful: pie charts on maps. Pie charting on map is a compact way to show composition by locations.</p>
+<p>A recent <code>R</code> package, <a href="https://github.com/GuangchuangYu/scatterpie"><code>scatterpie</code></a> by Guangchuang Yu, specializes in making pie charts at multiple locations. This package is an extension of <code>ggplot2</code> so it will be easy for <code>ggplot2</code> users.</p>
+<p>We will use <code>scatterpie</code> package to plot the racial composition of largest metropolitan areas in the United state. The demographics data is extracted from 2016 American Community Survey 1-year estimate with <a href="https://github.com/GL-Li/totalcensus"><code>totalcensus</code></a> package.</p>
+<p>Let’s first load the required packages.</p>
+<pre class="r"><code>library(scatterpie)
+library(totalcensus)
+library(dplyr)</code></pre>
+<p>Now we extract total population and population of selected races in metro areas from 2016 ACS 1-year estimate. We will only keep metro areas with population over one million.</p>
+<pre class="r"><code># read all metro data
+metro &lt;- read_acs1year(
+    year = 2016,
+    states = &quot;US&quot;,
+    table_contents = c(
+        &quot;white = C02003_003&quot;, 
+        &quot;black = C02003_004&quot;, 
+        &quot;asian = C02003_006&quot;
+    ),
+    geo_headers = &quot;CBSA&quot;,
+    summary_level = &quot;310&quot;
+) %&gt;%
+    mutate(others = population - white - black - asian)</code></pre>
+<pre><code>## Reading US 2016 ACS 1-year survey geography file</code></pre>
+<pre class="r"><code># keep only largest metro and make some cleaning
+largest &lt;- metro %&gt;%
+    filter(population &gt; 1e6) %&gt;%
+    # Los Angeles metro changed CBSA from 31100 to 31080, hand correct the coordinate
+    # mutate(lon = ifelse(GEOID == &quot;31000US31080&quot;, -118.18194, lon),
+    #        lat = ifelse(GEOID == &quot;31000US31080&quot;, 34.10939, lat)) %&gt;%
+    select(NAME, lon, lat, total = population, white, black, asian, others) %&gt;%
+    arrange(-total)
+
+head(largest, 3)</code></pre>
+<pre><code>##                                               NAME       lon      lat
+## 1 New York-Newark-Jersey City, NY-NJ-PA Metro Area  -73.8745 40.77432
+## 2    Los Angeles-Long Beach-Anaheim, CA Metro Area -118.1819 34.10939
+## 3    Chicago-Naperville-Elgin, IL-IN-WI Metro Area  -87.8283 41.82352
+##      total    white   black   asian  others
+## 1 20153634 11704438 3430610 2215765 2802821
+## 2 13310447  7080092  880118 2112197 3238040
+## 3  9512968  6202988 1577873  617341 1114766</code></pre>
+<p>With the race data, we are ready to make pie plot on a map with package <code>scatterpie</code>.</p>
+<pre class="r"><code>us &lt;- map_data(&#39;state&#39;)
+ggplot(us, aes(long, lat)) +
+    geom_map(map=us, aes(map_id=region), fill=&quot;grey97&quot;, color=&quot;grey&quot;) +
+    geom_scatterpie(data = largest, 
+                    aes(lon, lat, r = sqrt(total)/2000),
+                    cols = c(&quot;white&quot;, &quot;black&quot;, &quot;asian&quot;, &quot;others&quot;), 
+                    alpha = 0.5) +
+    scale_fill_manual(
+        breaks = c(&quot;white&quot;, &quot;black&quot;, &quot;asian&quot;, &quot;others&quot;),
+        labels = c(&quot;white alone&quot;, &quot;black alone&quot;, &quot;asian alone&quot;, &quot;others&quot;),
+        values = c(&quot;asian&quot; = &quot;orange&quot;,
+                   &quot;white&quot; = &quot;white&quot;,
+                   &quot;black&quot; = &quot;black&quot;,
+                   &quot;others&quot; = &quot;cyan&quot;)
+    ) +
+    labs(title = &quot;Races in metro areas over one million population&quot;,
+         subtitle = &quot;others includes mixed races and American indians, Alaska natives, native Hawaiians and pacific islanders&quot;,
+         caption = &quot;Source: 2016 ACS 1-year estimate&quot;,
+         fill = NULL) +
+    coord_fixed() +
+    theme_bw() +
+    theme(legend.position = c(0.96, 0.02),
+          legend.justification = c(1, 0),
+          panel.grid = element_blank(),
+          panel.border = element_blank(),
+          axis.title = element_blank(),
+          axis.text = element_blank(),
+          axis.ticks = element_blank())</code></pre>
+<p><img src="/post/2018-01-16-create-pie-plots-on-a-map-in-r_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+
+</div>
+
+        <footer class="post-footer clearfix">
+    
+        <p class="post-tags">
+            <span>Tagged:</span>
+            
+            
+                <a href="/tags/census/">census</a>
+            
+        </p>
+    
+
+    <div class="share">
+        
+            <a class="icon-twitter" href="https://twitter.com/share?text=Plot%20pie%20charts%20of%20racial%20composition%20in%20largest%20metro%20areas%20on%20a%20map%20in%20R&url=%2f2018%2f01%2f17%2f2018-01-16-create-pie-plots-on-a-map-in-r%2f"
+                onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+                <i class="fa fa-twitter"></i>
+                <span class="hidden">Twitter</span>
+            </a>
+        
+
+        
+            <a class="icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=%2f2018%2f01%2f17%2f2018-01-16-create-pie-plots-on-a-map-in-r%2f"
+                onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+                <i class="fa fa-facebook"></i>
+                <span class="hidden">Facebook</span>
+            </a>
+        
+
+        
+            <a class="icon-google-plus" href="https://plus.google.com/share?url=%2f2018%2f01%2f17%2f2018-01-16-create-pie-plots-on-a-map-in-r%2f"
+              onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+              <i class="fa fa-google-plus"></i>
+                <span class="hidden">Google+</span>
+            </a>
+        
+        
+    </div>
+</footer>
+
+        
+    <div class="comments">
+        <div id="disqus_thread"></div>
+<script>
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "XXX" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+    </div>
+
+    </article>
+</div>
+
+            </div>
+        </div>
+
+        <footer class="footer">
+            <div class="container">
+                <div class="site-title-wrapper">
+                    <h1 class="site-title">
+                        <a title="Ghostwriter example" href="/">Ghostwriter example</a>
+                    </h1>
+                    <a class="button-square button-jump-top js-jump-top" href="#">
+                        <i class="fa fa-angle-up"></i>
+                    </a>
+                </div>
+
+                <p class="footer-copyright">
+                    <span>&copy; 2018 / Powered by <a href="https://gohugo.io/">Hugo</a></span>
+                </p>
+                <p class="footer-copyright">
+                    <span><a href="https://github.com/roryg/ghostwriter">Ghostwriter theme</a> By <a href="http://jollygoodthemes.com">JollyGoodThemes</a></span>
+                    <span>/ <a href="https://github.com/jbub/ghostwriter">Ported</a> to Hugo By <a href="https://github.com/jbub">jbub</a></span>
+                </p>
+            </div>
+        </footer>
+
+        <script src="/js/jquery-1.11.3.min.js"></script>
+        <script src="/js/jquery.fitvids.js"></script>
+        
+        
+            <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.11.0/r.min.js"></script>
+        
+        
+        <script src="/js/scripts.js"></script>
+    </body>
+</html>
+

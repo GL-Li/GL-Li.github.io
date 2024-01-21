@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="">
+  <meta name="generator" content="Hugo 0.69.0" />
+
+  <title>ggplot2: place text at right location &middot; R &amp; Census</title>
+
+  
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/1.0.0/pure-min.css">
+
+  <!--[if lte IE 8]>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/1.0.0/grids-responsive-old-ie-min.css">
+  <![endif]-->
+  <!--[if gt IE 8]><!-->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/1.0.0/grids-responsive-min.css">
+  <!--<![endif]-->
+
+  <!--[if lte IE 8]>
+  <link rel="stylesheet" href="/css/side-menu-old-ie.css">
+  <![endif]-->
+  <!--[if gt IE 8]><!-->
+  <link rel="stylesheet" href="/css/side-menu.css">
+  <!--<![endif]-->
+
+  <link rel="stylesheet" href="/css/blackburn.css">
+
+  
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+
+  
+  <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet" type="text/css">
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+ 
+  
+
+  
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css">
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  
+  <script>hljs.initHighlightingOnLoad();</script>
+  
+
+  <link rel="shortcut icon" href="/img/favicon.ico" type="image/x-icon" />
+
+  
+  
+
+</head>
+
+
+<body>
+<div id="layout">
+
+  
+<a href="#menu" id="menuLink" class="menu-link">
+  
+  <span></span>
+</a>
+<div id="menu">
+
+  
+
+  <div class="pure-menu">
+    <ul class="pure-menu-list">
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="/"><i class='fa fa-home fa-fw'></i>Home</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="/post/"><i class='fa fa-list fa-fw'></i>Archive</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://www.r-bloggers.com/"><i class='fa fa-comments fa-fw'></i>R-bloggers</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://rweekly.org/"><i class='fa fa-book fa-fw'></i>R Weekly</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://www.census.gov/newsroom/blogs/about.html"><i class='fa fa-microphone fa-fw'></i>Census Blogs</a>
+      
+        </li>
+      
+    </ul>
+  </div>
+
+  <div class="pure-menu social">
+  <ul class="pure-menu-list">
+
+    
+
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="https://twitter.com/guanglai_li" target="_blank"><i class="fa fa-twitter-square fa-fw"></i>Twitter</a>
+    </li>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="https://github.com/GL-Li" target="_blank"><i class="fa fa-github-square fa-fw"></i>GitHub</a>
+    </li>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+  </ul>
+</div>
+
+
+  <div>
+  <div class="small-print">
+    <small>&copy; 2017 - 2019. All rights reserved.</small>
+  </div>
+  <div class="small-print">
+    <small>Built with&nbsp;<a href="https://gohugo.io/" target="_blank">Hugo</a></small>
+    <small>Theme&nbsp;<a href="https://github.com/yoshiharuyamashita/blackburn" target="_blank">Blackburn</a></small>
+  </div>
+</div>
+
+</div>
+
+
+  <div id="main">
+
+
+<div class="header">
+  <h1>ggplot2: place text at right location</h1>
+  <span>GL Li</span>, <span>2017/08/18</span>
+</div>
+<div class="content">
+
+  
+
+  
+
+
+<p>A common task in plotting is adding texts as labels or annotations to specific locations. <code>ggplot()</code> has functions <code>geom_text()</code>, <code>geom_label()</code> and <code>annotate()</code> for this purpose. In this post we discuss how <code>ggplot2</code> controls positioning of text.</p>
+<p>First we need to specify <code>(x, y)</code> coordinate in the plot where the text is placed. By default, the center of the text is at <code>(x, y)</code>, which is sometimes not what we want, as shown in the example below.</p>
+<pre class="r"><code>library(ggplot2)
+df &lt;- data.frame(x = 1:3, 
+                 y = 1:3, 
+                 z = c(&quot;aa\nnew line&quot;, &quot;bb\nnew line 1\nand new line 2&quot;, &quot;cc&quot;))
+g &lt;- ggplot(df, aes(x = x, y = y)) +
+    geom_col() +
+    geom_point(color = &quot;red&quot;) +
+    coord_cartesian(xlim = c(0.3, 3.5), ylim = c(0.5, 3.5))
+g + geom_text(aes(label = z)) +
+    labs(subtitle = &quot;(x, y) set the position of text but often is not we want&quot;)</code></pre>
+<p><img src="/post/2017-08-18-place-object-at-right-location_files/figure-html/unnamed-chunk-2-1.png" width="480" /></p>
+<p>As the text has its own shape and size, we need to determine which part of the text to be superimposed at <code>(x, y)</code>. This positioning is controlled by parameters <code>hjust</code> and <code>vjust</code>. Imaging the text is surrounded by a rectangle and a local coordinate originates at the bottom left corner of the rectangle, <code>(hjust, vjust)</code> then is a local position in the local coordinate. By default, <code>hjust = 0.5</code> and <code>vjust = 0.5</code>, that is, the center of the rectangle is at <code>(x, y)</code>. We can change them to match to <code>(x, y)</code> by borders or corners, as shown in the examples below. The positioning of text is still not ideal as it is too close to <code>(x, y)</code>.</p>
+<pre class="r"><code>library(grid)
+library(gridExtra)
+
+g1 &lt;- g + geom_text(aes(label = z), hjust = 0) +
+    labs(subtitle = &quot;hjust = 0 place left side of the text to (x, y)&quot;)
+g2 &lt;- g + geom_text(aes(label = z), vjust = 1) +
+    labs(subtitle = &quot;vjust = 1 place top of the text to (x, y)&quot;)
+g3 &lt;- g + geom_text(aes(label = z), hjust = 1, vjust = 0) +
+    labs(subtitle = &quot;hjust = 1 and vjust = 0 place tottom\nright cornor of the text to (x, y)&quot;)
+
+grid.arrange(g1, g2, g3, nrow = 1)</code></pre>
+<p><img src="/post/2017-08-18-place-object-at-right-location_files/figure-html/unnamed-chunk-3-1.png" width="960" /></p>
+<p>The parameters <code>nudge_x</code> and <code>nudge_y</code> shift whole text along <code>x</code> and <code>y</code> axis. With them we can add a space between text and <code>(x, y)</code>.</p>
+<pre class="r"><code>g1 &lt;- g + geom_text(aes(label = z), hjust = 0, nudge_x = 0.1) +
+    labs(subtitle = &quot;nudge_x = 0.1 moves text to the right by 0.1&quot;)
+g2 &lt;- g + geom_text(aes(label = z), vjust = 1, nudge_y = -0.1) +
+    labs(subtitle = &quot;nudge_y = -0.1 moves text down by 0.1&quot;)
+g3 &lt;- g + geom_text(aes(label = z), hjust = 1, vjust = 0, nudge_x = -0.1, nudge_y = 0.1) +
+    labs(subtitle = &quot;nudge_x = -0.1 nudge_y = 0.1 to northwest&quot;)
+
+grid.arrange(g1, g2, g3, nrow = 1)</code></pre>
+<p><img src="/post/2017-08-18-place-object-at-right-location_files/figure-html/unnamed-chunk-4-1.png" width="960" /></p>
+<p>For multi-line text, we also want to adjust the line space. The line space is set by parameter <code>lineheight</code>.</p>
+<pre class="r"><code>g1 &lt;- g + geom_text(aes(label = z), hjust = 1, vjust = 0, nudge_x = -0.1, lineheight = 0) +
+    labs(subtitle = &quot;lineheight = 0&quot;)
+g2 &lt;- g + geom_text(aes(label = z), hjust = 1, vjust = 0, nudge_x = -0.1, lineheight = 0.9) +
+    labs(subtitle = &quot;lineheight = 0.9&quot;)
+g3 &lt;- g + geom_text(aes(label = z), hjust = 1, vjust = 0, nudge_x = -0.1, lineheight = 2) +
+    labs(subtitle = &quot;lineheight = 2&quot;)
+
+grid.arrange(g1, g2, g3, nrow = 1)</code></pre>
+<p><img src="/post/2017-08-18-place-object-at-right-location_files/figure-html/unnamed-chunk-5-1.png" width="960" /></p>
+<p>As a final note, some people use <code>hjust</code> and <code>vjust</code> that are <code>&lt; 0</code> or <code>&gt; 1</code> to shift text from <code>(x, y)</code>. This works well to move up and down a single line text but not good to move left and right or multi-line text, as <code>hjust</code> and <code>vjust</code> are relative to dimension of the rectangle around the text. Some bad examples are shown below. So it is better to use <code>nudge_x</code> and <code>nudge_y</code> to shift whole text.</p>
+<pre class="r"><code>g1 &lt;- g + geom_text(aes(label = z), vjust = 1.3) +
+    labs(subtitle = &quot;vjust = 1.3, more line more space&quot;)
+g2 &lt;- g + geom_text(aes(label = z), hjust = -0.2) +
+    labs(subtitle = &quot;hjust = -0.1, longer lines more space&quot;)
+
+grid.arrange(g1, g2, nrow = 1)</code></pre>
+<p><img src="/post/2017-08-18-place-object-at-right-location_files/figure-html/unnamed-chunk-6-1.png" width="768" /></p>
+
+
+  
+<div class="prev-next-post pure-g">
+  <div class="pure-u-1-24" style="text-align: left;">
+    
+    <a href="/2017/08/13/ggplot2-group-overrides-default-grouping/"><i class="fa fa-chevron-left"></i></a>
+    
+  </div>
+  <div class="pure-u-10-24">
+    
+    <nav class="prev">
+      <a href="/2017/08/13/ggplot2-group-overrides-default-grouping/">ggplot2: aes(group = ...) overrides default grouping</a>
+    </nav>
+    
+  </div>
+  <div class="pure-u-2-24">
+    &nbsp;
+  </div>
+  <div class="pure-u-10-24">
+    
+    <nav class="next">
+      <a href="/2017/08/29/process-2010-census-data-with-data-table/">Extract US Census 2010 data with data.table and dplyr</a>
+    </nav>
+    
+  </div>
+  <div class="pure-u-1-24" style="text-align: right;">
+    
+    <a href="/2017/08/29/process-2010-census-data-with-data-table/"><i class="fa fa-chevron-right"></i></a>
+    
+  </div>
+</div>
+
+
+
+  
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+
+(function() {
+    
+    
+    if (window.location.hostname == "localhost")
+        return;
+
+    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+    var disqus_shortname = 'gl-li-github-io';
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com/" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+</div>
+
+</div>
+</div>
+<script src="/js/ui.js"></script>
+<script src="/js/menus.js"></script>
+
+
+<script>
+  
+  if (window.location.hostname != "localhost") {
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-132163439-1', 'auto');
+    ga('send', 'pageview');
+  }
+</script>
+
+
+
+
+
+</body>
+</html>
+

@@ -1,0 +1,89 @@
+---
+title: Compare data.table pipes and magrittr pipes
+author: GL
+date: '2017-07-25'
+slug: Compare-data.table-pipes-and-magrittr-pipes
+categories:
+  - data.table
+tags:
+  - data wrangling
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
+```
+
+We have two ways to chain `data.table` operations, using `data.table` pipes or using `magrittr` pipes. For a data.table ``dt``, the `data.table` pipes take the form of `dt[][][]...` and `magrittr` pipes `dt %>% .[] %>% .[] %>% ...`. 
+
+Let's first compare the readability of the two pipes in the following examples. Hadley Wickham criticized the readability of ``data.table`` pipes in this [stackoverflow post](https://stackoverflow.com/questions/21435339/data-table-vs-dplyr-can-one-do-something-well-the-other-cant-or-does-poorly). The `data.table` pipes, however, are not that hard to follow for those who are familiar with `data.table`. To my eyes, the `magrittr` pipes improve the readability but the `data.table` pipes are still acceptable. It is more of a personal choice.
+```{r}
+library(data.table)
+library(magrittr)
+
+# the data.table pipes
+data.table(iris)[
+    # add a new column "is_setosa", 1 if yes and 0 if no, use two lines of codes 
+    # to clearly show the values
+    Species == "setosa", is_setosa := 1
+][
+    Species != "setosa", is_setosa := 0
+][
+    # changes the Petal.Length of Species "versicolor", other species not affected
+    Species == "versicolor", Petal.Length := 999
+][
+    # calculate sepal area when length > 5. Area is NA if length <= 5
+    Sepal.Length > 5, Sepal.Area := Sepal.Length * Sepal.Width
+][
+    # select columns
+    , .(Species, is_setosa, Petal.Length, Sepal.Area)
+][
+    # average of each column grouped by species
+    , lapply(.SD, mean, na.rm = TRUE), by = Species
+]
+
+
+# the magrittr pipes
+data.table(iris) %>%
+    # add a new column "is_setosa", 1 if yes and 0 if no, use two lines of codes 
+    # to clearly show the values
+    .[Species == "setosa", is_setosa := 1] %>%                         
+    .[Species != "setosa", is_setosa := 0] %>%
+    
+    # changes the Petal.Length of Species "versicolor", other species not affected
+    .[Species == "versicolor", Petal.Length := 999] %>%   
+    
+    # calculate sepal area when length > 5. Area is NA if length <= 5
+    .[Sepal.Length > 5, Sepal.Area := Sepal.Length * Sepal.Width] %>%  
+    
+    # select columns
+    .[, .(Species, is_setosa, Petal.Length, Sepal.Area)] %>%    
+    
+    # average of each column grouped by species
+    .[, lapply(.SD, mean, na.rm = TRUE), by = Species]                  
+```
+
+Will the use of pipes ```%>%``` slow down the computing? In the following code, we add three new columns to a made-up data table with ``data.table`` pipes and `magrittr` pipes. They almost have the same speed.
+
+```{r}
+set.seed(123)
+dt <- data.table(a = sample(letters, 1e5, replace = TRUE),
+                 b = abs(rnorm(1e5)))
+
+datatable_pipe <- function(){
+    dt[, x := sqrt(b)][
+        , y := b^2
+    ][
+        , z := paste0(a , b)
+    ]
+}
+
+magrittr_pipe <- function(){
+    dt[, x := sqrt(b)] %>%
+        .[, y := b^2] %>%
+        .[, z := paste0(a , b)]
+}
+
+rbenchmark::benchmark(datatable_pipe(), magrittr_pipe(), replications=20)
+
+```

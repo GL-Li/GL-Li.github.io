@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Hugo 0.31.1" />
+
+
+<title>Compare data.table pipes and magrittr pipes - R &amp; Census</title>
+<meta property="og:title" content="Compare data.table pipes and magrittr pipes - R &amp; Census">
+
+
+
+  
+
+
+
+
+
+
+
+
+<link href='//cdn.bootcss.com/highlight.js/9.11.0/styles/github.min.css' rel='stylesheet' type='text/css' />
+
+
+
+<link rel="stylesheet" href="../../../../css/fonts.css" media="all">
+<link rel="stylesheet" href="../../../../css/main.css" media="all">
+
+
+
+    
+
+  </head>
+  <body>
+    <div class="wrapper">
+      <header class="header">
+        <nav class="nav">
+  <a href="../../../../" class="nav-logo">
+    <img src="../../../../images/logo.png"
+         width="50"
+         height="50"
+         alt="Logo">
+  </a>
+
+  <ul class="nav-links">
+    
+    <li><a href="../../../../about/">About</a></li>
+    
+    <li><a href="../../../../projects/">Projects</a></li>
+    
+    <li><a href="../../../../links/">Blogroll</a></li>
+    
+    <li><a href="../../../../collections/">Collections</a></li>
+    
+  </ul>
+</nav>
+
+      </header>
+
+
+<main class="content" role="main">
+
+  <article class="article">
+    
+    <span class="article-duration">3 min read</span>
+    
+
+    <h1 class="article-title">Compare data.table pipes and magrittr pipes</h1>
+
+    
+    <span class="article-date">2017/07/25</span>
+    
+
+    <div class="article-content">
+      <p>There are two ways to chain <code>data.table</code> operation, using <code>data.table</code> pipes or using <code>magrittr</code> pipes. For a data.table <code>dt</code>, the <code>data.table</code> pipes take the form of <code>dt[][][]...</code> and <code>magrittr</code> pipes <code>dt %&gt;% .[] %&gt;% .[] %&gt;% ...</code>.</p>
+<p>Below is an example that compares their readability. The readability of <code>data.table</code> pipes has been criticized in this <a href="https://stackoverflow.com/questions/21435339/data-table-vs-dplyr-can-one-do-something-well-the-other-cant-or-does-poorly">stackoverflow post</a>. It seems, however, not that hard to follow for those who have basic knowledge of <code>data.table</code>. To my eyes, the <code>magrittr</code> pipes improves the readability but not enough to replace the <code>data.table</code> pipes. It is more of a personal choice.</p>
+<pre class="r"><code>library(data.table)
+library(magrittr)
+
+# the data.table pipes
+data.table(iris)[
+    # add a new column &quot;is_setosa&quot;, 1 if yes and 0 if no, use two lines of codes 
+    # to clearly show the values
+    Species == &quot;setosa&quot;, is_setosa := 1
+][
+    Species != &quot;setosa&quot;, is_setosa := 0
+][
+    # changes the Petal.Length of Species &quot;versicolor&quot;, other species not affected
+    Species == &quot;versicolor&quot;, Petal.Length := 999
+][
+    # calculate sepal area when length &gt; 5. Area is NA if length &lt;= 5
+    Sepal.Length &gt; 5, Sepal.Area := Sepal.Length * Sepal.Width
+][
+    # select columns
+    , .(Species, is_setosa, Petal.Length, Sepal.Area)
+][
+    # average of each column grouped by species
+    , lapply(.SD, mean, na.rm = TRUE), by = Species
+]</code></pre>
+<pre><code>##       Species is_setosa Petal.Length Sepal.Area
+## 1:     setosa         1        1.462   19.76364
+## 2: versicolor         0      999.000   16.87340
+## 3:  virginica         0        5.552   19.83633</code></pre>
+<pre class="r"><code># the magrittr pipes
+data.table(iris) %&gt;%
+    # add a new column &quot;is_setosa&quot;, 1 if yes and 0 if no, use two lines of codes 
+    # to clearly show the values
+    .[Species == &quot;setosa&quot;, is_setosa := 1] %&gt;%                         
+    .[Species != &quot;setosa&quot;, is_setosa := 0] %&gt;%
+    
+    # changes the Petal.Length of Species &quot;versicolor&quot;, other species not affected
+    .[Species == &quot;versicolor&quot;, Petal.Length := 999] %&gt;%   
+    
+    # calculate sepal area when length &gt; 5. Area is NA if length &lt;= 5
+    .[Sepal.Length &gt; 5, Sepal.Area := Sepal.Length * Sepal.Width] %&gt;%  
+    
+    # select columns
+    .[, .(Species, is_setosa, Petal.Length, Sepal.Area)] %&gt;%    
+    
+    # average of each column grouped by species
+    .[, lapply(.SD, mean, na.rm = TRUE), by = Species]                  </code></pre>
+<pre><code>##       Species is_setosa Petal.Length Sepal.Area
+## 1:     setosa         1        1.462   19.76364
+## 2: versicolor         0      999.000   16.87340
+## 3:  virginica         0        5.552   19.83633</code></pre>
+<p>Will the use of pipes <code>%&gt;%</code> slow down the computing? In the following code, we add three new columns to a made-up data table with <code>data.table</code> pipes and <code>magrittr</code> pipes. They almost have the same speed.</p>
+<pre class="r"><code>set.seed(123)
+dt &lt;- data.table(a = sample(letters, 1e5, replace = TRUE),
+                 b = abs(rnorm(1e5)))
+
+datatable_pipe &lt;- function(){
+    dt[, x := sqrt(b)][
+        , y := b^2
+    ][
+        , z := paste0(a , b)
+    ]
+}
+
+magrittr_pipe &lt;- function(){
+    dt[, x := sqrt(b)] %&gt;%
+        .[, y := b^2] %&gt;%
+        .[, z := paste0(a , b)]
+}
+
+rbenchmark::benchmark(datatable_pipe(), magrittr_pipe(), replications=20)</code></pre>
+<pre><code>##               test replications elapsed relative user.self sys.self
+## 1 datatable_pipe()           20   3.649    1.054     3.644    0.004
+## 2  magrittr_pipe()           20   3.461    1.000     3.460    0.000
+##   user.child sys.child
+## 1          0         0
+## 2          0         0</code></pre>
+
+    </div>
+  </article>
+
+  
+<section id="comments">
+  <div id="disqus_thread"></div>
+  <script>
+  var disqus_config = function () {
+  
+  };
+  (function() {
+    var inIFrame = function() {
+      var iframe = true;
+      try { iframe = window.self !== window.top; } catch (e) {}
+      return iframe;
+    };
+    if (inIFrame()) return;
+    var d = document, s = d.createElement('script');
+    s.src = '//gl-li-github-io.disqus.com/embed.js'; s.async = true;
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
+  })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</section>
+
+
+
+</main>
+
+      <footer class="footer">
+          
+        <ul class="footer-links">
+          <li>
+              &copy;<a href="http://www.gl-li.com/about/">Guanglai Li</a>
+          </li>
+          <li>
+            <a href="https://twitter.com/guanglai_li" target="_blank">Twitter</a>
+          </li>
+          <li>
+            <a href="https://github.com/GL-Li" class="footer-links-kudos">Github</a>
+          </li>
+        </ul>
+      </footer>
+
+    </div>
+    
+
+
+
+<script src="//cdn.bootcss.com/highlight.js/9.11.0/highlight.min.js"></script>
+
+
+
+<script src="//cdn.bootcss.com/highlight.js/9.11.0/languages/r.min.js"></script>
+<script src="//cdn.bootcss.com/highlight.js/9.11.0/languages/yaml.min.js"></script>
+<script>hljs.configure({languages: []}); hljs.initHighlightingOnLoad();</script>
+
+
+
+    
+
+    
+  </body>
+</html>
+

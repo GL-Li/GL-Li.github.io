@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="">
+  <meta name="generator" content="Hugo 0.69.0" />
+
+  <title>Extract US Census 2010 data with data.table and dplyr &middot; R &amp; Census</title>
+
+  
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/1.0.0/pure-min.css">
+
+  <!--[if lte IE 8]>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/1.0.0/grids-responsive-old-ie-min.css">
+  <![endif]-->
+  <!--[if gt IE 8]><!-->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/1.0.0/grids-responsive-min.css">
+  <!--<![endif]-->
+
+  <!--[if lte IE 8]>
+  <link rel="stylesheet" href="/css/side-menu-old-ie.css">
+  <![endif]-->
+  <!--[if gt IE 8]><!-->
+  <link rel="stylesheet" href="/css/side-menu.css">
+  <!--<![endif]-->
+
+  <link rel="stylesheet" href="/css/blackburn.css">
+
+  
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+
+  
+  <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet" type="text/css">
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+ 
+  
+
+  
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css">
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  
+  <script>hljs.initHighlightingOnLoad();</script>
+  
+
+  <link rel="shortcut icon" href="/img/favicon.ico" type="image/x-icon" />
+
+  
+  
+
+</head>
+
+
+<body>
+<div id="layout">
+
+  
+<a href="#menu" id="menuLink" class="menu-link">
+  
+  <span></span>
+</a>
+<div id="menu">
+
+  
+
+  <div class="pure-menu">
+    <ul class="pure-menu-list">
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="/"><i class='fa fa-home fa-fw'></i>Home</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="/post/"><i class='fa fa-list fa-fw'></i>Archive</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://www.r-bloggers.com/"><i class='fa fa-comments fa-fw'></i>R-bloggers</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://rweekly.org/"><i class='fa fa-book fa-fw'></i>R Weekly</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://www.census.gov/newsroom/blogs/about.html"><i class='fa fa-microphone fa-fw'></i>Census Blogs</a>
+      
+        </li>
+      
+    </ul>
+  </div>
+
+  <div class="pure-menu social">
+  <ul class="pure-menu-list">
+
+    
+
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="https://twitter.com/guanglai_li" target="_blank"><i class="fa fa-twitter-square fa-fw"></i>Twitter</a>
+    </li>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="https://github.com/GL-Li" target="_blank"><i class="fa fa-github-square fa-fw"></i>GitHub</a>
+    </li>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+  </ul>
+</div>
+
+
+  <div>
+  <div class="small-print">
+    <small>&copy; 2017 - 2019. All rights reserved.</small>
+  </div>
+  <div class="small-print">
+    <small>Built with&nbsp;<a href="https://gohugo.io/" target="_blank">Hugo</a></small>
+    <small>Theme&nbsp;<a href="https://github.com/yoshiharuyamashita/blackburn" target="_blank">Blackburn</a></small>
+  </div>
+</div>
+
+</div>
+
+
+  <div id="main">
+
+
+<div class="header">
+  <h1>Extract US Census 2010 data with data.table and dplyr</h1>
+  <span>GL Li</span>, <span>2017/08/29</span>
+</div>
+<div class="content">
+
+  
+
+  
+
+
+<p>This post explains how to extract information from the original dataset of the US 2010 census summary file 1 with urban/rural update, using data.table or dplyr package in R.</p>
+<p>Why do we want to work with the original data? You may ask, when there are already R packages, such as UScensus2010, censusapi, and tidycensus, which help user get the data.</p>
+<p>The biggest benefit is that you will have full access to all the census 2010 data. The total size of the US 2010 national census summary 1 file with urban/rural update is nearly 150Gb, which is too heavy to be included as dataset in a package. The stand-alone UScensus2010 package only delivers selected demographic data. Others provide an access to United States Census Bureau’s APIs, which also offers selected data. By dealing with the original data directly, you can extract whatever data you want.</p>
+<p>In recent years, fast development of packages data.table and dplyr makes it possible for R to process original 2010 census data in a reasonable time frame. In the following example, I retrieved the latitude, longitude, population of all race and of black people living in each census block in the city of South Bend Indiana. The whole process takes about 4 seconds on a four years old laptop. With these data in hand we can plot nicely where black people live down to census block level on a map downloaded from GoogleMap. In a city most census blocks are equivalent to street blocks.</p>
+<p><img src="/rmarkdown-libs/figure-html4/unnamed-chunk-2-1.png" width="768" /></p>
+<p>This post is organized in this order: I will first give a brief introduction to the 2010 census summary file 1 with urban/rural update. Then I will show how to extract data step by step using R and data.table package with the example shown above. The codes are verbose in this section as I want to show the details. To clean it up I will then give a more concise codes that use pipe operator from magrittr package. As many users are more familiar with dplyr package, I will also translate the data.table code to dplyr code. The dplyr approach is sufficiently fast for most applications.</p>
+<div id="file-structure-of-the-census-2010-summary-1-file" class="section level2">
+<h2>File structure of the census 2010 summary 1 file</h2>
+<p>The 2010 census data with urban/rural update can be downloaded from <a href="https://www2.census.gov/census_2010/04-Summary_File_1/Urban_Rural_Update/">United States Census Bureau official site</a>. The total size is nearly 150 GB so make sure you have enough hard drive space for it. The data is split into 50 states and DC. Click on a state, for example, Indiana, there is a file named in2010.ur1.zip. Download this file and unzip it to a folder named with the abbreviation “IN”. Do this for all other state and DC.</p>
+<p>Inside the folder “IN/” there are a geographic header record file named <code>ingeo2010.ur1</code> and 48 data files named as <code>in000012010.ur1</code>, <code>in000022010.ur1</code>, …, <code>in000482010.ur1</code>. The first two characters <code>in</code> is the abbreviation of Indiana. The file extension <code>ur1</code> stands for summary file <strong>1</strong> with <strong>u</strong>rban <strong>r</strong>ural update. The last four numbers <code>2010</code> before file extension indicate the census year 2010. The numbers <code>00001</code>, <code>00002</code>, …, and <code>00048</code> are the sequence of the files. These files are called <code>file 01</code>, <code>file 02</code>, …, and <code>file 48</code> in the <a href="https://www.census.gov/prod/cen2010/doc/sf1.pdf">techinical documentation of the summary file 1</a>. The documentation is our dictionary in using these files and we will talk more about it later.</p>
+<p>The geographic header record file <code>ingeo2010.ur1</code> contains the geographic information. It has 331556 lines; each line corresponds to a geographic entity in the census data of Indiana. A geographic entity can be a state, a county, a city, a census tract, a census block etc. A line can be up to 500 characters long, including spaces. Unique to each line is the logical record number, which is 7 characters long, located from 19 to 25 characters in a line. Page 2-8 of the technical documentation lists all geographic field in a line. Each field is assigned with a short reference code. Here are list of frequently use ones:</p>
+<table>
+<thead>
+<tr class="header">
+<th>geographic field</th>
+<th>reference</th>
+<th>starting position</th>
+<th>ending position</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>logical record number</td>
+<td>LOGRECNO</td>
+<td>19</td>
+<td>25</td>
+</tr>
+<tr class="even">
+<td>summary level</td>
+<td>SUMLEV</td>
+<td>9</td>
+<td>11</td>
+</tr>
+<tr class="odd">
+<td>geographic component</td>
+<td>GEOCOMP</td>
+<td>12</td>
+<td>13</td>
+</tr>
+<tr class="even">
+<td>county FIPS</td>
+<td>COUNTY</td>
+<td>30</td>
+<td>32</td>
+</tr>
+<tr class="odd">
+<td>place FIPS</td>
+<td>PLACE</td>
+<td>46</td>
+<td>50</td>
+</tr>
+<tr class="even">
+<td>Metropolitan Area FIPS</td>
+<td>CBSA</td>
+<td>113</td>
+<td>117</td>
+</tr>
+<tr class="odd">
+<td>internal point (latitude)</td>
+<td>INTPTLAT</td>
+<td>337</td>
+<td>347</td>
+</tr>
+<tr class="even">
+<td>internal point (longitude)</td>
+<td>INTPTLON</td>
+<td>348</td>
+<td>359</td>
+</tr>
+</tbody>
+</table>
+<p>The data files contain the recorded census data. They are <code>.csv</code> files, that is, each data field is separated by a comma. For example, file 02 contains the population in urban and rural area. Its 5th field is the logical record number that matches the geographic header record file. The 6th field is total population, 7th field urban population, 8th field population in urbanized area, … The properties of each field is listed in the technical documentation. If you want to know the details of, for example file 17, just search in the pdf file of the technical documentation for “file 17” and read through the description.</p>
+</div>
+<div id="extract-the-2010-census-data-step-by-step" class="section level2">
+<h2>Extract the 2010 census data step by step</h2>
+<p>Say we are interested in the population and race in the city of South Bend, Indiana and we want to plot these data on a map at census block level, what should we do? I will use this as an example to show how to extract 2010 census data in detail.</p>
+<div id="read-and-extract-geographic-data" class="section level3">
+<h3>read and extract geographic data</h3>
+<p>Let’s first take a look at the geographic header record file. We convert it to a data.table of which each row is a line in the file. Each line is a string of characters without separator, so we read it into only one column.</p>
+<pre class="r"><code>library(data.table)
+# change path to data based on your local directories
+geo_file &lt;- fread(paste0(path_to_data, &quot;IN/ingeo2010.ur1&quot;), 
+                  sep = &quot;\n&quot;, 
+                  header = FALSE)
+# show total number of lines
+dim(geo_file)</code></pre>
+<pre><code>## [1] 331556      1</code></pre>
+<pre class="r"><code># display the first line
+head(geo_file, 1)</code></pre>
+<pre><code>##                                                                                                                                                                                                                                                                                                                                                                                               V1
+## 1: UR1ST IN04000000  00000012318                                                                                                                                                                            92789193658    1537004191Indiana                                                                                   AN  6483802  2795541+39.9030256-086.283950300            00448508</code></pre>
+<p>This file has 331556 lines. There are many blank spaces in a line as a geographic entity usually does not have all the geographic fields.</p>
+<p>We want get the logical record number, which is used to match those in data file, and latitude and longitude for plot in map. We want to keep the FIPS of place so that later on we can locate South Bend city with its FIPS number. We also want keep summary levels as we only want data at census blocks level. The references of geographic fields are used as column names.</p>
+<pre class="r"><code>geo &lt;- geo_file[, .(LOGRECNO = as.numeric(substr(V1, 19, 25)),
+                    SUMLEV = substr(V1, 9, 11),
+                    PLACE = substr(V1, 46, 50),
+                    INTPTLAT = as.numeric(substr(V1, 337, 347)),
+                    INTPTLON = as.numeric(substr(V1, 348, 359)))]
+geo</code></pre>
+<pre><code>##         LOGRECNO SUMLEV PLACE INTPTLAT  INTPTLON
+##      1:        1    040       39.90303 -86.28395
+##      2:        2    040       40.13668 -86.23489
+##      3:        3    040       40.43883 -86.21876
+##      4:        4    040       40.12984 -86.21021
+##      5:        5    040       39.92054 -86.27358
+##     ---                                         
+## 331552:   331552    970       41.63835 -85.55221
+## 331553:   331553    970       41.67686 -87.49205
+## 331554:   331554    970       41.15086 -85.66872
+## 331555:   331555    970       39.35130 -86.03878
+## 331556:   331556    970       41.63419 -87.20929</code></pre>
+<p>The column <code>PLACE</code> has a lot of missing values, as many geographic entities does not belong to any place.</p>
+<p>Now we can extract geographic data of South Bend. An easy way to find its FIPS number is from <a href="https://en.wikipedia.org/wiki/South_Bend,_Indiana">its Wikipedia page</a>. South Bend’s FIPS is 18-71000. The first two digits are the FIPS of Indiana, so the unique FIPS in Indiana for South Bend is 71000. Let’s keep only the rows for South Bend (sb).</p>
+<pre class="r"><code>sb_geo &lt;- geo[PLACE == &quot;71000&quot;]
+sb_geo</code></pre>
+<pre><code>##       LOGRECNO SUMLEV PLACE INTPTLAT  INTPTLON
+##    1:   241621    070 71000 41.61875 -86.24093
+##    2:   241622    080 71000 41.63354 -86.22549
+##    3:   241623    085 71000 41.63354 -86.22549
+##    4:   241624    091 71000 41.63525 -86.21833
+##    5:   241625    090 71000 41.63525 -86.21833
+##   ---                                         
+## 5461:   321382    614 71000 41.72872 -86.26427
+## 5462:   324739    624 71000 41.70951 -86.20096
+## 5463:   324774    624 71000 41.66799 -86.23096
+## 5464:   324810    624 71000 41.66797 -86.27524
+## 5465:   324851    624 71000 41.70286 -86.27826</code></pre>
+<p>This geographic data includes all summary levels. As we only want the census block level data, we further filter with <code>SUMLEV == &quot;100&quot;</code>. At this stage we get the geographic data we want.</p>
+<pre class="r"><code>sb_block &lt;- sb_geo[SUMLEV == &quot;100&quot;]
+sb_block</code></pre>
+<pre><code>##       LOGRECNO SUMLEV PLACE INTPTLAT  INTPTLON
+##    1:   241626    100 71000 41.63613 -86.21864
+##    2:   241627    100 71000 41.63670 -86.21659
+##    3:   241628    100 71000 41.63573 -86.22172
+##    4:   241629    100 71000 41.63182 -86.22022
+##    5:   241630    100 71000 41.63367 -86.22093
+##   ---                                         
+## 5002:   252566    100 71000 41.69486 -86.25132
+## 5003:   252567    100 71000 41.69649 -86.25815
+## 5004:   253091    100 71000 41.73058 -86.35508
+## 5005:   253092    100 71000 41.73035 -86.35565
+## 5006:   253093    100 71000 41.72831 -86.35573</code></pre>
+<p>Are we sure we get the correct geographic data? We can plot the latitude and longitude directly on a map. From the map below you will also get a sense of what a census block is; it is basically a street block in urban area. We need internet connection to download map data from Google Map.</p>
+<pre class="r"><code>map &lt;- get_map(&quot;south bend, indiana&quot;, zoom = 13)
+ggmap(map) +
+    geom_point(data = sb_block, aes(INTPTLON, INTPTLAT), color = &quot;red&quot;, alpha = 0.3)</code></pre>
+<p><img src="/rmarkdown-libs/figure-html4/unnamed-chunk-7-1.png" width="768" /></p>
+</div>
+<div id="read-and-extract-population-and-race-data" class="section level3">
+<h3>read and extract population and race data</h3>
+<p>From the technical documentation we know that population and race information is in file 03. So let’s read this file.</p>
+<pre class="r"><code>f03 &lt;- fread(paste0(path_to_data, &quot;IN/in000032010.ur1&quot;), header = FALSE)</code></pre>
+<pre><code>## 
+Read 72.4% of 331556 rows
+Read 331556 rows and 199 (of 199) columns from 0.134 GB file in 00:00:03</code></pre>
+<pre class="r"><code># number of rows and columns
+dim(f03)</code></pre>
+<pre><code>## [1] 331556    199</code></pre>
+<p>It has 199 columns; which ones are what we want? We still go back to the technical documentation, page 6-22, and read the description for file 03. The 5th field is logical record number, 6th the total population data and 8th the black population data. Each population data field also has a reference but is hard to follow. For clarity we name these column in plain English. So all the data we need in Indiana is</p>
+<pre class="r"><code>population &lt;- f03[, .(LOGRECNO = V5,
+                      total_popul = V6,
+                      black_popul = V8)]
+population</code></pre>
+<pre><code>##         LOGRECNO total_popul black_popul
+##      1:        1     6483802      591397
+##      2:        2     4697100      580128
+##      3:        3     3836584      560288
+##      4:        4      860516       19840
+##      5:        5     1786702       11269
+##     ---                                 
+## 331552:   331552       18918          24
+## 331553:   331553        4636         154
+## 331554:   331554       10537          25
+## 331555:   331555         560         100
+## 331556:   331556           0           0</code></pre>
+<p>From here it is easy to get the population in South Bend at census block level: just join the data to <code>sb_block</code> by logical record number:</p>
+<pre class="r"><code>sb_block_popl &lt;- population[sb_block, on = .(LOGRECNO)]
+sb_block_popl</code></pre>
+<pre><code>##       LOGRECNO total_popul black_popul SUMLEV PLACE INTPTLAT  INTPTLON
+##    1:   241626          28          10    100 71000 41.63613 -86.21864
+##    2:   241627           0           0    100 71000 41.63670 -86.21659
+##    3:   241628          52          16    100 71000 41.63573 -86.22172
+##    4:   241629         279          21    100 71000 41.63182 -86.22022
+##    5:   241630          42           1    100 71000 41.63367 -86.22093
+##   ---                                                                 
+## 5002:   252566          64           0    100 71000 41.69486 -86.25132
+## 5003:   252567           0           0    100 71000 41.69649 -86.25815
+## 5004:   253091           0           0    100 71000 41.73058 -86.35508
+## 5005:   253092           0           0    100 71000 41.73035 -86.35565
+## 5006:   253093           0           0    100 71000 41.72831 -86.35573</code></pre>
+<p>There is no need to keep the blocks where there are no people lives.</p>
+<pre class="r"><code>sb_block_popul &lt;- sb_block_popl[total_popul &gt; 0]
+sb_block_popul</code></pre>
+<pre><code>##       LOGRECNO total_popul black_popul SUMLEV PLACE INTPTLAT  INTPTLON
+##    1:   241626          28          10    100 71000 41.63613 -86.21864
+##    2:   241628          52          16    100 71000 41.63573 -86.22172
+##    3:   241629         279          21    100 71000 41.63182 -86.22022
+##    4:   241630          42           1    100 71000 41.63367 -86.22093
+##    5:   241631          48           3    100 71000 41.63525 -86.21833
+##   ---                                                                 
+## 3780:   252543          75           6    100 71000 41.66027 -86.32578
+## 3781:   252551          36           0    100 71000 41.69367 -86.24275
+## 3782:   252559         360          11    100 71000 41.69560 -86.25924
+## 3783:   252561          14           0    100 71000 41.69583 -86.25781
+## 3784:   252566          64           0    100 71000 41.69486 -86.25132</code></pre>
+</div>
+<div id="plot-on-map-at-block-level" class="section level3">
+<h3>plot on map at block level</h3>
+<p>Now we can plot total and black population on the map. This is the same map we saw at the beginning of the post. It is not shown here.</p>
+<pre class="r"><code>ggmap(map) +
+    geom_point(data = sb_block_popul, 
+               aes(INTPTLON, INTPTLAT, size = total_popul,  color = &quot;red&quot;), 
+               alpha = 0.6) +
+    # remove row with 0 black population, otherwise show a small dot
+    geom_point(data = sb_block_popul[black_popul &gt; 0], 
+               aes(INTPTLON, INTPTLAT, size = black_popul, color = &quot;blue&quot;), 
+               alpha = 0.6) +
+    scale_size_area(breaks = c(1, 50, 100, 300, 600, 1000)) +
+    scale_color_identity(guide = &quot;legend&quot;, 
+                         breaks = c(&quot;red&quot;, &quot;blue&quot;),
+                         label = c(&quot;all&quot;, &quot;black&quot;)) +
+    labs(color = &quot;race&quot;, size = &quot;population&quot;) +
+    guides(size = guide_legend(override.aes = list(shape = 1)))</code></pre>
+</div>
+</div>
+<div id="more-concise-code" class="section level2">
+<h2>More concise code</h2>
+<div id="the-data.table-way" class="section level3">
+<h3>the data.table way</h3>
+<p>The above codes that select South Bend data can be squeezed with pipe operator <code>%&gt;%</code> to get rid of intermediate variables.</p>
+<pre class="r"><code>library(data.table)
+library(magrittr)
+
+## An example to retrieve and plot the total and black population at the census
+## black level of the city South Bend in Indiana
+
+# the directory holding all census 2010 data
+path_to_data &lt;- &quot;~/dropbox_datasets/US_2010_census/&quot;
+
+# geographic record of South Bend (sb) at census block level
+sb_block &lt;- fread(paste0(path_to_data, &quot;IN/ingeo2010.ur1&quot;), sep = &quot;\n&quot;, 
+                  header = FALSE) %&gt;%
+    .[, .(LOGRECNO = as.numeric(substr(V1, 19, 25)),
+          SUMLEV = substr(V1, 9, 11),
+          PLACE = substr(V1, 46, 50),
+          INTPTLAT = as.numeric(substr(V1, 337, 347)),
+          INTPTLON = as.numeric(substr(V1, 348, 359)))] %&gt;%
+    .[PLACE == &quot;71000&quot; &amp; SUMLEV == &quot;100&quot;]
+
+# total and black population of South Bend at census block level
+sb_block_popul &lt;- fread(paste0(path_to_data, &quot;IN/in000032010.ur1&quot;), 
+                       header = FALSE) %&gt;%
+    .[, .(LOGRECNO = V5,
+          total_popul = V6,
+          black_popul = V8)] %&gt;%
+    .[sb_block, on = .(LOGRECNO)] %&gt;%
+    .[total_popul &gt; 0]</code></pre>
+</div>
+<div id="the-dplyr-approach" class="section level3">
+<h3>the dplyr approach</h3>
+<p>We still use data.table’s <code>fread()</code> to read the data but use dplyr functions to process data.</p>
+<pre class="r"><code>library(data.table)
+library(dplyr)
+path_to_data &lt;- &quot;~/dropbox_datasets/US_2010_census/&quot;
+
+sb_block &lt;- fread(paste0(path_to_data, &quot;IN/ingeo2010.ur1&quot;), sep = &quot;\n&quot;, 
+                  header = FALSE) %&gt;%
+    transmute(
+        LOGRECNO = as.numeric(substr(V1, 19, 25)),
+        SUMLEV = substr(V1, 9, 11),
+        PLACE = substr(V1, 46, 50),
+        INTPTLAT = as.numeric(substr(V1, 337, 347)),
+        INTPTLON = as.numeric(substr(V1, 348, 359))
+    ) %&gt;%
+    filter(PLACE == &quot;71000&quot; &amp; SUMLEV == &quot;100&quot;)
+
+sb_block_popul &lt;- fread(paste0(path_to_data, &quot;IN/in000032010.ur1&quot;), header = FALSE) %&gt;%
+    transmute(
+        LOGRECNO = V5,
+        total_popul = V6,
+        black_popul = V8
+    ) %&gt;%
+    right_join(sb_block, by = &quot;LOGRECNO&quot;) %&gt;%
+    filter(total_popul &gt; 0)</code></pre>
+</div>
+</div>
+
+
+  
+<div class="prev-next-post pure-g">
+  <div class="pure-u-1-24" style="text-align: left;">
+    
+    <a href="/2017/08/18/place-text-at-right-location/"><i class="fa fa-chevron-left"></i></a>
+    
+  </div>
+  <div class="pure-u-10-24">
+    
+    <nav class="prev">
+      <a href="/2017/08/18/place-text-at-right-location/">ggplot2: place text at right location</a>
+    </nav>
+    
+  </div>
+  <div class="pure-u-2-24">
+    &nbsp;
+  </div>
+  <div class="pure-u-10-24">
+    
+    <nav class="next">
+      <a href="/2017/09/14/build-a-r-package-for-yourself/">Build a R package for yourself</a>
+    </nav>
+    
+  </div>
+  <div class="pure-u-1-24" style="text-align: right;">
+    
+    <a href="/2017/09/14/build-a-r-package-for-yourself/"><i class="fa fa-chevron-right"></i></a>
+    
+  </div>
+</div>
+
+
+
+  
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+
+(function() {
+    
+    
+    if (window.location.hostname == "localhost")
+        return;
+
+    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+    var disqus_shortname = 'gl-li-github-io';
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com/" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+</div>
+
+</div>
+</div>
+<script src="/js/ui.js"></script>
+<script src="/js/menus.js"></script>
+
+
+<script>
+  
+  if (window.location.hostname != "localhost") {
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-132163439-1', 'auto');
+    ga('send', 'pageview');
+  }
+</script>
+
+
+
+
+
+</body>
+</html>
+

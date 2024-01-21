@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Posts on R &amp; Census</title>
+    <link>/post/</link>
+    <description>Recent content in Posts on R &amp; Census</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>&amp;copy; 2017 - 2019. All rights reserved.</copyright>
+    <lastBuildDate>Wed, 11 Nov 2020 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="/post/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Benford&#39;s Law and Census Data</title>
+      <link>/2020/11/11/benford-s-law-and-census-data/</link>
+      <pubDate>Wed, 11 Nov 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/2020/11/11/benford-s-law-and-census-data/</guid>
+      <description>Benford’s law attracted lots of attention after the 2020 election, as some people attempted to use this law to question the integrity of the election. Benford’s law states that the frequency of the first digit of a large set of numerical data follows this rule: 30.1% are 1s, 17.6% are 2s, 12.5% are 3s, …, 4.6% are 9s. Therefore it can be used to detect data manipulation that leads to the violaton of the law.</description>
+    </item>
+    
+    <item>
+      <title>Build a static website with R Shiny</title>
+      <link>/2020/04/13/build-static-website-with-r-shiny/</link>
+      <pubDate>Mon, 13 Apr 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/2020/04/13/build-static-website-with-r-shiny/</guid>
+      <description>Sounds stupid? Yes, it’s kind of throwing away 99% of Shiny’s power; and you can always build a static website with R markdown, blogdown, or bookdown.
+Anyway, please keep reading as it will save you time if you are an R users who
+ want to make a portfolio website to showcase your work, but know little about web development, and yet prefer designing your own interface rather than using a popular theme.</description>
+    </item>
+    
+    <item>
+      <title>Navigate through Decennial Census and American Community Survey</title>
+      <link>/2019/02/03/navigate-through-decennial-census-and-american-community-survey/</link>
+      <pubDate>Sun, 03 Feb 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/2019/02/03/navigate-through-decennial-census-and-american-community-survey/</guid>
+      <description>Finding the right content in census data can be daunting. Just give you an idea how complex the census data are, there are 1127 tables and 25070 columns of table contents in the 2012-2017 ACS 5-year summary file alone.
+  dataset number of tables number of columns    2010 decennial census summary file 1 333 8959  2012-2017 5-year ACS summary file 1127 25070  2017 1-year ACS summary file 1372 33593    The complexity does not stop here.</description>
+    </item>
+    
+    <item>
+      <title>Cities boomed and doomed</title>
+      <link>/2018/12/15/population-change/</link>
+      <pubDate>Sat, 15 Dec 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/2018/12/15/population-change/</guid>
+      <description>Population in the United States grew by 3.76% from 313.91 million in 2012 to 325.72 million in 2017. The growth, however, is not uniform geographically. One of the geographical areas of particular interest is the city. Some cities are shrinking in population while some others exploding. The purpose of this post is to find cities that decrease and increase most in population. In addition, we will show the population and its change of all cities in an interactive map.</description>
+    </item>
+    
+    <item>
+      <title>Find Salamander -- Congressional District Gerrymandering</title>
+      <link>/2018/10/23/find-salamander-congressional-district-gerrymandering/</link>
+      <pubDate>Tue, 23 Oct 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/2018/10/23/find-salamander-congressional-district-gerrymandering/</guid>
+      <description>When Republicans or Democrats are in charge, they tend to draw election district boundaries to their favor. This can go very ugly, creating wacky boundaries by a practice called Gerrymandering.
+The word “Gerrymander” is a blend of two species: the Massachusetts Governor Elbridge Gerry and a mythological salamander, a dragon-like monster. Governor Gerry signed a bill 200 year ago that drew an state senate election district in a shape resembling a salamander.</description>
+    </item>
+    
+    <item>
+      <title>Map prisons in the United States</title>
+      <link>/2018/02/05/map-prisons-in-the-united-states/</link>
+      <pubDate>Mon, 05 Feb 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/2018/02/05/map-prisons-in-the-united-states/</guid>
+      <description>Despite 1 in every 110 adults are locked behind bars in the United States, most people have no idea where these prisons are. This post helps you find out the location and number of inmates in federal prisons, state prisons, and local jails.
+The data are extracted from Decennial Census 2010. According to the census, a total number of 2,263,602 persons were incarcerated in the United States.</description>
+    </item>
+    
+    <item>
+      <title>Is your hometown named after Lincoln or Washington?</title>
+      <link>/2018/01/27/the-most-popular-president-lincoln-or-washington/</link>
+      <pubDate>Sat, 27 Jan 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/2018/01/27/the-most-popular-president-lincoln-or-washington/</guid>
+      <description>Washington and Lincoln are the two greatest presidents in the history of the United States. This post, however, does not discuss how great they are. Instead, I want to show a fun fact related the two presidents: how many cities and towns (and equivalents) are named after them. I am living in Lincoln, Rhode Island, a town so named in honor of President Lincoln.
+The data are extracted from decennial census 2010, the most detailed census so far.</description>
+    </item>
+    
+    <item>
+      <title>Plot pie charts of racial composition in largest metro areas on a map in R</title>
+      <link>/2018/01/17/create-pie-plots-on-a-map-in-r/</link>
+      <pubDate>Wed, 17 Jan 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/2018/01/17/create-pie-plots-on-a-map-in-r/</guid>
+      <description>Pie chart has been criticized for being a poor visualization and is not recommended in R community. The popular ggplot2 package discourages the use of pie charts and there is no dedicated geom_pie for it.
+Although the criticism is mostly valid, there is a case that pie chart can be useful: pie charts on maps. Pie charting on map is a compact way to show composition by locations.
+A recent R package, scatterpie by Guangchuang Yu, specializes in making pie charts at multiple locations.</description>
+    </item>
+    
+    <item>
+      <title>Determine relationship between census geographic entities with totalcensus package</title>
+      <link>/2017/12/28/use-totalcensus-package-to-determine-relationship-between-geographic-entities/</link>
+      <pubDate>Thu, 28 Dec 2017 00:00:00 +0000</pubDate>
+      
+      <guid>/2017/12/28/use-totalcensus-package-to-determine-relationship-between-geographic-entities/</guid>
+      <description>This is an application example of totalcensus package.
+The geographic hierarchy primer in Census 2010 summary file 1 technical documentation displays the relationship between geographic entities. The lower one of the two entities connected by a line is entirely within the boundary of the upper one. For example, a county subdivision is always within the boundaries of a county and a school district always within the boundaries of a state.</description>
+    </item>
+    
+    <item>
+      <title>Proccess 5-digit ZIP Code Tabulation Area (ZCTA5) data with totalcensus package</title>
+      <link>/2017/12/23/census_data_zip_code/</link>
+      <pubDate>Sat, 23 Dec 2017 00:00:00 +0000</pubDate>
+      
+      <guid>/2017/12/23/census_data_zip_code/</guid>
+      <description>This is an example of applications of totalcensus package. To install the package, follow the instructions at https://github.com/GL-Li/totalcensus.
+In this example, we examine data related to 5-digit ZIP Code Tabulation Area (ZCTA5), using 2016 ACS 5-year survey summary files. Let’s first load the libraries and then answer a couple questions related to zip code
+library(totalcensus) library(data.table) library(magrittr) library(ggplot2) library(ggmap) What’s the population in a ZCTA5 These population data can be easily obtained with the code below.</description>
+    </item>
+    
+    <item>
+      <title>Build a R package for yourself</title>
+      <link>/2017/09/14/build-a-r-package-for-yourself/</link>
+      <pubDate>Thu, 14 Sep 2017 00:00:00 +0000</pubDate>
+      
+      <guid>/2017/09/14/build-a-r-package-for-yourself/</guid>
+      <description>A R user can benefit a lot from building packages. I have read people writing about the benefit in various occasions and cannot agree more after building my first package. We don’t have to a be R developer to write packages. Developers write packages for others; we can just write packages for ourselves. As a R user, we must have written functions and collected datasets, and may have used them across projects or may want to use them later on.</description>
+    </item>
+    
+    <item>
+      <title>Extract US Census 2010 data with data.table and dplyr</title>
+      <link>/2017/08/29/process-2010-census-data-with-data-table/</link>
+      <pubDate>Tue, 29 Aug 2017 00:00:00 +0000</pubDate>
+      
+      <guid>/2017/08/29/process-2010-census-data-with-data-table/</guid>
+      <description>This post explains how to extract information from the original dataset of the US 2010 census summary file 1 with urban/rural update, using data.table or dplyr package in R.
+Why do we want to work with the original data? You may ask, when there are already R packages, such as UScensus2010, censusapi, and tidycensus, which help user get the data.
+The biggest benefit is that you will have full access to all the census 2010 data.</description>
+    </item>
+    
+    <item>
+      <title>ggplot2: place text at right location</title>
+      <link>/2017/08/18/place-text-at-right-location/</link>
+      <pubDate>Fri, 18 Aug 2017 00:00:00 +0000</pubDate>
+      
+      <guid>/2017/08/18/place-text-at-right-location/</guid>
+      <description>A common task in plotting is adding texts as labels or annotations to specific locations. ggplot() has functions geom_text(), geom_label() and annotate() for this purpose. In this post we discuss how ggplot2 controls positioning of text.
+First we need to specify (x, y) coordinate in the plot where the text is placed. By default, the center of the text is at (x, y), which is sometimes not what we want, as shown in the example below.</description>
+    </item>
+    
+    <item>
+      <title>ggplot2: aes(group = ...) overrides default grouping</title>
+      <link>/2017/08/13/ggplot2-group-overrides-default-grouping/</link>
+      <pubDate>Sun, 13 Aug 2017 00:00:00 +0000</pubDate>
+      
+      <guid>/2017/08/13/ggplot2-group-overrides-default-grouping/</guid>
+      <description>Default grouping in ggplot2 ggplot2 can subset all data into groups and give each group its own appearance and transformation. In many cases new users are not aware that default groups have been created, and are surprised when seeing unexpected plots.
+There are two ways in which ggplot2 creates groups implicitly:
+ If x or y are categorical variables, the rows with the same level form a group. Users often overlook this type of default grouping.</description>
+    </item>
+    
+    <item>
+      <title>My uniform way of using ggplot2</title>
+      <link>/2017/08/03/a-uniform-way-to-use-ggplot2/</link>
+      <pubDate>Thu, 03 Aug 2017 00:00:00 +0000</pubDate>
+      
+      <guid>/2017/08/03/a-uniform-way-to-use-ggplot2/</guid>
+      <description>Just finished reading Hadley Wickham’s ggplot2 book, (second eition). Before that I have been using ggplot2 for a couple of years, mainly learned by reading documentation and searching for help online.
+The ggplot2 package is a powerful and comprehensive tool for generating static plots, but I also feel it is a little bit too flexible; the same plot can be made with many different ways. This fexibility provides obvious convenience but also introduces a lot of confusion and extra burden of memorization.</description>
+    </item>
+    
+    <item>
+      <title>Compare data.table pipes and magrittr pipes</title>
+      <link>/2017/07/25/compare-data.table-pipes-and-magrittr-pipes/</link>
+      <pubDate>Tue, 25 Jul 2017 00:00:00 +0000</pubDate>
+      
+      <guid>/2017/07/25/compare-data.table-pipes-and-magrittr-pipes/</guid>
+      <description>We have two ways to chain data.table operations, using data.table pipes or using magrittr pipes. For a data.table dt, the data.table pipes take the form of dt[][][]... and magrittr pipes dt %&amp;gt;% .[] %&amp;gt;% .[] %&amp;gt;% ....
+Let’s first compare the readability of the two pipes in the following examples. Hadley Wickham criticized the readability of data.table pipes in this stackoverflow post. The data.table pipes, however, are not that hard to follow for those who are familiar with data.</description>
+    </item>
+    
+  </channel>
+</rss>

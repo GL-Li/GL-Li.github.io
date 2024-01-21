@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="">
+  <meta name="generator" content="Hugo 0.53" />
+
+  <title>Navigate through Decennial Census and American Community Survey with totalcensus package &middot; R &amp; Census</title>
+
+  
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/1.0.0/pure-min.css">
+
+  <!--[if lte IE 8]>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/1.0.0/grids-responsive-old-ie-min.css">
+  <![endif]-->
+  <!--[if gt IE 8]><!-->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/1.0.0/grids-responsive-min.css">
+  <!--<![endif]-->
+
+  <!--[if lte IE 8]>
+  <link rel="stylesheet" href="/css/side-menu-old-ie.css">
+  <![endif]-->
+  <!--[if gt IE 8]><!-->
+  <link rel="stylesheet" href="/css/side-menu.css">
+  <!--<![endif]-->
+
+  <link rel="stylesheet" href="/css/blackburn.css">
+
+  
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+
+  
+  <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet" type="text/css">
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+ 
+  
+
+  
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css">
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  
+  <script>hljs.initHighlightingOnLoad();</script>
+  
+
+  <link rel="shortcut icon" href="/img/favicon.ico" type="image/x-icon" />
+
+  
+  
+
+</head>
+
+
+<body>
+<div id="layout">
+
+  
+<a href="#menu" id="menuLink" class="menu-link">
+  
+  <span></span>
+</a>
+<div id="menu">
+
+  
+
+  <div class="pure-menu">
+    <ul class="pure-menu-list">
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="/"><i class='fa fa-home fa-fw'></i>Home</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="/post/"><i class='fa fa-list fa-fw'></i>Archive</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://www.r-bloggers.com/"><i class='fa fa-comments fa-fw'></i>R-bloggers</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://rweekly.org/"><i class='fa fa-book fa-fw'></i>R Weekly</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://www.census.gov/newsroom/blogs/about.html"><i class='fa fa-microphone fa-fw'></i>Census Blogs</a>
+      
+        </li>
+      
+    </ul>
+  </div>
+
+  <div class="pure-menu social">
+  <ul class="pure-menu-list">
+
+    
+
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="https://twitter.com/guanglai_li" target="_blank"><i class="fa fa-twitter-square fa-fw"></i>Twitter</a>
+    </li>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="https://github.com/GL-Li" target="_blank"><i class="fa fa-github-square fa-fw"></i>GitHub</a>
+    </li>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+  </ul>
+</div>
+
+
+  <div>
+  <div class="small-print">
+    <small>&copy; 2017 - 2019. All rights reserved.</small>
+  </div>
+  <div class="small-print">
+    <small>Built with&nbsp;<a href="https://gohugo.io/" target="_blank">Hugo</a></small>
+    <small>Theme&nbsp;<a href="https://github.com/yoshiharuyamashita/blackburn" target="_blank">Blackburn</a></small>
+  </div>
+</div>
+
+</div>
+
+
+  <div id="main">
+
+
+<div class="header">
+  <h1>Navigate through Decennial Census and American Community Survey with totalcensus package</h1>
+  <span>GL Li</span>, <span>2019/02/01</span>
+</div>
+<div class="content">
+
+  
+
+  
+
+
+<p>Finding the right content in census data can be daunting. Just give you an idea how complex the census data are, there are 1127 tables and 25070 columns of table contents in the 2012-2017 ACS 5-year summary file alone.</p>
+<table>
+<thead>
+<tr class="header">
+<th align="left">dataset</th>
+<th align="left">number of tables</th>
+<th align="left">number of columns</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">decennial census 2010 summary file 1</td>
+<td align="left">333</td>
+<td align="left">8959</td>
+</tr>
+<tr class="even">
+<td align="left">2012-2017 ACS 5-year survey summary file</td>
+<td align="left">1127</td>
+<td align="left">25070</td>
+</tr>
+<tr class="odd">
+<td align="left">2017 ACS 1-year survey summary file</td>
+<td align="left">1372</td>
+<td align="left">33593</td>
+</tr>
+</tbody>
+</table>
+<p>The complexity does not stop here. But before proceeding to further confuse ourselves, let’s explain what those <strong>summary files</strong> are.</p>
+<p>A summary file contains the summary statiscs of various geographic areas and is the most comprehensive dataset of a census survey available to the public. To carry out a survey, the Census Beaura mails census questionairs to each address and collects information from return mails or from enumerators sent to the doorsteps of addresses if the mail is not returned. The inforamtion relating to the individual addresses, however, is not published. Instead, the Census Berura publish summary statistics of larger geographic areas covering multiple indidual addresses so that personal information is not revealed. So in addition to the tables, which are derived from answers to the questionnairs, the summaruy files also contains rich information of geographic areas.</p>
+<p>The Census Beaura publishes one or more summary file for each survey. The 2010 decennial census has two summary files, of which the summary file 1 is the most complete. Each year the Census Beaura publishes one summary file for ACS 1-year estimate since 2005 and one for ACS 5-year estimate since 2009. Along with each summary file, the Census Beaura also publishes a technical documentation, giving instructions on how to use the summary file.</p>
+<p>We will look into the key elements of a summary file with <code>totalcensus</code> package. The names used in this package are based on the techincal documentation of summary files. You can check this <a href="https://www.census.gov/prod/cen2010/doc/sf1.pdf">techincal documentation of 2010 census summary file 1</a> to get an idea. To use this package to navigate through census data, simply install and load it:</p>
+<pre class="r"><code>install.packages(&quot;totalcensus&quot;)
+library(totalcensus)</code></pre>
+<div id="tables-and-table-contents" class="section level2">
+<h2>Tables and table contents</h2>
+<p>We use <code>search_tablecontents()</code> function to find a table content (called a variable in census API). You can specify year and keywords for the search, but the best way is to use it in RStudio without specifying year and keywords. For example, to search a table content in 2010 decennial census, simply run</p>
+<pre class="r"><code>search_tablecontents(&quot;dec&quot;)</code></pre>
+<p>where “dec” is for decennial census. All table contents will show up in the <code>View()</code> window in RStudio. We can then use <code>filer</code> to search for what we want. Let’s say we want to find table contents related to prisons in the 2010 decennial census, we use the <code>filter</code> to set the year and search for keyword <code>prison</code> (and <code>jail</code>). The results look like the figure as shown below. Actually the data has been used to <a href="https://www.gl-li.com/2018/02/05/map-prisons-in-the-united-states/">map prisons in the US</a>.</p>
+<div class="figure">
+<img src="/post/2019-02-01-navigate-through-decennial-census-and-american-community-survey_files/search_prison.jpg" style="width:100.0%" />
+
+</div>
+<p>One more example, we have heard that Census Beaura asked for internet use in recent ACS surveys. Let’s find out what information they want to collect in a 5-year ACS. As shown in the figure below, quite a lot questions were asked in 2017 but not before.</p>
+<pre class="r"><code>search_tablecontents(&quot;acs5&quot;)</code></pre>
+<div class="figure">
+<img src="/post/2019-02-01-navigate-through-decennial-census-and-american-community-survey_files/search_internet.jpg" style="width:100.0%" />
+
+</div>
+</div>
+<div id="summary-levels-and-geographic-areas" class="section level2">
+<h2>Summary levels and geographic areas</h2>
+<p>Some of the geographic areas are obvious by the names, such as “state”, “county” and “school district”. Some are not well known to the public, for example:</p>
+<ul>
+<li><p>census block: Census block is the smallest geographic area used in summary files. It has man-made or natural boundaries such as road and river. In urban area a census block is mostly equivalent to a street block. Summary statistics of census blocks are only available in the summary files of decennial census.</p></li>
+<li><p>census block group: Well, it is a group of census blocks, typically have a couple thousand people. ACS 5-year estimate have summary statistics down to the block group level.</p></li>
+<li><p>census tract: A census tract is roughly equivalent to a neighborhood, having one or more block groups, with typical population in the range of 2500 to 8000.</p></li>
+</ul>
+<p>A Census tract or block group is entirely within the boundary of a county, but not necessarily wholly within the boundary of a town or a city. This brings up the concept of summary level (called geography in census API). Let’s pull out some data to see what the summary level looks like.</p>
+<pre class="r"><code>search_summarylevels(&quot;dec&quot;) </code></pre>
+<div class="figure">
+<img src="/post/2019-02-01-navigate-through-decennial-census-and-american-community-survey_files/search_summarylevel.jpg" style="width:100.0%" />
+
+</div>
+<p>Summary level refers to a nested structure of geographic areas from larger to small. For example, summary level with code <code>140</code> is from state -&gt; county -&gt; census tract. As we know that census tract is entirely within a county, the summary statistic of summaru level <code>140</code> is about the entire tract. One the other hand the summary level <code>158</code> is from state -&gt; place -&gt; county -&gt; census tract. As a county may not wholly within a place such as a city, the census tract in this summary level may be only the part of the tract within the place.</p>
+</div>
+<div id="geographic-headers-record-and-geographic-areas" class="section level2">
+<h2>Geographic headers record and geographic areas</h2>
+<p>Within the summary file dataset, there is a particular file called geographic header record file, which provides data of the attributes of geographic areas. It provides FIPS code of, for example, state and county that associated with the geographic area, or gives the coordinates, names, and land areas etc. A geographic header is also called a variable in census API. To find out more geographic headers, run code like</p>
+<pre class="r"><code>search_geoheaders(&quot;acs1&quot;)</code></pre>
+<div class="figure">
+<img src="/post/2019-02-01-navigate-through-decennial-census-and-american-community-survey_files/search_geoheader.jpg" style="width:100.0%" />
+
+</div>
+</div>
+
+
+  
+<div class="prev-next-post pure-g">
+  <div class="pure-u-1-24" style="text-align: left;">
+    
+    <a href="/2018/12/15/population-change/"><i class="fa fa-chevron-left"></i></a>
+    
+  </div>
+  <div class="pure-u-10-24">
+    
+    <nav class="prev">
+      <a href="/2018/12/15/population-change/">Cities boomed and doomed</a>
+    </nav>
+    
+  </div>
+  <div class="pure-u-2-24">
+    &nbsp;
+  </div>
+  <div class="pure-u-10-24">
+    
+  </div>
+  <div class="pure-u-1-24" style="text-align: right;">
+    
+  </div>
+</div>
+
+
+
+  
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+
+(function() {
+    
+    
+    if (window.location.hostname == "localhost")
+        return;
+
+    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+    var disqus_shortname = 'gl-li-github-io';
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com/" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+</div>
+
+</div>
+</div>
+<script src="/js/ui.js"></script>
+<script src="/js/menus.js"></script>
+
+
+<script>
+  
+  if (window.location.hostname != "localhost") {
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-132163439-1', 'auto');
+    ga('send', 'pageview');
+  }
+</script>
+
+
+
+
+
+</body>
+</html>
+

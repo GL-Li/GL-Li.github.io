@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Ggplot on R &amp; Census</title>
+    <link>/categories/ggplot/</link>
+    <description>Recent content in Ggplot on R &amp; Census</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Fri, 18 Aug 2017 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="/categories/ggplot/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>ggplot2: place text at right location</title>
+      <link>/2017/08/18/place-text-at-right-location/</link>
+      <pubDate>Fri, 18 Aug 2017 00:00:00 +0000</pubDate>
+      
+      <guid>/2017/08/18/place-text-at-right-location/</guid>
+      <description>A common task in plotting is adding texts as labels or annotations to specific locations. ggplot() has functions geom_text(), geom_label() and annotate() for this purpose. In this post we discuss how ggplot2 controls positioning of text.
+First we need to specify (x, y) coordinate in the plot where the text is placed. By default, the center of the text is at (x, y), which is sometimes not what we want, as shown in the example below.</description>
+    </item>
+    
+    <item>
+      <title>ggplot2: aes(group = ...) overrides default grouping</title>
+      <link>/2017/08/13/ggplot2-group-overrides-default-grouping/</link>
+      <pubDate>Sun, 13 Aug 2017 00:00:00 +0000</pubDate>
+      
+      <guid>/2017/08/13/ggplot2-group-overrides-default-grouping/</guid>
+      <description>Default grouping in ggplot2 ggplot2 can subset all data into groups and give each group its own appearance and transformation. In many cases new users are not aware that default groups have been created, and are surprised when seeing unexpected plots.
+There are two ways in which ggplot2 creates groups implicitly:
+ If x or y are categorical variables, the rows with the same level form a group. Users often overlook this type of default grouping.</description>
+    </item>
+    
+    <item>
+      <title>My uniform way of using ggplot2</title>
+      <link>/2017/08/03/a-uniform-way-to-use-ggplot2/</link>
+      <pubDate>Thu, 03 Aug 2017 00:00:00 +0000</pubDate>
+      
+      <guid>/2017/08/03/a-uniform-way-to-use-ggplot2/</guid>
+      <description>Just finished reading Hadley Wickham’s ggplot2 book, (second eition). Before that I have been using ggplot2 for a couple of years, mainly learned by reading documentation and searching for help online.
+The ggplot2 package is a powerful and comprehensive tool for generating static plots, but I also feel it is a little bit too flexible; the same plot can be made with many different ways. This fexibility provides obvious convenience but also introduces a lot of confusion and extra burden of memorization.</description>
+    </item>
+    
+  </channel>
+</rss>

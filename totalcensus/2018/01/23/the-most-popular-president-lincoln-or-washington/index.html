@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Hugo 0.31.1" />
+
+
+<title>Is your town named after Lincoln or Washington? - R &amp; Census</title>
+<meta property="og:title" content="Is your town named after Lincoln or Washington? - R &amp; Census">
+
+
+
+  
+
+
+
+
+
+
+
+
+<link href='//cdn.bootcss.com/highlight.js/9.11.0/styles/github.min.css' rel='stylesheet' type='text/css' />
+
+
+
+<link rel="stylesheet" href="../../../../css/fonts.css" media="all">
+<link rel="stylesheet" href="../../../../css/main.css" media="all">
+
+
+
+    
+
+  </head>
+  <body>
+    <div class="wrapper">
+      <header class="header">
+        <nav class="nav">
+  <a href="../../../../" class="nav-logo">
+    <img src="../../../../images/logo.png"
+         width="50"
+         height="50"
+         alt="Logo">
+  </a>
+
+  <ul class="nav-links">
+    
+    <li><a href="../../../../about/">About</a></li>
+    
+    <li><a href="../../../../projects/">Projects</a></li>
+    
+    <li><a href="../../../../links/">Blogroll</a></li>
+    
+    <li><a href="../../../../collections/">Collections</a></li>
+    
+  </ul>
+</nav>
+
+      </header>
+
+
+<main class="content" role="main">
+
+  <article class="article">
+    
+    <span class="article-duration">3 min read</span>
+    
+
+    <h1 class="article-title">Is your town named after Lincoln or Washington?</h1>
+
+    
+    <span class="article-date">2018/01/23</span>
+    
+
+    <div class="article-content">
+      <p>Washington and Lincoln are the two greatest presidents in the history of the United States. This post, however, does not discuss how great they are. Instead, I want to show a fun fact related the two presidents: how many cities and towns (and equivalents) are named after them. I am living in Lincoln, Rhode Island, a town so named in honor of President Lincoln.</p>
+<p>The data are extracted from decennial census 2010, the most detailed census so far. There are 311 cities and towns having “Washington” in their names and 205 having “Lincoln”. We also extract the coordinates and population of these cities and towns and plot them on the US map. There are significantly more places named after “Washington” than “Lincoln” in three states, Indiana , Ohio, and Pennsylvania. They combined have 109 more places with <code>Washington</code> than with <code>Lincoln</code>.</p>
+<p><img src="../../../../post/2018-01-23-the-most-popular-president-lincoln-or-washington_files/figure-html/unnamed-chunk-2-1.png" width="864" /></p>
+<p><img src="../../../../post/2018-01-23-the-most-popular-president-lincoln-or-washington_files/figure-html/unnamed-chunk-3-1.png" width="864" /></p>
+<p>Here are the code. We use package <a href="https://github.com/GL-Li/totalcensus"><code>totalcensus</code></a> to extract data from decennial census 2010.</p>
+<p>Let’s first load packages.</p>
+<pre class="r"><code>library(totalcensus)
+library(data.table)
+library(magrittr)
+library(ggmap)</code></pre>
+<p>Define a function to extract citis and towns including particular words in names.</p>
+<pre class="r"><code>get_area &lt;- function(keywords){
+    # read census data
+    selected &lt;- read_decennial(
+        year = 2010,
+        states = &quot;US&quot;,
+        geo_headers = c(&quot;NAME&quot;),
+        show_progress = FALSE
+    ) %&gt;%
+        # select place and county subdivision that have name in NAME
+        .[SUMLEV %in% c(&quot;060&quot;, &quot;160&quot;)] %&gt;%
+        .[NAME %like% paste0(keywords, collapse = &quot;|&quot;)] %&gt;%
+        # remove duplicates by (lon, lat)
+        unique(by = c(&quot;lon&quot;, &quot;lat&quot;))
+    
+    # add area column to store keywords of area
+    for (nm in keywords){
+        selected[NAME %like% nm, area := nm]
+    }
+    
+    return(selected)
+}</code></pre>
+<p>Here are the cities or town having words “Washington” or “Lincoln” in their names.</p>
+<pre class="r"><code>wl &lt;- get_area(c(&quot;Washington&quot;, &quot;Lincoln&quot;)) %&gt;%
+    .[, area := factor(area, c(&quot;Washington&quot;, &quot;Lincoln&quot;))]
+
+# first five rows
+  #           lon      lat state                NAME population GEOCOMP SUMLEV       area
+  # 1:  -86.10771 33.61350    AL         Lincoln CCD       7771   total    060    Lincoln
+  # 2:  -86.07064 33.62218    AL        Lincoln city       6266   total    160    Lincoln
+  # 3: -111.27100 34.40035    AZ Washington Park CDP         70   total    160 Washington
+  # 4:  -92.13358 33.43522    AR Washington township       1410   total    060 Washington
+  # 5:  -92.70242 35.23478    AR Washington township       1852   total    060 Washington</code></pre>
+<p>Plot the cities and towns on a map.</p>
+<pre class="r"><code>us &lt;- map_data(&#39;state&#39;)
+ggplot(us, aes(long, lat)) +
+    geom_map(map=us, aes(map_id=region), fill=&quot;grey97&quot;, color=&quot;grey&quot;) +
+    geom_point(data = wl[order(-population)], aes(lon, lat, size = population, color = area), alpha = 0.6) +
+    scale_size_area(max_size = 10, breaks = c(1000, 10000, 100000, 500000)) +
+    ylim(26, 48.5) +
+    annotate(&quot;text&quot;, x = -125, y = 28.5, label = &quot;Washington : 311&quot;, color = &quot;#F8766D&quot;, hjust = 0, alpha = 0.6, size = 8) +
+    annotate(&quot;text&quot;, x = -125, y = 26, label = &quot;Lincoln : 205&quot;, color = &quot;#00BFC4&quot;, hjust = 0, alpha = 0.6, size = 8) +
+    labs(color = NULL) +
+    guides(color = &quot;none&quot;,
+           size = guide_legend(override.aes = list(alpha = 0.5))) +
+    coord_map() +
+    labs(title = &quot;Cities, towns, and equivalents named after Washington and Lincoln&quot;,
+         subtitle = &quot;State and counties are NOT included&quot;,
+         caption = &quot;Source: decennial census 2010&quot;) +
+    theme_bw() +
+    theme(legend.position = c(0.9, 0.),
+          legend.justification = c(0.5, 0),
+          legend.title = element_text(color = &quot;grey40&quot;),
+          legend.text = element_text(color = &quot;grey40&quot;),
+          panel.grid = element_blank(),
+          panel.border = element_blank(),
+          axis.title = element_blank(),
+          axis.text = element_blank(),
+          axis.ticks = element_blank(),
+          plot.caption = element_text(hjust = 0.95, color = &quot;grey30&quot;),
+          plot.title = element_text(color = &quot;grey30&quot;))</code></pre>
+<p>Bar plot of states with most cities or towns named after “Washington” or “Lincoln”,</p>
+<pre class="r"><code># count
+wl[, .(count = .N), by = .(area, state)] %&gt;%
+    .[state %in% c(&quot;IN&quot;, &quot;OH&quot;, &quot;PA&quot;, &quot;MO&quot;, &quot;IA&quot;, &quot;KS&quot;, &quot;NE&quot;, &quot;WI&quot;, &quot;AR&quot;)] %&gt;%
+    .[, state := factor(state, levels = c(&quot;IA&quot;, &quot;OH&quot;, &quot;IN&quot;, &quot;KS&quot;, &quot;MO&quot;, &quot;PA&quot;, &quot;NE&quot;, &quot;WI&quot;, &quot;AR&quot;))] %&gt;%
+    ggplot(aes(state, count, fill = area)) +
+    geom_col(position = &quot;dodge&quot;, alpha = 0.6) +
+    labs(title = &#39;States with most cities and towns that have &quot;Washington&quot; or &quot;Lincoln&quot; in the name&#39;,
+         fill = NULL) +
+    theme(legend.position = c(0.9, 0.85))</code></pre>
+
+    </div>
+  </article>
+
+  
+<section id="comments">
+  <div id="disqus_thread"></div>
+  <script>
+  var disqus_config = function () {
+  
+  };
+  (function() {
+    var inIFrame = function() {
+      var iframe = true;
+      try { iframe = window.self !== window.top; } catch (e) {}
+      return iframe;
+    };
+    if (inIFrame()) return;
+    var d = document, s = d.createElement('script');
+    s.src = '//gl-li-github-io.disqus.com/embed.js'; s.async = true;
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
+  })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</section>
+
+
+
+</main>
+
+      <footer class="footer">
+          
+        <ul class="footer-links">
+          <li>
+              &copy;<a href="http://www.gl-li.com/about/">Guanglai Li</a>
+          </li>
+          <li>
+            <a href="https://twitter.com/guanglai_li" target="_blank">Twitter</a>
+          </li>
+          <li>
+            <a href="https://github.com/GL-Li" class="footer-links-kudos">Github</a>
+          </li>
+        </ul>
+      </footer>
+
+    </div>
+    
+
+
+
+<script src="//cdn.bootcss.com/highlight.js/9.11.0/highlight.min.js"></script>
+
+
+
+<script src="//cdn.bootcss.com/highlight.js/9.11.0/languages/r.min.js"></script>
+<script src="//cdn.bootcss.com/highlight.js/9.11.0/languages/yaml.min.js"></script>
+<script>hljs.configure({languages: []}); hljs.initHighlightingOnLoad();</script>
+
+
+
+    
+
+    
+  </body>
+</html>
+

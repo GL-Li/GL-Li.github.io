@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>data wrangling on R &amp; Census</title>
+    <link>/tags/data-wrangling/</link>
+    <description>Recent content in data wrangling on R &amp; Census</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>&amp;copy; 2017 - 2019. All rights reserved.</copyright>
+    <lastBuildDate>Tue, 29 Aug 2017 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="/tags/data-wrangling/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Extract US Census 2010 data with data.table and dplyr</title>
+      <link>/2017/08/29/process-2010-census-data-with-data-table/</link>
+      <pubDate>Tue, 29 Aug 2017 00:00:00 +0000</pubDate>
+      
+      <guid>/2017/08/29/process-2010-census-data-with-data-table/</guid>
+      <description>This post explains how to extract information from the original dataset of the US 2010 census summary file 1 with urban/rural update, using data.table or dplyr package in R.
+Why do we want to work with the original data? You may ask, when there are already R packages, such as UScensus2010, censusapi, and tidycensus, which help user get the data.
+The biggest benefit is that you will have full access to all the census 2010 data.</description>
+    </item>
+    
+    <item>
+      <title>Compare data.table pipes and magrittr pipes</title>
+      <link>/2017/07/25/compare-data.table-pipes-and-magrittr-pipes/</link>
+      <pubDate>Tue, 25 Jul 2017 00:00:00 +0000</pubDate>
+      
+      <guid>/2017/07/25/compare-data.table-pipes-and-magrittr-pipes/</guid>
+      <description>We have two ways to chain data.table operations, using data.table pipes or using magrittr pipes. For a data.table dt, the data.table pipes take the form of dt[][][]... and magrittr pipes dt %&amp;gt;% .[] %&amp;gt;% .[] %&amp;gt;% ....
+Let’s first compare the readability of the two pipes in the following examples. Hadley Wickham criticized the readability of data.table pipes in this stackoverflow post. The data.table pipes, however, are not that hard to follow for those who are familiar with data.</description>
+    </item>
+    
+  </channel>
+</rss>
